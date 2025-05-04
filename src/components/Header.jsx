@@ -1,4 +1,4 @@
-import { UserButton, useUser } from '@clerk/clerk-react'
+import { UserButton, useUser, SignInButton } from '@clerk/clerk-react'
 import React from 'react'
 import { Button } from './ui/button';
 
@@ -23,6 +23,7 @@ function Header() {
         </div>
         :
         <div>
+          <SignInButton />
           <Button>Submit Listing</Button>
         </div>
       }
