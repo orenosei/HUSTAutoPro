@@ -19,12 +19,12 @@ function Header() {
       {isSignedIn?
         <div className='flex items-center gap-5'>
           <UserButton />
-          <Button>Submit Listing</Button>
+          <Button className='bg-blue-500 text-white hover:scale-110'>Submit Listing</Button>
         </div>
         :
         <div>
           <SignInButton />
-          <Button>Submit Listing</Button>
+          <Button className='bg-blue-500 text-white hover:scale-110'>Submit Listing</Button>
         </div>
       }
 
