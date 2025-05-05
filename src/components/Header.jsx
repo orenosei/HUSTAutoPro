@@ -1,4 +1,4 @@
-import { UserButton, useUser } from '@clerk/clerk-react'
+import { UserButton, useUser, SignInButton } from '@clerk/clerk-react'
 import React from 'react'
 import { Button } from './ui/button';
 
@@ -20,12 +20,14 @@ function Header() {
         <div className='flex items-center gap-5'>
           <UserButton />
           <Link to={'/profile'}>
-              <Button>Submit Listing</Button>
+              <Button className='bg-blue-500 text-white hover:scale-110'>Submit Listing</Button>
           </Link>
-        </div>
+          <Button className='bg-blue-500 text-white hover:scale-110'>Submit Listing</Button>
+        </div> 
         :
         <div>
-          <Button>Submit Listing</Button>
+          <SignInButton />
+          <Button className='bg-blue-500 text-white hover:scale-110'>Submit Listing</Button>
         </div>
       }
 
