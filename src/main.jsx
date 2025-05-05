@@ -10,6 +10,14 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Home/>,
+  },
+  {
+    path: '/profile',
+    element: <Profile/>,
+  },
+  {
+    path: '/add-listing',
+    element: <AddListing/>
   }
 ])
 
