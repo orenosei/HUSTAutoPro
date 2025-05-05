@@ -15,9 +15,9 @@ function DropdownField({item, handleInputChange}) {
         <SelectTrigger className="w-full">
             <SelectValue placeholder={item.label} />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="bg-white outline-none  shadow-none rounded-md">
             {item?.options?.map((option, index)=>(
-                <SelectItem value={option}>{option}</SelectItem>
+                <SelectItem className="hover:bg-gray-100 focus:bg-gray-200 cursor-pointer transition-colors" value={option}>{option}</SelectItem>
             ))}
         </SelectContent>
          </Select>

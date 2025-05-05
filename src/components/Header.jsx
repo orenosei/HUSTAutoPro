@@ -1,6 +1,7 @@
 import { UserButton, useUser, SignInButton } from '@clerk/clerk-react'
 import React from 'react'
 import { Button } from './ui/button';
+import { Link } from 'react-router-dom';
 
 function Header() {
   const { user, isSignedIn } = useUser();
@@ -22,7 +23,6 @@ function Header() {
           <Link to={'/profile'}>
               <Button className='bg-blue-500 text-white hover:scale-110'>Submit Listing</Button>
           </Link>
-          <Button className='bg-blue-500 text-white hover:scale-110'>Submit Listing</Button>
         </div> 
         :
         <div>

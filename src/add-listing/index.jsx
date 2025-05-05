@@ -8,7 +8,8 @@ import { Textarea } from '@/components/ui/textarea'
 import features from './../Shared/features.json'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
-import { h } from '@clerk/clerk-react/dist/useAuth-CbDfW7Rs'
+import { useState } from 'react'
+
 
 function AddListing() {
 
@@ -52,7 +53,7 @@ function AddListing() {
                 <Separator className="my-6" />
                 {/* features List */}
                 <div>
-                    <h2 className= 'font-medium text-xl my-6'>Feartures</h2>
+                    <h2 className= 'font-medium text-xl my-6'>Features</h2>
                     <div className='grid grid-cols-2 md:grid-cols-3 gap-2'>
                         {features.features.map((item,index)=>(
                             <div key={index} className='flex gap-2 items-center'>
@@ -63,7 +64,7 @@ function AddListing() {
                 </div>
                 {/* Car Images*/}
                 <div className='mt-10 flex justify-end'>
-                    <Button onClick={(e)=>onsubmit(e)}>Submit</Button>
+                    <Button className='bg-blue-500 text-white hover:scale-110' onClick={(e)=>onSubmit(e)}>Submit</Button>
                 </div>
             </form>
         </div>
