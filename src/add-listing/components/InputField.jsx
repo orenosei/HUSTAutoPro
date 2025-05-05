@@ -1,4 +1,5 @@
 import React from 'react'
+import { Input } from "@/components/ui/input";
 
 function InputField({item,handleInputChange}) {
   return (
