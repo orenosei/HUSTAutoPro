@@ -6,11 +6,11 @@ const FormatResult=(resp)=>{
     let result=[];
     let finalResult=[];
     resp.forEach((item)=>{
-        const listingId=item.carLisiting?.id;
+        const listingId=item.carListing?.id;
         if(!result[listingId])
         {
             result[listingId]={
-                car:item.carLisiting,
+                car:item.carListing,
                 images:[]
             }
         }
