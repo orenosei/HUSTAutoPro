@@ -1,32 +1,34 @@
 import { Button } from '@/components/ui/Button'
-//import { useUser } from '@clerk/clerk-react'
-//import { db } from './../../../configs'
-//import { CarListing, CarImages } from './../../../configs/schema'
-//import { eq, desc } from 'drizzle-orm'
+import { useUser } from '@clerk/clerk-react'
+import { db } from './../../../configs'
+import { CarListing, CarImages } from './../../../configs/schema'
+import { eq, desc } from 'drizzle-orm'
 import React, { useEffect } from 'react' 
 import { Link } from 'react-router-dom'
-//import { useState } from 'react'
-//import Service from '@/Shared/Service'
+import { useState } from 'react'
+import Service from '@/Shared/Service'
+import CarItem from '@/components/CarItem'
+
 
 function MyListing() {
 
-  // const {user}=useUser();
-  // const [carList,setCarList]=useState([]);
+  const {user}=useUser();
+  const [carList,setCarList]=useState([]);
 
-  // useEffect(()=>{
-  //   user && GetUserCarListing();
+  useEffect(()=>{
+    user && GetUserCarListing();
 
-  // }, [user])
-  // const GetUserCarListing=async()=>{
-  //   const result=await db.select().from(CarListing)
-  //   .leftJoin(CarImages,eq(CarListing.id,CarImages.carListingId))
-  //   .where(eq(CarListing.createdBy,user?.primaryEmailAddress?.emailAddress))
-  //   .orderBy(desc(CarListing.id))
+  }, [user])
+  const GetUserCarListing=async()=>{
+    const result=await db.select().from(CarListing)
+    .leftJoin(CarImages,eq(CarListing.id,CarImages.carListingId))
+    .where(eq(CarListing.createdBy,user?.primaryEmailAddress?.emailAddress))
+    .orderBy(desc(CarListing.id))
 
-  //   const resp=Service.FormatResult(result)
-  //   console.log(result);
-  //   setCarList(resp);
-  // }
+    const resp=Service.FormatResult(result)
+    console.log(result);
+    setCarList(resp);
+  }
 
 
   return (
