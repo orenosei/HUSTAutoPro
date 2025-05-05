@@ -9,11 +9,22 @@ import features from './../Shared/features.json'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
+import { db } from './../../configs'
+import { CarListing } from './../../configs/schema'
+import TextAreaField from './components/TextAreaField'
+import IconField from './components/IconField'
 
 
 function AddListing() {
 
     const[formData,setFormData]=useState([]);
+    const [featuresData,setFeaturesData]=useState([]);
+
+    /**
+     * Used to handle the user input from form
+     * @param {*} name 
+     * @param {*} value 
+     */
     const handleInputChange=(name, value)=>{
         setFormData((prevData)=>({
             ...prevData,
@@ -21,16 +32,39 @@ function AddListing() {
         }))
         console.log(formData);
     }
-
-    const onSubmit=(e)=>{
+    /**
+     * Used to handle the feature change
+     * @param {*} name 
+     * @param {*} value 
+     */
+    const handleFeatureChange=(name, value)=>{
+        setFeaturesData((prevData)=>({
+            ...prevData,
+            [name]:value
+        }))
+        console.log(featuresData);
+    }
+    const onSubmit=async(e)=>{
         e.preventDefault();
         console.log(formData);
+        try{
+            const result=await db.insert(CarListing).values({
+                ...formData,
+                features:featuresData
+            });
+            if(result){
+                console.log('Data saved successfully');
+            }
+        } catch (e) {
+            console.error('Error', e);
+        }
+        
     }
   return (
     <div>
         <Header/>
         <div className= 'px-10 md:px-20 my-10'>
-            <h2 className= 'font-blod text-4xl'>Add New Listing</h2>
+            <h2 className= 'font-bold text-4xl'>Add New Listing</h2>
             <form className= 'p-10 border rounded-xl mt-10'>
                 {/* Car Details */}
                 <div>
@@ -38,13 +72,15 @@ function AddListing() {
                     <div className= 'grid grid-cols-1 md:grid-cols-2 gap-5'>
                         {carDetails.carDetails.map((item,index)=>(
                             <div key ={index}>
-                                <label className='text-sm'>{item?.label} {item.required&&<span className='text-red-500'>*</span>}</label>
+                                <label className='text-sm flex gap-2 items-center font-medium text-gray-500 mb-1'>
+                                    <IconField icon={item?.icon}/>
+                                    {item?.label} {item.required&&<span className='text-red-500'>*</span>}</label>
                                 {item.fieldType=='text'||item.fieldType=='number'
                                 ?<InputField item ={item} handleInputChange={handleInputChange}/>
                                 :item.fieldType=='dropdown'
                                 ?<DropdownField item={item} handleInputChange={handleInputChange}/>
                                 :item.fieldType=='textarea'
-                                ?<Textarea item={item} handleInputChange={handleInputChange}/>
+                                ?<TextAreaField item={item} handleInputChange={handleInputChange}/>
                                 :null}
                             </div>
                         ))}
@@ -57,7 +93,7 @@ function AddListing() {
                     <div className='grid grid-cols-2 md:grid-cols-3 gap-2'>
                         {features.features.map((item,index)=>(
                             <div key={index} className='flex gap-2 items-center'>
-                                <Checkbox onCheckedChange={(value)=>handleInputChange(item.name,value)}/> <h2>{item.label}</h2>
+                                <Checkbox onCheckedChange={(value)=>handleFeatureChange(item.name,value)}/> <h2>{item.label}</h2>
                             </div>
                         ))}
                     </div>
