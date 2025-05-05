@@ -31,7 +31,7 @@ function UploadImages({ onImagesChange }) {
             className="relative border rounded-xl border-dotted border-blue-400 bg-blue-100"
           >
             <IoMdCloseCircle
-              className="absolute top-2 right-2 text-lg text-red-600 cursor-pointer"
+              className="absolute top-2 right-2 text-lg text-white cursor-pointer"
               onClick={() => onImageRemove(image)}
             />
             <img
