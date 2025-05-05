@@ -19,8 +19,11 @@ function Header() {
       {isSignedIn?
         <div className='flex items-center gap-5'>
           <UserButton />
+          <Link to={'/profile'}>
+              <Button className='bg-blue-500 text-white hover:scale-110'>Submit Listing</Button>
+          </Link>
           <Button className='bg-blue-500 text-white hover:scale-110'>Submit Listing</Button>
-        </div>
+        </div> 
         :
         <div>
           <SignInButton />
