@@ -8,7 +8,7 @@ function MyListing() {
         <div className='flex justify-between items-center'>
             <h2 className='font-bold text-4xl'>My Listing</h2>
             <Link to={'/add-listing'}>
-                <Button>+ Add New Listing</Button>
+                <Button className='bg-blue-500 text-white hover:scale-110' > + Add New Listing</Button>
             </Link>
         </div>
     </div>
