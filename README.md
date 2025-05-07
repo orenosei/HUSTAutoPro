@@ -6,8 +6,8 @@ This project is a web application that leverages modern tools like Vite, Tailwin
 
 Make sure your development environment meets the following requirements:
 
-* **Node.js** (v18 or later)
-* **npm** (v9 or later)
+* **Node.js** (v20 or later)
+* **npm** (v10 or later)
 * **Git**
 
 ## Setup Instructions
