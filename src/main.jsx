@@ -36,7 +36,17 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
       <RouterProvider router={router}/> 
-      <Toaster />
+      <Toaster 
+        position="bottom-right" 
+        toastOptions={{
+          style: {
+            background: '#333',
+            color: '#fff',
+            fontSize: '18px',
+          },
+          duration: 3000,
+        }}
+      />
     </ClerkProvider>
   </StrictMode>,
 )
