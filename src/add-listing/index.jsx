@@ -93,7 +93,7 @@ function AddListing() {
           ...formData,
           features: featuresData,
           createdBy: user?.primaryEmailAddress?.emailAddress,
-          postedOn: new Date().toISOString(),
+          postedOn: new Date().toISOString().replace('T', ' ').slice(0, 19), // Lấy thời điểm hiện tại và chuyển về định dạng "YYYY-MM-DD HH:mm:ss"
         })
         .returning({id:CarListing.id}); // Lấy id của bản ghi vừa lưu
       const carListingId = listingResult[0]?.id;
