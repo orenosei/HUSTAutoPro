@@ -108,7 +108,7 @@ function AddListing() {
         }
         console.log("Data saved successfully!");
         setLoader(false);
-        toast.success("Data saved successfully!");
+        toast.success("Add new car successfully!");
         navigate("/profile");
       }
     } catch (error) {
