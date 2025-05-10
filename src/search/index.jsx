@@ -6,6 +6,8 @@ import { CarImages, CarListing } from './../../configs/schema';
 import { db } from './../../configs';  
 import { eq } from 'drizzle-orm';
 import { useSearchParams } from 'react-router-dom';
+import CarItem from '@/components/CarItem';
+
 
 function SearchByOptions() {
   
