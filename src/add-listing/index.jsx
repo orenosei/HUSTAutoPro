@@ -163,7 +163,7 @@ function AddListing() {
                 <div key={index} className="flex gap-2 items-center">
                   <Checkbox
                     onCheckedChange={(value) =>
-                      handleFeatureChange(item.name, value)
+                      handleFeatureChange(item.label, value)
                     }
                   />{" "}
                   <h2>{item.label}</h2>
