@@ -9,27 +9,35 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { CiSearch } from "react-icons/ci";
 import Data from "@/Shared/Data";
+import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 function Search() {
+
+  const [cars, setCars] = useState();
+  const [make, setMake] = useState();
+  const [price, setPrice] = useState();
+
   return (
     <div className="p-4 bg-white rounded-md md:rounded-full flex-col md:flex md:flex-row gap-10 px-5 items-center w-[60%]">
       {/* Dropdown 1 */}
-      <Select>
+      <Select onValueChange={(value) => setCars(value)}>
         <SelectTrigger className="outline-none md:border-none w-full shadow-none text-lg">
           <SelectValue placeholder="Cars" />
         </SelectTrigger>
         <SelectContent className="bg-white outline-none border-none shadow-none rounded-md">
-          <SelectItem
-            value="light"
-            className="hover:bg-gray-100 focus:bg-gray-200 cursor-pointer transition-colors"
+          <SelectItem value="New"
+          className="hover:bg-gray-100 focus:bg-gray-200 cursor-pointer transition-colors"
           >
             New
           </SelectItem>
-          <SelectItem
-            value="dark"
+          <SelectItem value="Used"
             className="hover:bg-gray-100 focus:bg-gray-200 cursor-pointer transition-colors"
           >
-            Old
+            Used
+          </SelectItem>
+          <SelectItem value="Certified Pre-Owned">
+            Certified Pre-Owned
           </SelectItem>
         </SelectContent>
       </Select>
@@ -37,7 +45,7 @@ function Search() {
       <Separator orientation="vertical" className="hidden md:block" />
 
       {/* Dropdown 2 */}
-      <Select>
+      <Select onValueChange={(value) => setMake(value)}>
         <SelectTrigger className="outline-none md:border-none w-full shadow-none text-lg">
           <SelectValue placeholder="Car Makes" />
         </SelectTrigger>
@@ -57,7 +65,7 @@ function Search() {
       <Separator orientation="vertical" className="hidden md:block" />
 
       {/* Dropdown 3 */}
-      <Select>
+      <Select onValueChange={(value) => setPrice(value)}>
         <SelectTrigger className="outline-none md:border-none w-full shadow-none text-lg">
           <SelectValue placeholder="Pricing" />
         </SelectTrigger>
@@ -75,9 +83,9 @@ function Search() {
       </Select>
 
       {/* Search Button */}
-      <div>
-        <CiSearch className="text-[50px] bg-blue-500 rounded-full p-3 text-white hover:scale-130 transition-all cursor-pointer" />
-      </div>
+    <Link to={'/search?cars=' + cars + '&make=' + make + '&price=' + price}>
+      <CiSearch className="text-[50px] bg-blue-500 rounded-full p-3 text-white hover:scale-130 transition-all cursor-pointer" />
+    </Link>
     </div>
   );
 }
