@@ -1,6 +1,6 @@
 import React from 'react'
 
-function DetailHeader() {
+function DetailHeader({carDetail}) {
   return (
     <div>DetailHeader</div>
   )
