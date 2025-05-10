@@ -16,7 +16,7 @@ function CarItem({car}) {
           />
           <div className='p-4' >
             <h2 className='font-bold text-black text-lg mb-2'>{car?.listingTitle}</h2>
-            <Separator/>
+            <Separator className="bg-gray-200" />
             <div className='grid grid-cols-3 mt-5'>
                 <div className='flex flex-col items-center'>
                 <LuFuel className='text-lg mb-2' />
@@ -31,7 +31,7 @@ function CarItem({car}) {
                 <h2>{car?.transmission}</h2>
                 </div>
             </div>
-            <Separator className="my-2" />
+            <Separator className="my-2 bg-gray-200" />
             <div className='flex items-center justify-between'>
               <h2 className='font-bold text-xl'>${car.sellingPrice}</h2>
               <h2 className='text-primary text-sm flex gap-2 items-center'> 
