@@ -6,6 +6,7 @@ import { CarImages, CarListing } from './../../../configs/schema';
 import { db } from './../../../configs'; 
 import { eq } from 'drizzle-orm';
 import CarItem from '@/components/CarItem';
+import Service from '@/Shared/Service';
 
 function SearchByCategory() {
 
