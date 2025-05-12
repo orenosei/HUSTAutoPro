@@ -1,5 +1,5 @@
 import Header from '@/components/Header'
-import React from 'react'
+import React, { useEffect } from 'react'
 import carDetails from './../Shared/carDetails.json'
 import InputField from './components/InputField'
 import DropdownField from './components/DropdownField'
@@ -16,8 +16,9 @@ import IconField from './components/IconField'
 import UploadImages from './components/UploadImages'
 import { BiLoaderAlt } from 'react-icons/bi'
 import { toast } from 'sonner'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useUser } from '@clerk/clerk-react'
+import Service from '@/Shared/Service'
 
 function AddListing() {    
   
@@ -25,11 +26,33 @@ function AddListing() {
   const UPLOAD_PRESET = "hustautopro_preset"; 
   const [formData, setFormData] = useState([]);
   const [featuresData, setFeaturesData] = useState([]);
+  const [searchParams]= useSearchParams();
+  const [carInfo, setCarInfo]= useState();
   const [images, setImages] = useState([]);
   const [loader, setLoader] = useState(false);
   const navigate = useNavigate();
   const {user} = useUser();
+  
+  const mode = searchParams.get('mode');
+  const recordId= searchParams.get('id');
 
+  useEffect(()=>{
+    if(mode=='edit')
+    {
+      GetListingDetail();
+    }
+  }, []);
+  
+  const GetListingDetail=async()=>{
+    const result=await db.select().from(CarListing)
+    .innerJoin(CarImages, eq(CarListing.id, CarImages.carListingId))
+    .where(eq(CarListing.id, recordId));
+
+    const resp=Service.FormatResult(result)
+    setCarInfo(resp[0])
+    setFeaturesData(resp[0]);
+    setFormData(resp[0].features);
+  }
   
   const handleInputChange = (name, value) => {
     setFormData((prevData) => ({
@@ -82,7 +105,18 @@ function AddListing() {
     console.log("Submitting...");
     setLoader(true);
 
-    try {
+    if(mode=='edit'){
+      const result = await db.update(CarListing).set({
+        ...formData,
+          features: featuresData,
+          createdBy: user?.primaryEmailAddress?.emailAddress,
+          postedOn: new Date().toISOString().replace('T', ' ').slice(0, 19), // Lấy thời điểm hiện tại và chuyển về định dạng "YYYY-MM-DD HH:mm:ss"
+      }).where(eq(CarListing.id, recordId)).returning({id:CarListing.id});
+      console.log(result);
+      navigate('/profile');
+      setLoader(false);
+    }else{
+        try {
       // Upload ảnh lên Cloudinary và lấy danh sách URLs
       const imageUrls = await uploadImagesToCloud();
 
@@ -111,10 +145,11 @@ function AddListing() {
         toast.success("Add new car successfully!");
         navigate("/profile");
       }
-    } catch (error) {
+        } catch (error) {
       console.error("Error saving data:", error);
       setLoader(false);
-    }
+        }
+  }
   };
 
   return (
@@ -138,16 +173,19 @@ function AddListing() {
                     <InputField
                       item={item}
                       handleInputChange={handleInputChange}
+                      carInfo={carInfo}
                     />
                   ) : item.fieldType === "dropdown" ? (
                     <DropdownField
                       item={item}
                       handleInputChange={handleInputChange}
+                      carInfo={carInfo}
                     />
                   ) : item.fieldType === "textarea" ? (
                     <TextAreaField
                       item={item}
                       handleInputChange={handleInputChange}
+                      carInfo={carInfo}
                     />
                   ) : null}
                 </div>
@@ -165,6 +203,7 @@ function AddListing() {
                     onCheckedChange={(value) =>
                       handleFeatureChange(item.label, value)
                     }
+                    checked={ featuresData?.[item.name]}
                   />{" "}
                   <h2>{item.label}</h2>
                 </div>
