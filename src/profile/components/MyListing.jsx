@@ -54,7 +54,9 @@ function MyListing() {
             <div key={index}>
                 <CarItem car={item} />
                 <div className='p-3 bg-gray-100 rounded-lg flex justify-between mt-2 gap-5'>
-                    <Button className='flex-1 border-gray-300 bg-white text-center hover:bg-gray-200'>Edit</Button>
+                    <Link to={'/add-listing?profile?mode=edit&id='+ item?.id} >
+                        <Button className='flex-1 border-gray-300 bg-white text-center hover:bg-gray-200'>Edit</Button>
+                    </Link>
                     <Button className='text-white bg-red-400 flex-shrink-0 hover:bg-red-600'>
                       <FaTrashAlt />
                     </Button>
