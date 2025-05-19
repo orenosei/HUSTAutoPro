@@ -25,7 +25,7 @@ import { useState, useEffect } from 'react';
     const minPrice = Math.min(...priceValues);
     const maxPrice = Math.max(...priceValues);
 
-    // Khởi tạo giá trị mặc định
+
     useEffect(() => {
       setCars(searchParams.get('cars') || '');
       setMake(searchParams.get('make') || '');
@@ -44,7 +44,7 @@ import { useState, useEffect } from 'react';
       if(type === 'price') setPrice(minPrice);
     };
 
-    // Tạo URL không bao gồm price khi ở mức mặc định
+
     const buildSearchUrl = () => {
       const params = new URLSearchParams();
       if(cars) params.set('cars', cars);
@@ -58,8 +58,8 @@ import { useState, useEffect } from 'react';
       {/* Condition Filter */}
       <div className="relative group w-full md:w-auto">
         <Select value={cars} onValueChange={setCars}>
-          <SelectTrigger className="w-full md:w-48 pr-8 outline-none md:border-none shadow-none text-lg ">
-            <SelectValue placeholder="Tình Trạng" />
+          <SelectTrigger className="w-full md:w-48 pr-8 outline-none md:border-none shadow-none text-lg hover:scale-105">
+            <SelectValue  placeholder="Tình Trạng" />
           </SelectTrigger>
           <SelectContent className="bg-white outline-none border-none shadow-none rounded-md">
             <SelectItem  className="hover:bg-gray-100 focus:bg-gray-200 cursor-pointer transition-colors" value="New">Xe Mới</SelectItem>
@@ -67,12 +67,12 @@ import { useState, useEffect } from 'react';
             <SelectItem  className="hover:bg-gray-100 focus:bg-gray-200 cursor-pointer transition-colors" value="Certified Pre-Owned">Xe Đã Được Chứng Nhận</SelectItem>
           </SelectContent>
         </Select>
-        {cars && (
+        {/* {cars && (
           <CiTrash
             className="absolute right-2 top-3 text-gray-400 hover:text-red-500 cursor-pointer transition-all opacity-0 group-hover:opacity-100"
             onClick={() => resetFilter('cars')}
           />
-        )}
+        )} */}
       </div>
 
       <Separator className="md:h-8 md:w-px bg-gray-200" orientation="vertical" />
@@ -80,7 +80,7 @@ import { useState, useEffect } from 'react';
       {/* Make Filter */}
       <div className="relative group w-full md:w-auto">
         <Select value={make} onValueChange={setMake}>
-          <SelectTrigger className="w-full md:w-48 pr-8 outline-none md:border-none shadow-none text-lg">
+          <SelectTrigger className="w-full md:w-48 pr-8 outline-none md:border-none shadow-none text-lg hover:scale-105">
             <SelectValue placeholder="Hãng Xe" />
           </SelectTrigger>
           <SelectContent className="bg-white outline-none border-none shadow-none rounded-md">
@@ -91,12 +91,12 @@ import { useState, useEffect } from 'react';
             ))}
           </SelectContent>
         </Select>
-        {make && (
+        {/* {make && (
           <CiTrash
             className="absolute right-2 top-3 text-gray-400 hover:text-red-500 cursor-pointer transition-all opacity-0 group-hover:opacity-100"
             onClick={() => resetFilter('make')}
           />
-        )}
+        )} */}
       </div>
 
       <Separator className="md:h-8 md:w-px bg-gray-200" orientation="vertical" />
@@ -111,12 +111,12 @@ import { useState, useEffect } from 'react';
                 {price > minPrice ? `VND ${price.toLocaleString()}` : "Bất kỳ"}
               </span>
             </span>
-            {price > minPrice && (
+            {/* {price > minPrice && (
               <CiTrash
                 className="text-gray-400 hover:text-red-500 cursor-pointer transition-colors"
                 onClick={() => resetFilter('price')}
               />
-            )}
+            )} */}
           </div>
           <div className="relative mt-2">
             <Slider
@@ -140,9 +140,7 @@ import { useState, useEffect } from 'react';
               )}
             </Slider>
           </div>
-          {/* <div className="text-xs text-gray-400 text-right">
-            Range: ${minPrice.toLocaleString()} - ${maxPrice.toLocaleString()}
-          </div> */}
+
         </div>
       </div>
 
@@ -151,21 +149,30 @@ import { useState, useEffect } from 'react';
         to={buildSearchUrl()}
         className="w-full md:w-auto mt-4 md:mt-0"
       >
-        <div className="bg-red-500 hover:bg-red-600 text-white p-4 rounded-xl flex items-center justify-center gap-2 transition-all">
+        <div className="bg-red-500 hover:bg-red-600 hover:scale-105 text-white p-4 rounded-xl flex items-center justify-center gap-2 transition-all">
           <CiSearch className="text-2xl" />
           <span className="font-semibold">Tìm Kiếm</span>
         </div>
       </Link>
 
       {/* Reset All */}
-      {(cars || make || price > minPrice) && (
+      {/* {(cars || make || price > minPrice) && (
         <button
           onClick={() => navigate('/search')}
           className="text-sm text-red-400 hover:text-red-600 flex items-center gap-1 mt-2 md:mt-0 md:ml-4"
         >
           <CiTrash className="text-4xl" />
         </button>
-      )}
+      )} */}
+      {/* Reset All */}
+{useSearchParams()[0].size > 0 && (
+  <button
+    onClick={() => navigate('/search')}
+    className="text-sm text-red-400 hover:text-red-600 flex items-center gap-1 mt-2 md:mt-0 md:ml-4"
+  >
+    <CiTrash className="text-4xl" />
+  </button>
+)}
     </div>
   );
 }
