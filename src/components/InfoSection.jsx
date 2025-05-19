@@ -15,7 +15,7 @@ function InfoSection() {
 
           <div className="md:col-span-1 md:pl-0 pl-4">
             <div className="max-w-lg md:max-w-none md:pr-4">
-              <h2 className="text-3xl font-semibold text-gray-900 sm:text-3xl transition duration-300 hover:text-blue-600 hover:scale-105">
+              <h2 className="text-3xl font-semibold text-gray-900 sm:text-3xl transition duration-300 hover:text-red-600 hover:scale-105">
                 <span className="whitespace-nowrap block">Khách hàng là trung tâm</span>
                 <span className="whitespace-nowrap block">Trải nghiệm là ưu tiên</span>
               </h2>

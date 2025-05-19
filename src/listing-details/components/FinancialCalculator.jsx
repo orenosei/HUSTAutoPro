@@ -53,7 +53,7 @@ function FinancialCalculator({carDetail}) {
             <span className='text-4xl font-bold'>   {monthlyPayment} $</span>
         </h2>
     }
-        <Button className="mt-10 w-full bg-blue-500 hover:bg-blue-600 text-white" size="lg"  
+        <Button className="mt-10 w-full bg-red-500 hover:bg-red-600 text-white" size="lg"  
         onClick={CalculateMonthlyPayment}
         >Calculate</Button>
     </div>

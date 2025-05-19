@@ -277,7 +277,7 @@ function AddListing() {
           setLoader={(v)=>setLoader(v)}/>
           <div className="mt-10 flex justify-end">
             <Button
-              className="bg-blue-500 text-white hover:scale-110"
+              className="bg-red-500 text-white hover:scale-110"
               type="submit"
               disabled={loader}
             >
