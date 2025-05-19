@@ -24,13 +24,16 @@ function MostSearchedCar() {
             .select()   
             .from(CarListing)
             .leftJoin(CarImages, eq(CarListing.id, CarImages.carListingId))
-            .where(eq(CarListing.createdBy, user?.primaryEmailAddress?.emailAddress))
+            // .where(eq(CarListing.createdBy, user?.primaryEmailAddress?.emailAddress))
+            .where(eq(CarListing.createdBy, "dungdetanglike123@gmail.com")) // thay sau
+
             .orderBy(desc(CarListing.id))
             .limit(10)
       
           const resp = Service.FormatResult(result);
           console.log(resp);
           setCarList(resp);
+          console.log(carList);
   }
   return (
     <div className='mx-24'>

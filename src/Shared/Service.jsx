@@ -2,6 +2,14 @@
 
 // const SendBirdApplicationId=import.meta.env.VITE_SENDBIRD_APP_ID;
 // const SendBirdApiToken=import.meta.env.VITE_SENDBIRD_API_TOKEN;
+
+
+import { useEffect } from 'react';
+import { useUser } from '@clerk/clerk-react';
+import { db } from './../../configs';
+import { User } from './../../configs/schema'; 
+import { eq } from 'drizzle-orm';
+
 const FormatResult=(resp)=>{
     let result=[];
     let finalResult=[];
@@ -30,6 +38,53 @@ const FormatResult=(resp)=>{
  
     return finalResult;
 }
+
+
+export function checkUserInDb() {
+  const { user } = useUser();
+
+  useEffect(() => {
+    const addUserToDB = async () => {
+      if (!user) {
+        console.log('User chưa đăng nhập.');
+        return;
+      }
+
+      try {
+        const existingUser = await db
+          .select()
+          .from(User)
+          .where(eq(User.clerkUserId, user.id))
+          .execute();
+
+        if (existingUser.length > 0) {
+          console.log('Người dùng đã tồn tại trong DB.');
+          return;
+        }
+
+        const newUser = {
+          clerkUserId: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.primaryEmailAddress.emailAddress,
+          phoneNumber: user.primaryPhoneNumber?.phoneNumber || null,
+          address: null, // Nếu cần xử lý thêm địa chỉ
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        };
+
+        await db.insert(User).values(newUser).execute();
+        console.log('Người dùng mới đã được thêm vào DB:', newUser);
+      } catch (error) {
+        console.error('Lỗi khi kiểm tra/thêm người dùng trong DB:', error);
+      }
+    };
+
+    addUserToDB();
+  }, [user]);
+}
+
+
 
 // const CreateSendBirdUser=(userId,nickName,profileUrl)=>{
     
@@ -66,4 +121,5 @@ export default{
     FormatResult,
     // CreateSendBirdUser,
     // CreateSendBirdChannel
+    //checkUserInDB
 }
