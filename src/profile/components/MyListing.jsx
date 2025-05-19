@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/Button'
 import { useUser } from '@clerk/clerk-react'
 import { db } from './../../../configs'
-import { CarListing, CarImages } from './../../../configs/schema'
+import { CarListing, CarImages, User } from './../../../configs/schema'
 import { eq, desc } from 'drizzle-orm'
 import React, { useEffect } from 'react' 
 import { Link } from 'react-router-dom'
@@ -27,7 +27,8 @@ function MyListing() {
         .select()
         .from(CarListing)
         .leftJoin(CarImages, eq(CarListing.id, CarImages.carListingId))
-        .where(eq(CarListing.createdBy, user?.primaryEmailAddress?.emailAddress))
+        .innerJoin(User, eq(CarListing.createdBy, User.id))
+        .where(eq(CarListing.createdBy, User.id))
         .orderBy(desc(CarListing.id));
   
       const resp = Service.FormatResult(result);

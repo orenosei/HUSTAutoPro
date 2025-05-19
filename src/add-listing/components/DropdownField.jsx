@@ -1,30 +1,53 @@
 import React from 'react'
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select"
 
-function DropdownField({item, handleInputChange, carInfo}) {
-  return (
-    <div>
-        <Select onValueChange={(value)=>handleInputChange(item.name, value)}
-            required={item.required}
-            defaultValue={carInfo?.[item.name]}>
-        <SelectTrigger className="w-full">
-            <SelectValue placeholder={carInfo?.[item.name]?carInfo?.[item.name]:item.label} />
-        </SelectTrigger>
-        <SelectContent className="bg-white outline-none  shadow-none rounded-md">
-            {item?.options?.map((option, index)=>(
-                <SelectItem className="hover:bg-gray-100 focus:bg-gray-200 cursor-pointer transition-colors" value={option}>{option}</SelectItem>
-            ))}
-        </SelectContent>
-         </Select>
+function DropdownField({ item, handleInputChange, carInfo }) {
+  const [selectedValue, setSelectedValue] = React.useState(
+    carInfo?.[item.name] || ''
+  );
 
+  const handleChange = (value) => {
+    setSelectedValue(value);
+    handleInputChange(item.name, value);
+  };
+
+  return (
+    <div className="relative group">
+      <Select 
+        onValueChange={handleChange} 
+        value={selectedValue}
+      >
+        <SelectTrigger className="w-full px-4 py-3 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 group-hover:border-blue-300 transition-colors">
+          <SelectValue 
+            placeholder={item.label} 
+            className="text-gray-700"
+          >
+            {selectedValue || item.label}
+          </SelectValue>
+        </SelectTrigger>
+        
+        <SelectContent className="rounded-lg shadow-lg border border-gray-200 mt-1 bg-white">
+          {item?.options?.map((option) => (
+            <SelectItem 
+              key={option}
+              value={option}
+              className="px-4 py-2.5 hover:bg-blue-50/80 text-gray-700 cursor-pointer transition-colors border-b border-gray-200 last:border-b-0"
+            >
+              {option}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      
+      <div className="absolute inset-0 pointer-events-none rounded-lg ring-0 group-focus-within:ring-2 ring-blue-200 transition-shadow" />
     </div>
-  )
+  );
 }
 
-export default DropdownField
+export default DropdownField;
