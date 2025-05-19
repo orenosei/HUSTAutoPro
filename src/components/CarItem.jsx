@@ -11,7 +11,7 @@ function CarItem({ car }) {
     <div>
       {car ? (
         <Link to={'/listing-details/' + car?.id}>
-          <div className='rounded-xl bg-white border border-gray-300 hover:shadow-md cursor-pointer'>
+          <div className='rounded-2xl bg-white border-3  border-gray-300 hover:shadow-md cursor-pointer '>
             <h2 className='absolute m-2 bg-green-500 px-2 rounded-full text-sm text-white'>New</h2>
             <img 
               src={car?.images?.[0]?.imageUrl || '/path/to/placeholder.jpg'} 
