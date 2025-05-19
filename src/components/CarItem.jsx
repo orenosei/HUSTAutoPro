@@ -41,7 +41,7 @@ function CarItem({ car }) {
               <div className='flex items-center justify-between'>
                 <h2 className='font-bold text-xl'> {Math.floor(Number(car?.sellingPrice))?.toLocaleString('en-US') + ' VNĐ' || 'N/A'}</h2>
                 <h2 className='text-primary text-sm flex gap-2 items-center'> 
-                  View Details <MdOpenInNew />
+                  Chi Tiết <MdOpenInNew />
                 </h2>
               </div>
             </div>

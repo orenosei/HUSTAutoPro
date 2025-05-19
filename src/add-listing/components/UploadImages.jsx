@@ -28,7 +28,7 @@ function UploadImages({ onImagesChange }) {
         {selectedFileList.map((image, index) => (
           <div
             key={index}
-            className="relative border rounded-xl border-dotted border-blue-400 bg-blue-100"
+            className="relative border rounded-xl border-dotted border-red-400 bg-red-100"
           >
             <IoMdCloseCircle
               className="absolute top-2 right-2 text-lg text-white cursor-pointer"
@@ -42,8 +42,8 @@ function UploadImages({ onImagesChange }) {
           </div>
         ))}
         <label htmlFor="upload-images">
-          <div className="border rounded-xl border-dotted border-blue-400 bg-blue-100 p-10 cursor-pointer hover:shadow-md">
-            <h2 className="text-lg text-center text-blue-500">+</h2>
+          <div className="border rounded-xl border-dotted border-red-400 bg-red-100 p-10 cursor-pointer hover:shadow-md">
+            <h2 className="text-lg text-center text-red-500">+</h2>
           </div>
         </label>
         <input

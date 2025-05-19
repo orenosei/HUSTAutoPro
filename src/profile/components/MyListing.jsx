@@ -45,9 +45,9 @@ function MyListing() {
 
     <div className='mt-6'>
         <div className='flex justify-between items-center'>
-            <h2 className='font-bold text-4xl'>My Listing</h2>
+            <h2 className='font-bold text-4xl'>Danh Sách Của Tôi</h2>
             <Link to={'/add-listing'}>
-                <Button className='bg-blue-500 text-white hover:scale-110' > + Add New Listing</Button>
+                <Button className='bg-red-500 text-white hover:scale-110' >Đăng Xe Mới</Button>
             </Link>
         </div>
         <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-7'>
@@ -56,7 +56,7 @@ function MyListing() {
                 <CarItem car={item} />
                 <div className='p-3 bg-gray-100 rounded-lg flex justify-between mt-2 gap-5'>
                     <Link to={'/add-listing?profile?mode=edit&id='+ item?.id} >
-                        <Button className='flex-1 border-gray-300 bg-white text-center hover:bg-gray-200'>Edit</Button>
+                        <Button className='flex-1 border-gray-300 bg-white text-center hover:bg-gray-200'>Chỉnh Sửa</Button>
                     </Link>
                     <Button className='text-white bg-red-400 flex-shrink-0 hover:bg-red-600'>
                       <FaTrashAlt />

@@ -72,7 +72,10 @@ function SearchByOptions() {
           <Search />
       </div>
       <div className='p-10 md:px-20'>
-          <h2 className='font-bold text-4xl '>Search Result</h2>
+          <h2 className='font-bold text-4xl '>Kết Quả Tìm Kiếm </h2>
+          <div className='text-sm text-gray-500 mt-2'>
+            {carList.length} xe được tìm thấy
+          </div>
           
           {/* List of CarList */}
           <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-7'>
