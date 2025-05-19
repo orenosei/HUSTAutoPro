@@ -95,11 +95,11 @@ const Pricing=[
     },
     {
         id:3,
-        amount:5000
+        amount:50000000
     },
     {
         id:4,
-        amount:10000
+        amount:50000000000
     }
 ]
 

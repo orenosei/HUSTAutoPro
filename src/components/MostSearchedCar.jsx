@@ -24,8 +24,7 @@ function MostSearchedCar() {
             .select()   
             .from(CarListing)
             .leftJoin(CarImages, eq(CarListing.id, CarImages.carListingId))
-            // .where(eq(CarListing.createdBy, user?.primaryEmailAddress?.emailAddress))
-            .where(eq(CarListing.createdBy, "dungdetanglike123@gmail.com")) // thay sau
+            .where(eq(CarListing.createdBy, 1)) // thay sau
 
             .orderBy(desc(CarListing.id))
             .limit(10)
