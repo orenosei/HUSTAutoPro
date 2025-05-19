@@ -23,7 +23,7 @@ function DropdownField({ item, handleInputChange, carInfo }) {
         onValueChange={handleChange} 
         value={selectedValue}
       >
-        <SelectTrigger className="w-full px-4 py-3 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 group-hover:border-blue-300 transition-colors">
+        <SelectTrigger className="w-full px-4 py-3 border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 group-hover:border-red-300 transition-colors">
           <SelectValue 
             placeholder={item.label} 
             className="text-gray-700"
@@ -37,7 +37,7 @@ function DropdownField({ item, handleInputChange, carInfo }) {
             <SelectItem 
               key={option}
               value={option}
-              className="px-4 py-2.5 hover:bg-blue-50/80 text-gray-700 cursor-pointer transition-colors border-b border-gray-200 last:border-b-0"
+              className="px-4 py-2.5 hover:bg-red-50/80 text-gray-700 cursor-pointer transition-colors border-b border-gray-200 last:border-b-0"
             >
               {option}
             </SelectItem>
@@ -45,7 +45,7 @@ function DropdownField({ item, handleInputChange, carInfo }) {
         </SelectContent>
       </Select>
       
-      <div className="absolute inset-0 pointer-events-none rounded-lg ring-0 group-focus-within:ring-2 ring-blue-200 transition-shadow" />
+      <div className="absolute inset-0 pointer-events-none rounded-lg ring-0 group-focus-within:ring-2 ring-red-200 transition-shadow" />
     </div>
   );
 }
