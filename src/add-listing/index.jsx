@@ -9,8 +9,10 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { db } from './../../configs'
+import { eq } from 'drizzle-orm'
 import { CarListing } from './../../configs/schema'
 import { CarImages } from './../../configs/schema'
+import { User } from './../../configs/schema'
 import TextAreaField from './components/TextAreaField'
 import IconField from './components/IconField'
 import UploadImages from './components/UploadImages'
@@ -24,14 +26,15 @@ function AddListing() {
   
   const CLOUD_NAME = "dql9a2fi8"; 
   const UPLOAD_PRESET = "hustautopro_preset"; 
-  const [formData, setFormData] = useState([]);
-  const [featuresData, setFeaturesData] = useState([]);
   const [searchParams]= useSearchParams();
-  const [carInfo, setCarInfo]= useState();
   const [images, setImages] = useState([]);
   const [loader, setLoader] = useState(false);
   const navigate = useNavigate();
   const {user} = useUser();
+
+  const [formData, setFormData] = useState({}); // Sửa thành object
+  const [featuresData, setFeaturesData] = useState({}); // Sửa thành object
+  const [carInfo, setCarInfo] = useState({}); // Sửa thành object
   
   const mode = searchParams.get('mode');
   const recordId= searchParams.get('id');
@@ -42,22 +45,37 @@ function AddListing() {
       GetListingDetail();
     }
   }, []);
-  
-  const GetListingDetail=async()=>{
-    const result=await db.select().from(CarListing)
-    .innerJoin(CarImages, eq(CarListing.id, CarImages.carListingId))
-    .where(eq(CarListing.id, recordId));
 
-    const resp=Service.FormatResult(result)
-    setCarInfo(resp[0])
-    setFeaturesData(resp[0]);
-    setFormData(resp[0].features);
-  }
+  const GetListingDetail = async () => {
+    const result = await db.select()
+      .from(CarListing)
+      .innerJoin(CarImages, eq(CarListing.id, CarImages.carListingId))
+      .innerJoin(User, eq(CarListing.createdBy, User.id)) // Thêm join với User
+      .where(eq(CarListing.id, Number(recordId)));
+
+    const resp = Service.FormatResult(result);
+    const formattedData = {
+      ...resp[0],
+      // Convert các trường số
+      year: Number(resp[0].year),
+      mileage: Number(resp[0].mileage),
+      door: Number(resp[0].door),
+      sellingPrice: parseFloat(resp[0].sellingPrice),
+      originalPrice: resp[0].originalPrice ? parseFloat(resp[0].originalPrice) : null,
+      engineSize: resp[0].engineSize ? parseFloat(resp[0].engineSize) : null,
+      cylinder: resp[0].cylinder ? Number(resp[0].cylinder) : null
+    };
+    
+    setCarInfo(formattedData);
+    setFeaturesData(formattedData.features || {});
+    setFormData(formattedData);
+  };
   
+
   const handleInputChange = (name, value) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
+    setFormData(prev => ({
+      ...prev,
+      [name]: value === "" ? null : value 
     }));
   };
   
@@ -100,56 +118,99 @@ function AddListing() {
       return urls;
     };
 
+
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitting...");
     setLoader(true);
+  
+    try {
 
-    if(mode=='edit'){
-      const result = await db.update(CarListing).set({
+      const userResult = await db.select()
+      .from(User)
+      .where(eq(User.clerkUserId, user.id));
+
+      if (!userResult[0]) {
+        throw new Error('User not found in database');
+      }
+      const dbUserId = userResult[0].id;
+      // 1. Chuẩn bị dữ liệu
+      const processedData = {
         ...formData,
-          features: featuresData,
-          createdBy: user?.primaryEmailAddress?.emailAddress,
-          postedOn: new Date().toISOString().replace('T', ' ').slice(0, 19), // Lấy thời điểm hiện tại và chuyển về định dạng "YYYY-MM-DD HH:mm:ss"
-      }).where(eq(CarListing.id, recordId)).returning({id:CarListing.id});
-      console.log(result);
-      navigate('/profile');
-      setLoader(false);
-    }else{
-        try {
-      // Upload ảnh lên Cloudinary và lấy danh sách URLs
-      const imageUrls = await uploadImagesToCloud();
-
-      // Lưu dữ liệu listing vào bảng `CarListing`
-      const listingResult = await db
-        .insert(CarListing)
-        .values({
-          ...formData,
-          features: featuresData,
-          createdBy: user?.primaryEmailAddress?.emailAddress,
-          postedOn: new Date().toISOString().replace('T', ' ').slice(0, 19), // Lấy thời điểm hiện tại và chuyển về định dạng "YYYY-MM-DD HH:mm:ss"
-        })
-        .returning({id:CarListing.id}); // Lấy id của bản ghi vừa lưu
-      const carListingId = listingResult[0]?.id;
-
-      if (carListingId) {
-        // Lưu URLs vào bảng `CarImages`
-        for (const url of imageUrls) {
-          await db.insert(CarImages).values({
-            imageUrl: url,
-            carListingId,
-          });
+        // Chuyển đổi các trường số
+        year: Number(formData.year),
+        mileage: Number(formData.mileage),
+        door: Number(formData.door),
+        sellingPrice: parseFloat(formData.sellingPrice),
+        originalPrice: formData.originalPrice 
+          ? parseFloat(formData.originalPrice) 
+          : null,
+        engineSize: formData.engineSize 
+          ? parseFloat(formData.engineSize) 
+          : null,
+        cylinder: formData.cylinder 
+          ? Number(formData.cylinder) 
+          : null,
+        
+        // Xử lý dữ liệu đặc biệt
+        features: featuresData,
+        createdBy: dbUserId, // Sử dụng database user ID
+        postedOn: new Date()
+      };
+  
+      // 2. Xử lý mode edit
+      if (mode === 'edit') {
+        await db.update(CarListing)
+          .set(processedData)
+          .where(eq(CarListing.id, Number(recordId)));
+  
+        // Cập nhật ảnh nếu có
+        if (images.length > 0) {
+          const imageUrls = await uploadImagesToCloud();
+          await db.delete(CarImages)
+            .where(eq(CarImages.carListingId, Number(recordId)));
+          
+          for (const url of imageUrls) {
+            await db.insert(CarImages).values({
+              imageUrl: url,
+              carListingId: Number(recordId)
+            });
+          }
         }
-        console.log("Data saved successfully!");
-        setLoader(false);
-        toast.success("Add new car successfully!");
+  
+        toast.success("Cập nhật thành công!");
+        navigate('/profile');
+      } 
+      // 3. Xử lý mode tạo mới
+      else {
+        // Upload ảnh
+        const imageUrls = await uploadImagesToCloud();
+  
+        // Tạo bản ghi chính
+        const listingResult = await db.insert(CarListing)
+          .values(processedData)
+          .returning({ id: CarListing.id });
+  
+        const carListingId = listingResult[0]?.id;
+  
+        // Thêm ảnh vào bảng CarImages
+        if (carListingId && imageUrls.length > 0) {
+          await db.insert(CarImages).values(
+            imageUrls.map(url => ({
+              imageUrl: url,
+              carListingId: carListingId
+            }))
+          );
+        }
+  
+        toast.success("Đăng tin thành công!");
         navigate("/profile");
       }
-        } catch (error) {
-      console.error("Error saving data:", error);
+    } catch (error) {
+      console.error("Lỗi xử lý:", error);
+      toast.error(`Thao tác thất bại: ${error.message}`);
+    } finally {
       setLoader(false);
-        }
-  }
+    }
   };
 
   return (
@@ -199,7 +260,7 @@ function AddListing() {
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
               {features.features.map((item, index) => (
                 <div key={index} className="flex gap-2 items-center">
-                  <Checkbox
+                  <Checkbox className="h-5 w-5 "
                     onCheckedChange={(value) =>
                       handleFeatureChange(item.label, value)
                     }
