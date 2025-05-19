@@ -47,7 +47,7 @@ const iconMap = {
   
 function IconField({icon}) {
 return (
-    <div className='text-blue-500 bg-blue-100 p-1.5 rounded-full'>{iconMap[icon]}</div>
+    <div className='text-red-500 bg-red-100 p-1.5 rounded-full'>{iconMap[icon]}</div>
 )
 }
 

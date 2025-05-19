@@ -59,12 +59,12 @@ import { useState, useEffect } from 'react';
       <div className="relative group w-full md:w-auto">
         <Select value={cars} onValueChange={setCars}>
           <SelectTrigger className="w-full md:w-48 pr-8 outline-none md:border-none shadow-none text-lg ">
-            <SelectValue placeholder="Condition" />
+            <SelectValue placeholder="Tình Trạng" />
           </SelectTrigger>
           <SelectContent className="bg-white outline-none border-none shadow-none rounded-md">
-            <SelectItem  className="hover:bg-gray-100 focus:bg-gray-200 cursor-pointer transition-colors" value="New">New</SelectItem>
-            <SelectItem  className="hover:bg-gray-100 focus:bg-gray-200 cursor-pointer transition-colors" value="Used">Used</SelectItem>
-            <SelectItem  className="hover:bg-gray-100 focus:bg-gray-200 cursor-pointer transition-colors" value="Certified Pre-Owned">Certified</SelectItem>
+            <SelectItem  className="hover:bg-gray-100 focus:bg-gray-200 cursor-pointer transition-colors" value="New">Xe Mới</SelectItem>
+            <SelectItem  className="hover:bg-gray-100 focus:bg-gray-200 cursor-pointer transition-colors" value="Used">Xe Cũ</SelectItem>
+            <SelectItem  className="hover:bg-gray-100 focus:bg-gray-200 cursor-pointer transition-colors" value="Certified Pre-Owned">Xe Đã Được Chứng Nhận</SelectItem>
           </SelectContent>
         </Select>
         {cars && (
@@ -81,7 +81,7 @@ import { useState, useEffect } from 'react';
       <div className="relative group w-full md:w-auto">
         <Select value={make} onValueChange={setMake}>
           <SelectTrigger className="w-full md:w-48 pr-8 outline-none md:border-none shadow-none text-lg">
-            <SelectValue placeholder="Car Make" />
+            <SelectValue placeholder="Hãng Xe" />
           </SelectTrigger>
           <SelectContent className="bg-white outline-none border-none shadow-none rounded-md">
             {Data.CarMakes.map((maker) => (
@@ -106,9 +106,9 @@ import { useState, useEffect } from 'react';
         <div className="p-4 bg-white shadow-md rounded-lg flex flex-col gap-3">
           <div className="flex justify-between items-center">
             <span className="text-sm font-medium text-gray-600">
-              Max Price: 
-              <span className="ml-1 text-blue-500 font-semibold">
-                {price > minPrice ? `VND ${price.toLocaleString()}` : "Any"}
+              Giá tối đa: 
+              <span className="ml-1 text-red-500 font-semibold">
+                {price > minPrice ? `VND ${price.toLocaleString()}` : "Bất kỳ"}
               </span>
             </span>
             {price > minPrice && (
@@ -151,9 +151,9 @@ import { useState, useEffect } from 'react';
         to={buildSearchUrl()}
         className="w-full md:w-auto mt-4 md:mt-0"
       >
-        <div className="bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-xl flex items-center justify-center gap-2 transition-all">
+        <div className="bg-red-500 hover:bg-red-600 text-white p-4 rounded-xl flex items-center justify-center gap-2 transition-all">
           <CiSearch className="text-2xl" />
-          <span className="font-semibold">Search</span>
+          <span className="font-semibold">Tìm Kiếm</span>
         </div>
       </Link>
 

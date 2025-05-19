@@ -10,7 +10,7 @@ function Pricing({carDetail}) {
           ? Math.floor(Number(carDetail.sellingPrice)).toLocaleString('en-US')
           : 'N/A'} VNĐ</h2>
 
-        <Button className='w-full mt-10 bg-blue-500 hover:bg-blue-600 text-white'>
+        <Button className='w-full mt-10 bg-red-500 hover:bg-red-600 text-white'>
             <MdOutlineLocalOffer className='text-white text-lg mr-2' />
             Make an Offer Price
         </Button>
