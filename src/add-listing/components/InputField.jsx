@@ -1,5 +1,8 @@
 import React from 'react'
 import { Input } from "@/components/ui/input";
+import { useState, useEffect } from "react";
+
+
 
 const NUMERIC_FIELDS = [
   'year', 'mileage', 'door', 
@@ -19,9 +22,13 @@ const FIELD_CONFIG = {
 
 function InputField({ item, handleInputChange, carInfo }) {
   const isNumeric = NUMERIC_FIELDS.includes(item.name);
-  const [localValue, setLocalValue] = React.useState(
+  const [localValue, setLocalValue] = useState(
     carInfo?.[item.name] ?? ''
   );
+
+  useEffect(() => {
+    setLocalValue(carInfo?.[item.name] ?? '');
+  }, [carInfo?.[item.name]]);
 
   const handleChange = (e) => {
     const value = e.target.value;
