@@ -30,9 +30,9 @@ function MostSearchedCar() {
             .limit(10)
       
           const resp = Service.FormatResult(result);
-          console.log(resp);
+          //console.log(resp);
           setCarList(resp);
-          console.log(carList);
+          //console.log(carList);
   }
   return (
     <div className='mx-24'>

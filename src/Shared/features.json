@@ -1,130 +1,61 @@
 {
-    "features": [
-      {
-        "label": "Air Conditioner",
-        "name": "airConditioner",
-        "fieldType": "checkbox"
-      },
-      {
-        "label": "Digital Odometer",
-        "name": "digitalOdometer",
-        "fieldType": "checkbox"
-      },
-      {
-        "label": "Heater",
-        "name": "heater",
-        "fieldType": "checkbox"
-      },
-      {
-        "label": "Leather Seats",
-        "name": "leatherSeats",
-        "fieldType": "checkbox"
-      },
-      {
-        "label": "Panoramic Moonroof",
-        "name": "panoramicMoonroof",
-        "fieldType": "checkbox"
-      },
-      {
-        "label": "Tachometer",
-        "name": "tachometer",
-        "fieldType": "checkbox"
-      },
-      {
-        "label": "Touchscreen Display",
-        "name": "touchscreenDisplay",
-        "fieldType": "checkbox"
-      },
-      {
-        "label": "Anti-lock Braking",
-        "name": "antiLockBraking",
-        "fieldType": "checkbox"
-      },
-      {
-        "label": "Brake Assist",
-        "name": "brakeAssist",
-        "fieldType": "checkbox"
-      },
-      {
-        "label": "Child Safety Locks",
-        "name": "childSafetyLocks",
-        "fieldType": "checkbox"
-      },
-      {
-        "label": "Driver Air Bag",
-        "name": "driverAirBag",
-        "fieldType": "checkbox"
-      },
-      {
-        "label": "Power Door Locks",
-        "name": "powerDoorLocks",
-        "fieldType": "checkbox"
-      },
-      {
-        "label": "Stability Control",
-        "name": "stabilityControl",
-        "fieldType": "checkbox"
-      },
-      {
-        "label": "Traction Control",
-        "name": "tractionControl",
-        "fieldType": "checkbox"
-      },
-      {
-        "label": "Fog Lights Front",
-        "name": "fogLightsFront",
-        "fieldType": "checkbox"
-      },
-      {
-        "label": "Rain Sensing Wiper",
-        "name": "rainSensingWiper",
-        "fieldType": "checkbox"
-      },
-      {
-        "label": "Rear Spoiler",
-        "name": "rearSpoiler",
-        "fieldType": "checkbox"
-      },
-      {
-        "label": "Windows - Electric",
-        "name": "windowsElectric",
-        "fieldType": "checkbox"
-      },
-      {
-        "label": "Comfort & Convenience",
-        "name": "comfortConvenience",
-        "fieldType": "checkbox"
-      },
-      {
-        "label": "Android Auto",
-        "name": "androidAuto",
-        "fieldType": "checkbox"
-      },
-      {
-        "label": "Apple CarPlay",
-        "name": "appleCarPlay",
-        "fieldType": "checkbox"
-      },
-      {
-        "label": "Bluetooth",
-        "name": "bluetooth",
-        "fieldType": "checkbox"
-      },
-      {
-        "label": "HomeLink",
-        "name": "homeLink",
-        "fieldType": "checkbox"
-      },
-      {
-        "label": "Power Steering",
-        "name": "powerSteering",
-        "fieldType": "checkbox"
-      },
-      {
-        "label": "Vanity Mirror",
-        "name": "vanityMirror",
-        "fieldType": "checkbox"
-      }
-    ]
-  }
-  
+  "features": [
+    
+    {"label": "Điều hòa không khí", "name": "airConditioner", "fieldType": "checkbox"},
+    {"label": "Hệ thống sưởi", "name": "heater", "fieldType": "checkbox"},
+    {"label": "Ghế da cao cấp", "name": "leatherSeats", "fieldType": "checkbox"},
+    {"label": "Ghế chỉnh điện", "name": "powerSeats", "fieldType": "checkbox"},
+    {"label": "Cửa sổ trời toàn cảnh", "name": "panoramicMoonroof", "fieldType": "checkbox"},
+    {"label": "Màn hình cảm ứng", "name": "touchscreenDisplay", "fieldType": "checkbox"},
+    {"label": "Gương trang điểm có đèn", "name": "vanityMirror", "fieldType": "checkbox"},
+    {"label": "Hộp số tự động", "name": "automaticTransmission", "fieldType": "checkbox"},
+    {"label": "Sạc không dây", "name": "wirelessCharger", "fieldType": "checkbox"},
+    {"label": "Cửa sổ điện", "name": "windowsElectric", "fieldType": "checkbox"},
+    {"label": "Gương chiếu hậu gập điện", "name": "autoFoldingMirrors", "fieldType": "checkbox"},
+
+    
+    {"label": "Hệ thống chống bó phanh (ABS)", "name": "antiLockBraking", "fieldType": "checkbox"},
+    {"label": "Hỗ trợ phanh khẩn cấp", "name": "brakeAssist", "fieldType": "checkbox"},
+    {"label": "Khóa an toàn trẻ em", "name": "childSafetyLocks", "fieldType": "checkbox"},
+    {"label": "Túi khí lái xe", "name": "driverAirBag", "fieldType": "checkbox"},
+    {"label": "Khóa cửa điện", "name": "powerDoorLocks", "fieldType": "checkbox"},
+    {"label": "Kiểm soát ổn định thân xe", "name": "stabilityControl", "fieldType": "checkbox"},
+    {"label": "Kiểm soát lực kéo", "name": "tractionControl", "fieldType": "checkbox"},
+    {"label": "Hệ thống cảnh báo va chạm phía trước", "name": "forwardCollisionWarning", "fieldType": "checkbox"},
+    {"label": "Hệ thống cảnh báo lệch làn đường", "name": "laneDepartureWarning", "fieldType": "checkbox"},
+    {"label": "Hệ thống hỗ trợ giữ làn đường", "name": "laneKeepingAssist", "fieldType": "checkbox"},
+    {"label": "Hệ thống giám sát áp suất lốp", "name": "tirePressureMonitoring", "fieldType": "checkbox"},
+    {"label": "Hệ thống chống trộm", "name": "antiTheftSystem", "fieldType": "checkbox"},
+    {"label": "Cảm biến ánh sáng tự động", "name": "automaticHeadlights", "fieldType": "checkbox"},
+    {"label": "Đèn pha tự động điều chỉnh góc chiếu", "name": "adaptiveHeadlights", "fieldType": "checkbox"},
+    {"label": "Cảm biến đỗ xe trước", "name": "frontParkingSensors", "fieldType": "checkbox"},
+    {"label": "Cảm biến đỗ xe sau", "name": "rearParkingSensors", "fieldType": "checkbox"},
+    {"label": "Camera lùi", "name": "rearCamera", "fieldType": "checkbox"},
+    {"label": "Cảm biến va chạm", "name": "collisionSensor", "fieldType": "checkbox"},
+    {"label": "Cảnh báo điểm mù", "name": "blindSpotWarning", "fieldType": "checkbox"},
+
+    
+    {"label": "Đèn sương mù phía trước", "name": "fogLightsFront", "fieldType": "checkbox"},
+    {"label": "Đèn LED ban ngày", "name": "daytimeRunningLights", "fieldType": "checkbox"},
+    {"label": "Gạt mưa tự động", "name": "rainSensingWiper", "fieldType": "checkbox"},
+
+    
+    {"label": "Android Auto", "name": "androidAuto", "fieldType": "checkbox"},
+    {"label": "Apple CarPlay", "name": "appleCarPlay", "fieldType": "checkbox"},
+    {"label": "Bluetooth", "name": "bluetooth", "fieldType": "checkbox"},
+    {"label": "Hệ thống âm thanh cao cấp", "name": "premiumSoundSystem", "fieldType": "checkbox"},
+    {"label": "Kết nối WiFi", "name": "wifiHotspot", "fieldType": "checkbox"},
+    {"label": "Sạc USB Type-C", "name": "usbTypeC", "fieldType": "checkbox"},
+
+    
+    {"label": "GPS", "name": "gps", "fieldType": "checkbox"},
+    {"label": "Trợ lực lái", "name": "powerSteering", "fieldType": "checkbox"},
+    {"label": "Hệ thống khởi động bằng nút bấm", "name": "pushButtonStart", "fieldType": "checkbox"},
+    {"label": "Chế độ lái thể thao", "name": "sportMode", "fieldType": "checkbox"},
+
+    
+    {"label": "Đồng hồ đo km điện tử", "name": "digitalOdometer", "fieldType": "checkbox"},
+    {"label": "Cánh gió sau", "name": "rearSpoiler", "fieldType": "checkbox"},
+    {"label": "Lốp dự phòng", "name": "spareTire", "fieldType": "checkbox"}
+  ]
+}
