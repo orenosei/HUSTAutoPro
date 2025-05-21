@@ -9,13 +9,12 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { useAuth, useUser } from "@clerk/clerk-react";
 import { toast } from "sonner";
 import  Service from '@/Shared/Service';
- // import service trực tiếp
 
 function CarItem({ car }) {
   const { user } = useUser();
 
   const handleAddToFavorites = async (e) => {
-    e.preventDefault(); // Ngăn việc chuyển trang khi click icon
+    e.preventDefault(); 
 
     if (!user) {
       toast.error("Vui lòng đăng nhập để thêm vào yêu thích.");

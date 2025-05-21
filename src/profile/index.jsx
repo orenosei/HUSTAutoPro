@@ -3,6 +3,8 @@ import MyListing from './components/MyListing'
 import Header from '@/components/Header'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import FavoriteList from './components/FavoriteCar'
+import ProfileInfo from './components/ProfileInfo'
+
 
 function Profile() {
   return (
@@ -23,7 +25,11 @@ function Profile() {
         </TabsContent>
 
         <TabsContent value="inbox">Hộp Thư</TabsContent>
-        <TabsContent value="profile">Hồ Sơ</TabsContent>
+
+
+        <TabsContent value="profile">
+          <ProfileInfo />
+        </TabsContent>
 
 
         <TabsContent value="favorite">
