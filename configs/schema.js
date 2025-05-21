@@ -41,7 +41,7 @@ export const User = pgTable('user', {
     lastName: varchar('lastName'),
     email: varchar('email').notNull().unique(),
     phoneNumber: varchar('phoneNumber'),
-    address: json('address'),
+    address: varchar('address'),
 });
 
 export const favorites = pgTable('favorites', {
