@@ -194,6 +194,13 @@ const AddToFavorite = async (clerkUserId, carListingId) => {
   }
 };
 
+const getCommentsWithUsers = async (carListingId) => {
+  return db.select()
+    .from(Comment)
+    .innerJoin(User, eq(Comment.userId, User.id))
+    .where(eq(Comment.carListingId, carListingId));
+};
+
 
 
 
@@ -234,6 +241,7 @@ export default{
     FormatResult,
     GetFavoriteCars,
     AddToFavorite,
+    getCommentsWithUsers,
       GetUserByClerkId,
 
     // CreateSendBirdUser,

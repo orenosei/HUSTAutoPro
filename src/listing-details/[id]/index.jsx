@@ -13,6 +13,7 @@ import Pricing from '../components/Pricing';
 import Specification from '../components/Specification';
 import FinancialCalculator from '../components/FinancialCalculator';
 import MostSearchedCar from '@/components/MostSearchedCar';
+import CommentSection from '../components/CommentSection';
 import Footer from '@/components/Footer';
 import { useLocation } from 'react-router-dom';
 import OwnerDetail from '../components/OwnerDetail';
@@ -80,7 +81,7 @@ function ListingDetail() {
                 <OwnerDetail carDetail={carDetail} />
               </div>
             </div>
-
+            <CommentSection carListingId={id} />
             <MostSearchedCar/>
         </div>
 
