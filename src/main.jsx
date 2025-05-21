@@ -13,6 +13,9 @@ import SearchByCategory from './search/[category]'
 import SearchByOptions from './search'
 import ListingDetail from './listing-details/[id]'
 import FavoriteList from './profile/components/FavoriteCar'
+import Blog from './blog'
+import AddBlog from './blog/pages/AddBlog'
+import BlogDetail from './blog/pages/[id]'
 
 const router = createBrowserRouter([
   {
@@ -44,7 +47,20 @@ const router = createBrowserRouter([
   {
     path: '/profile/favorites',
     element: <FavoriteList />
-  } 
+  },
+  {
+    path: '/blog',
+    element: <Blog />
+  },
+  {
+    path: '/blog/add',
+    element: <AddBlog />
+  },
+  {
+
+    path: '/blog/:id',
+    element: <BlogDetail />
+  }
 
   
 

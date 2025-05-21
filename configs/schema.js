@@ -58,3 +58,29 @@ export const Comment = pgTable('comment', {
     rating: integer('rating').notNull().default(5),
     createdAt: timestamp('createdAt', { mode: 'date' }).defaultNow(),
 });
+
+export const BlogPost = pgTable('blogPost', {
+    id: serial('id').primaryKey(),
+    title: varchar('title', { length: 255 }).notNull(),
+    content: text('content').notNull(),
+    imageUrls: json('imageUrls').notNull(),
+    userId: integer('userId').notNull().references(() => User.id, { onDelete: 'cascade' }),
+    createdAt: timestamp('createdAt', { mode: 'date' }).defaultNow(),
+    updatedAt: timestamp('updatedAt', { mode: 'date' }).defaultNow()
+  });
+  
+export const BlogComment = pgTable('blogComment', {
+    id: serial('id').primaryKey(),
+    content: text('content').notNull(),
+    blogPostId: integer('blogPostId').notNull().references(() => BlogPost.id, { onDelete: 'cascade' }),
+    userId: integer('userId').notNull().references(() => User.id, { onDelete: 'cascade' }),
+    createdAt: timestamp('createdAt', { mode: 'date' }).defaultNow()
+  });
+
+  // schema.ts
+export const BlogImages = pgTable('blog_images', {
+    id: serial('id').primaryKey(),
+    imageUrl: varchar('image_url', { length: 2048 }).notNull(),
+    blogPostId: integer('blog_post_id').references(() => BlogPost.id, { onDelete: 'cascade' }),
+    createdAt: timestamp('created_at').defaultNow(),
+  });
