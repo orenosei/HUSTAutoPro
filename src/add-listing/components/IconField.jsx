@@ -47,7 +47,11 @@ const iconMap = {
   
 function IconField({icon}) {
 return (
-    <div className='text-red-500 bg-red-100 p-1.5 rounded-full'>{iconMap[icon]}</div>
+    <div
+        className=" text-orange-500 bg-red-100 p-1.5 rounded-xl transition-transform duration-300 ease-in-out hover:scale-110 hover:shadow-lg"
+    >
+        {iconMap[icon]}
+    </div>
 )
 }
 

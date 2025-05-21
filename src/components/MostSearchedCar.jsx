@@ -36,13 +36,15 @@ function MostSearchedCar() {
   }
   return (
     <div className='mx-24'>
-      <h2 className='font-bold text-3xl text-center mt-16 mb-7'>Tìm Kiếm Nhiều Nhất</h2>
+      <h2 className='font-bold text-3xl text-center mt-16 mb-8'>Tìm Kiếm Nhiều Nhất</h2>
       <Carousel>
-      <CarouselContent>
+      <CarouselContent className="overflow-visible">
         {carList.map((car, index) => (
-        <CarouselItem key={index} className="basis-1/4">
-          <CarItem car = {car} />
-        </CarouselItem>
+          <CarouselItem key={index} className="basis-1/4 p-3 h-auto">
+            <div className="h-full p-3"> 
+              <CarItem car={car} />
+            </div>
+          </CarouselItem>
       ))}
       </CarouselContent>
       <CarouselPrevious />
