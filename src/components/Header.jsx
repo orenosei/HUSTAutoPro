@@ -33,7 +33,7 @@ function Header() {
             <UserButton />
             <Link to='/profile'>
               <Button className='bg-red-500 text-white hover:scale-110 hover:bg-red-600 transition-transform px-4 py-2 rounded-lg shadow-md'>
-                Xe Của Tôi
+                Trang Cá Nhân
               </Button>
             </Link>
           </>

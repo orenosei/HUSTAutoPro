@@ -20,7 +20,7 @@ function OwnerDetail({ carDetail }) {
     <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100 mt-5">
       <div className="flex items-center gap-3 mb-6">
         <FaUser className="h-6 w-6 text-gray-400" />
-        <h3 className="text-xl font-semibold">Thông tin người bán</h3>
+        <h3 className="text-xl font-semibold">Thông tin người đăng</h3>
       </div>
 
       <div className="space-y-4">

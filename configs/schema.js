@@ -57,5 +57,4 @@ export const Comment = pgTable('comment', {
     commentText: text('commentText').notNull(),
     rating: integer('rating').notNull().default(5),
     createdAt: timestamp('createdAt', { mode: 'date' }).defaultNow(),
-    parentId: integer('parentId').references(() => Comment.id), // Cho comment reply
 });
