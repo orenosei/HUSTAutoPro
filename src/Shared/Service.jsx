@@ -14,34 +14,71 @@ import { favorites, CarListing, CarImages } from './../../configs/schema';
 
 
 
-const FormatResult=(resp)=>{
-    let result=[];
-    let finalResult=[];
-    resp.forEach((item)=>{
-        const listingId=item.carListing?.id;
-        if(!result[listingId])
-        {
-            result[listingId]={
-                car:item.carListing,
-                images:[]
-            }
-        }
+// const FormatResult=(resp)=>{
+//     let result=[];
+//     let finalResult=[];
+//     resp.forEach((item)=>{
+//         const listingId=item.carListing?.id;
+//         if(!result[listingId])
+//         {
+//             result[listingId]={
+//                 car:item.carListing,
+//                 images:[]
+//             }
+//         }
 
-        if(item.carImages)
-        {
-            result[listingId].images.push(item.carImages)
-        }
-    })
+//         if(item.carImages)
+//         {
+//             result[listingId].images.push(item.carImages)
+//         }
+//     })
    
-    result.forEach((item)=>{
-        finalResult.push({
-            ...item.car,
-            images:item.images
-        })
-    })
+//     result.forEach((item)=>{
+//         finalResult.push({
+//             ...item.car,
+//             images:item.images
+//         })
+//     })
  
-    return finalResult;
-}
+//     return finalResult;
+// }
+
+const FormatResult = (resp) => {
+  const resultMap = new Map();
+  const finalResult = [];
+
+  resp.forEach((item) => {
+    const listingId = item.carListing?.id;
+    
+    if (!resultMap.has(listingId)) {
+      resultMap.set(listingId, {
+        ...item.carListing,
+        images: [],
+        user: item.user // Thêm trường user từ kết quả join
+      });
+    }
+
+    const currentListing = resultMap.get(listingId);
+    
+    if (item.carImages) {
+      currentListing.images.push(item.carImages);
+    }
+
+    // Cập nhật thông tin user nếu cần thiết
+    if (item.user && !currentListing.user) {
+      currentListing.user = item.user;
+    }
+  });
+
+  resultMap.forEach((value) => {
+    finalResult.push({
+      ...value,
+      images: value.images
+    });
+  });
+
+  return finalResult;
+};
 
 
 export function checkUserInDb() {
