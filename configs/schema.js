@@ -7,7 +7,7 @@ export const CarListing = pgTable('carListing', {
     originalPrice: numeric('originalPrice', { precision: 12, scale: 2 }),
     sellingPrice: numeric('sellingPrice', { precision: 12, scale: 2 }).notNull(),
     category: varchar('category', { length: 50 }).notNull(),
-    condition: varchar('condition', { length: 20 }).notNull(),
+    condition: varchar('condition', { length: 40 }).notNull(),
     make: varchar('make', { length: 50 }).notNull(),
     model: varchar('model', { length: 50 }).notNull(),
     year: integer('year').notNull(),

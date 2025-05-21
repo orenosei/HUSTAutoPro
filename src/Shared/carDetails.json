@@ -1,7 +1,7 @@
 {
   "carDetails": [
     {
-      "label": "Listing Title",
+      "label": "Tiêu đề",
       "name": "listingTitle",
       "fieldType": "text",
       "required": true,
@@ -9,21 +9,21 @@
       "icon": "FaClipboardList"
     },
     {
-      "label": "Tagline",
+      "label": "Tag",
       "name": "tagline",
       "fieldType": "text",
       "column": 2,
       "icon": "FaTag"
     },
     {
-      "label": "Original Price",
+      "label": "Giá gốc",
       "name": "originalPrice",
       "fieldType": "text",
       "column": 1,
       "icon": "FaDollarSign"
     },
     {
-      "label": "Selling Price",
+      "label": "Giá bán",
       "name": "sellingPrice",
       "fieldType": "text",
       "required": true,
@@ -31,7 +31,7 @@
       "icon": "FaMoneyBillAlt"
     },
     {
-      "label": "Category",
+      "label": "Dáng xe",
       "name": "category",
       "fieldType": "dropdown",
       "options": ["Sedan", "SUV", "Truck", "Coupe", "Convertible", "Van", "Hatchback","Electric","Hybrid"],
@@ -40,17 +40,16 @@
       "icon": "FaCar"
     },
     {
-      "label": "Condition",
+      "label": "Tình trạng",
       "name": "condition",
       "fieldType": "dropdown",
       "required": true,
-      "options": ["New", "Used", "Certified Pre-Owned"],
+      "options": ["Xe Mới", "Xe Cũ", "Xe Đã Được Chứng Nhận"],
       "column": 1,
       "icon": "FaCheckCircle"
     },
-    
     {
-      "label": "Make",
+      "label": "Hãng xe",
       "name": "make",
       "fieldType": "dropdown",
       "required": true,
@@ -102,7 +101,7 @@
       "icon": "FaIndustry"
     },
     {
-      "label": "Model",
+      "label": "Mẫu xe",
       "name": "model",
       "fieldType": "text",
       "required": true,
@@ -110,7 +109,7 @@
       "icon": "FaCarSide"
     },
     {
-      "label": "Year",
+      "label": "Năm sản xuất",
       "name": "year",
       "fieldType": "number",
       "required": true,
@@ -118,34 +117,34 @@
       "icon": "FaCalendarAlt"
     },
     {
-      "label": "Drive Type",
+      "label": "Loại dẫn động",
       "name": "driveType",
       "fieldType": "dropdown",
-      "options": ["FWD", "RWD", "AWD", "4WD"],
+      "options": ["Dẫn động cầu trước", "Dẫn động cầu sau", "Dẫn động 4 bánh", "Dẫn động 4 bánh toàn thời gian"],
       "required": true,
       "column": 1,
       "icon": "FaRoad"
     },
     {
-      "label": "Transmission",
+      "label": "Hộp số",
       "name": "transmission",
       "fieldType": "dropdown",
-      "options": ["Automatic", "Manual", "CVT"],
+      "options": ["Tự động", "Số sàn", "CVT"],
       "required": true,
       "column": 1,
       "icon": "FaCogs"
     },
     {
-      "label": "Fuel Type",
+      "label": "Loại nhiên liệu",
       "name": "fuelType",
       "fieldType": "dropdown",
-      "options": ["Petrol", "Diesel", "Electric", "Hybrid"],
+      "options": ["Xăng", "Dầu", "Điện", "Lai"],
       "required": true,
       "column": 1,
       "icon": "FaGasPump"
     },
     {
-      "label": "Mileage",
+      "label": "Số km đã đi",
       "name": "mileage",
       "fieldType": "number",
       "required": true,
@@ -153,30 +152,30 @@
       "icon": "FaTachometerAlt"
     },
     {
-      "label": "Engine Size",
+      "label": "Dung tích động cơ",
       "name": "engineSize",
       "fieldType": "text",
       "column": 1,
       "icon": "FaWrench"
     },
     {
-      "label": "Cylinder",
+      "label": "Số xi-lanh",
       "name": "cylinder",
       "fieldType": "number",
       "column": 1,
       "icon": "FaCircle"
     },
     {
-      "label": "Color",
+      "label": "Màu sắc",
       "name": "color",
       "fieldType": "dropdown",
       "required": true,
-      "options": ["Black", "Blue", "Gold", "Pink", "Red", "Silver", "White"],
+      "options": ["Đen", "Xanh dương", "Vàng", "Hồng", "Đỏ", "Bạc", "Trắng"],
       "column": 2,
       "icon": "FaPalette"
     },
     {
-      "label": "Door",
+      "label": "Số cửa",
       "name": "door",
       "fieldType": "number",
       "required": true,
@@ -184,22 +183,22 @@
       "icon": "FaDoorClosed"
     },
     {
-      "label": "VIN",
+      "label": "Số VIN",
       "name": "vin",
       "fieldType": "text",
       "column": 1,
       "icon": "FaIdCard"
     },
     {
-      "label": "Offer Type",
+      "label": "Loại ưu đãi",
       "name": "offerType",
       "fieldType": "dropdown",
-      "options": ["Buy", "Hot Offer", "Sell", "Urgent"],
+      "options": ["Mua", "Khuyến mãi", "Bán", "Gấp"],
       "column": 2,
       "icon": "FaTags"
     },
     {
-      "label": "Listing Description",
+      "label": "Mô tả chi tiết",
       "name": "listingDescription",
       "fieldType": "textarea",
       "required": true,
