@@ -9,6 +9,10 @@ import { useUser } from '@clerk/clerk-react';
 import { db } from './../../configs';
 import { User } from './../../configs/schema'; 
 import { eq } from 'drizzle-orm';
+import { and } from 'drizzle-orm';
+import { favorites, CarListing, CarImages } from './../../configs/schema';
+
+
 
 const FormatResult=(resp)=>{
     let result=[];
@@ -85,6 +89,78 @@ export function checkUserInDb() {
 }
 
 
+// Lấy user theo clerkUserId
+export const GetUserByClerkId = async (clerkUserId) => {
+  const result = await db
+    .select()
+    .from(User)
+    .where(eq(User.clerkUserId, clerkUserId))
+    .execute();
+
+  return result[0] || null;
+};
+
+
+const GetFavoriteCars = async (userId) => {
+  const result = await db
+    .select()
+    .from(favorites)
+    .leftJoin(CarListing, eq(favorites.carListingId, CarListing.id))
+    .leftJoin(CarImages, eq(CarImages.carListingId, CarListing.id))
+    .where(eq(favorites.userId, userId))
+    .execute();
+
+  return FormatResult(result);
+};
+
+
+
+
+const AddToFavorite = async (clerkUserId, carListingId) => {
+  try {
+    // 1. Tìm user theo clerk ID
+    const existingUser = await db
+      .select()
+      .from(User)
+      .where(eq(User.clerkUserId, clerkUserId))
+      .execute();
+
+    if (!existingUser || existingUser.length === 0) {
+      return { success: false, message: "Không tìm thấy người dùng." };
+    }
+
+    const userId = existingUser[0].id;
+
+    // 2. Kiểm tra đã có trong bảng favorites chưa
+    const existed = await db
+      .select()
+      .from(favorites)
+      .where(
+        and(eq(favorites.userId, userId), eq(favorites.carListingId, carListingId))
+      )
+      .execute();
+
+    if (existed.length > 0) {
+      return { success: false, message: "Xe đã có trong danh sách yêu thích." };
+    }
+
+    // 3. Thêm vào bảng favorites
+    await db.insert(favorites).values({
+      userId,
+      carListingId,
+    }).execute();
+
+    return { success: true, message: "Đã thêm vào xe yêu thích!" };
+  } catch (error) {
+    console.error("Lỗi khi thêm yêu thích:", error);
+    return { success: false, message: 'Đã xảy ra lỗi khi thêm yêu thích.' };
+  }
+};
+
+
+
+
+
 
 // const CreateSendBirdUser=(userId,nickName,profileUrl)=>{
     
@@ -119,6 +195,10 @@ export function checkUserInDb() {
 
 export default{
     FormatResult,
+    GetFavoriteCars,
+    AddToFavorite,
+      GetUserByClerkId,
+
     // CreateSendBirdUser,
     // CreateSendBirdChannel
     //checkUserInDB
