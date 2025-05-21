@@ -7,7 +7,7 @@
 import { useEffect } from 'react';
 import { useUser } from '@clerk/clerk-react';
 import { db } from './../../configs';
-import { User } from './../../configs/schema'; 
+import { User, BlogPost, BlogImages } from './../../configs/schema'; 
 import { eq } from 'drizzle-orm';
 import { and } from 'drizzle-orm';
 import { favorites, CarListing, CarImages } from './../../configs/schema';
@@ -222,7 +222,141 @@ export const UpdateUserProfile = async (userId, { firstName, lastName, phoneNumb
 }
 
 
+const FormatBlogResult = (resp) => {
+  const resultMap = new Map();
+  const finalResult = [];
 
+  resp.forEach((item) => {
+    const blogId = item.blogPost?.id;
+    
+    if (!resultMap.has(blogId)) {
+      resultMap.set(blogId, {
+        ...item.blogPost,
+        images: [],
+        author: item.user
+      });
+    }
+
+    const currentBlog = resultMap.get(blogId);
+    
+    if (item.blogImages) {
+      currentBlog.images.push(item.blogImages);
+    }
+  });
+
+  resultMap.forEach((value) => {
+    finalResult.push(value);
+  });
+
+  return finalResult;
+};
+
+export const GetBlogPosts = async () => {
+  try {
+    const result = await db.select()
+      .from(BlogPost)
+      .innerJoin(User, eq(BlogPost.userId, User.id))
+      .leftJoin(BlogImages, eq(BlogPost.id, BlogImages.blogPostId))
+      .execute();
+
+    return {
+      success: true,
+      data: FormatBlogResult(result)
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: 'Lỗi tải bài viết'
+    };
+  }
+};
+
+export const GetSingleBlogPost = async (id) => {
+  try {
+    const result = await db.select()
+      .from(BlogPost)
+      .innerJoin(User, eq(BlogPost.userId, User.id))
+      .leftJoin(BlogImages, eq(BlogPost.id, BlogImages.blogPostId))
+      .where(eq(BlogPost.id, id))
+      .execute();
+
+    const formatted = FormatBlogResult(result);
+    return {
+      success: true,
+      data: formatted.length > 0 ? formatted[0] : null
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: 'Lỗi tải bài viết'
+    };
+  }
+};
+
+export const CreateBlogPost = async (postData, imageUrls) => {
+  try {
+    // Tạo bài viết
+    const result = await db.insert(BlogPost)
+      .values(postData)
+      .returning({ id: BlogPost.id });
+
+    const postId = result[0].id;
+
+    // Thêm ảnh
+    if (imageUrls.length > 0) {
+      await db.insert(BlogImages).values(
+        imageUrls.map(url => ({
+          imageUrl: url,
+          blogPostId: postId
+        }))
+      );
+    }
+
+    return {
+      success: true,
+      id: postId
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: 'Lỗi tạo bài viết'
+    };
+  }
+};
+
+export const UpdateBlogPost = async (id, updateData, newImages = [], deletedImageIds = []) => {
+  try {
+    // Cập nhật thông tin chính
+    await db.update(BlogPost)
+      .set(updateData)
+      .where(eq(BlogPost.id, id))
+      .execute();
+
+    // Xóa ảnh cũ
+    if (deletedImageIds.length > 0) {
+      await db.delete(BlogImages)
+        .where(inArray(BlogImages.id, deletedImageIds))
+        .execute();
+    }
+
+    // Thêm ảnh mới
+    if (newImages.length > 0) {
+      await db.insert(BlogImages).values(
+        newImages.map(url => ({
+          imageUrl: url,
+          blogPostId: id
+        }))
+      );
+    }
+
+    return { success: true };
+  } catch (error) {
+    return {
+      success: false,
+      message: 'Lỗi cập nhật bài viết'
+    };
+  }
+};
 
 
 
@@ -263,8 +397,14 @@ export default{
     GetFavoriteCars,
     AddToFavorite,
     getCommentsWithUsers,
-      GetUserByClerkId,
+    GetUserByClerkId,
     UpdateUserProfile,
+
+    GetBlogPosts,
+    GetSingleBlogPost,
+    CreateBlogPost,
+    UpdateBlogPost
+
 
     // CreateSendBirdUser,
     // CreateSendBirdChannel

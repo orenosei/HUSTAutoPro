@@ -52,7 +52,6 @@ function ListingDetail() {
   return (
     <div>
         <Header/>
-        
 
         <div className='p-10 md:px-20'>
             {/* Header Detail Component */}
