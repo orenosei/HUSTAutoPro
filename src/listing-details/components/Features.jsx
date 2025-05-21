@@ -12,7 +12,7 @@ function Features({ features }) {
             {Object.entries(features).map(([feature, value], index) => (
               value && (
                 <div key={index} className="flex gap-2 items-center">
-                  <FaCheck className="text-red-500 text-lg p-1 rounded-full bg-red-100" />
+                  <FaCheck className="text-green-500 text-lg p-1 rounded-full bg-green-100" />
                   <h2>{feature}</h2>
                 </div>
               )
