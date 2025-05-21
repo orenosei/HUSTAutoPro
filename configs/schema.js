@@ -52,8 +52,8 @@ export const favorites = pgTable('favorites', {
 
 export const Comment = pgTable('comment', {
     id: serial('id').primaryKey(),
-    userId: integer('userId').notNull().references(() => User.id),
-    carListingId: integer('carListingId').notNull().references(() => CarListing.id),
+    userId: integer('userId').notNull().references(() => User.id, { onDelete: 'cascade' }),
+    carListingId: integer('carListingId').notNull().references(() => CarListing.id, { onDelete: 'cascade' }),
     commentText: text('commentText').notNull(),
     rating: integer('rating').notNull().default(5),
     createdAt: timestamp('createdAt', { mode: 'date' }).defaultNow(),
