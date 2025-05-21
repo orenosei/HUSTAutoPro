@@ -6,11 +6,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { useEffect } from "react";
 
 function DropdownField({ item, handleInputChange, carInfo }) {
   const [selectedValue, setSelectedValue] = React.useState(
     carInfo?.[item.name] || ''
   );
+
+  useEffect(() => {
+    setSelectedValue(carInfo?.[item.name] || '');
+  }, [carInfo?.[item.name]]);
+
 
   const handleChange = (value) => {
     setSelectedValue(value);

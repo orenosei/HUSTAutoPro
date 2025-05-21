@@ -21,6 +21,7 @@ import { toast } from 'sonner'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useUser } from '@clerk/clerk-react'
 import Service from '@/Shared/Service'
+import { inArray } from 'drizzle-orm'
 
 function AddListing() {    
   
@@ -32,9 +33,12 @@ function AddListing() {
   const navigate = useNavigate();
   const {user} = useUser();
 
-  const [formData, setFormData] = useState({}); // Sửa thành object
-  const [featuresData, setFeaturesData] = useState({}); // Sửa thành object
-  const [carInfo, setCarInfo] = useState({}); // Sửa thành object
+  const [formData, setFormData] = useState({}); 
+  const [featuresData, setFeaturesData] = useState({}); 
+  const [carInfo, setCarInfo] = useState({}); 
+  const [existingImages, setExistingImages] = useState([]);
+  const [newImages, setNewImages] = useState([]);
+  const [deletedImageIds, setDeletedImageIds] = useState([]);
   
   const mode = searchParams.get('mode');
   const recordId= searchParams.get('id');
@@ -67,8 +71,10 @@ function AddListing() {
     };
     
     setCarInfo(formattedData);
+    console.log(formattedData); //
     setFeaturesData(formattedData.features || {});
     setFormData(formattedData);
+    setExistingImages(resp[0].images || []);
   };
   
 
@@ -86,37 +92,29 @@ function AddListing() {
     }));
   };
   
-  const uploadImagesToCloud = async () => {
-      const urls = [];
-      for (const file of images) {
-        if (!file) continue; // Bỏ qua file undefined/null
+
+  const uploadImagesToCloud = async (files) => {
+    const urls = [];
     
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("upload_preset", UPLOAD_PRESET);
-    
-        try {
-          const response = await fetch(
-            `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
-            {
-              method: "POST",
-              body: formData,
-            }
-          );
-    
-          if (response.ok) {
-            const data = await response.json();
-            urls.push(data.secure_url); // Lấy URL ảnh đã upload
-            console.log(urls);
-          } else {
-            console.error("Upload failed:", await response.text());
-          }
-        } catch (error) {
-          console.error("Error uploading image:", error);
-        }
+    for (const file of files) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", UPLOAD_PRESET);
+  
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+        { method: "POST", body: formData }
+      );
+  
+      if (response.ok) {
+        const data = await response.json();
+        urls.push(data.secure_url);
+        console.log("Uploaded URL:", data.secure_url);
       }
-      return urls;
-    };
+    }
+    
+    return urls;
+  };
 
 
   const onSubmit = async (e) => {
@@ -125,6 +123,7 @@ function AddListing() {
   
     try {
 
+      const newImageUrls = await uploadImagesToCloud(newImages);
       const userResult = await db.select()
       .from(User)
       .where(eq(User.clerkUserId, user.id));
@@ -162,36 +161,38 @@ function AddListing() {
         await db.update(CarListing)
           .set(processedData)
           .where(eq(CarListing.id, Number(recordId)));
-  
-        // Cập nhật ảnh nếu có
-        if (images.length > 0) {
-          const imageUrls = await uploadImagesToCloud();
+      
+        // Xóa các ảnh đã đánh dấu xóa
+        if (deletedImageIds.length > 0) {
           await db.delete(CarImages)
-            .where(eq(CarImages.carListingId, Number(recordId)));
-          
-          for (const url of imageUrls) {
-            await db.insert(CarImages).values({
+            .where(inArray(CarImages.id, deletedImageIds));
+        }
+      
+        // Thêm ảnh mới
+        if (newImageUrls.length > 0) {
+          await db.insert(CarImages).values(
+            newImageUrls.map(url => ({
               imageUrl: url,
               carListingId: Number(recordId)
-            });
-          }
+            }))
+          );
         }
-  
+      
         toast.success("Cập nhật thành công!");
         navigate('/profile');
-      } 
+      }
       // 3. Xử lý mode tạo mới
       else {
-        // Upload ảnh
-        const imageUrls = await uploadImagesToCloud();
-  
+        // Upload ảnh mới
+        const imageUrls = await uploadImagesToCloud(newImages);
+        
         // Tạo bản ghi chính
         const listingResult = await db.insert(CarListing)
           .values(processedData)
           .returning({ id: CarListing.id });
-  
+      
         const carListingId = listingResult[0]?.id;
-  
+      
         // Thêm ảnh vào bảng CarImages
         if (carListingId && imageUrls.length > 0) {
           await db.insert(CarImages).values(
@@ -201,7 +202,7 @@ function AddListing() {
             }))
           );
         }
-  
+      
         toast.success("Đăng tin thành công!");
         navigate("/profile");
       }
@@ -217,11 +218,11 @@ function AddListing() {
     <div>
       <Header />
       <div className="px-10 md:px-20 my-10">
-        <h2 className="font-bold text-4xl">Add New Listing</h2>
-        <form className="p-10 border rounded-xl mt-10" onSubmit={onSubmit}>
+        <h2 className="font-bold text-4xl">{mode === 'edit' ? 'Chỉnh Sửa Xe' : 'Thêm Xe Mới'}</h2>
+        <form className="p-10 border rounded-xl mt-10 border-gray-200 shadow-2xl " onSubmit={onSubmit}>
           {/* Car Details */}
           <div>
-            <h2 className="font-medium text-xl mb-6">Car Details</h2>
+            <h2 className="font-medium text-xl mb-6">Thông Số</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {carDetails.carDetails.map((item, index) => (
                 <div key={index}>
@@ -253,28 +254,52 @@ function AddListing() {
               ))}
             </div>
           </div>
-          <Separator className="my-6 " />
-          {/* Features List */}
+          <Separator className="my-6 h-px w-full bg-gray-300 " />
           <div>
-            <h2 className="font-medium text-xl my-6">Features</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+            <h2 className="font-medium text-xl my-6">Tính Năng</h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {features.features.map((item, index) => (
-                <div key={index} className="flex gap-2 items-center">
-                  <Checkbox className="h-5 w-5 "
-                    onCheckedChange={(value) =>
-                      handleFeatureChange(item.label, value)
-                    }
-                    checked={ featuresData?.[item.name]}
-                  />{" "}
-                  <h2>{item.label}</h2>
+                <div
+                  key={index}
+                  className="flex gap-3 items-center p-2 rounded-lg transition-all duration-300 hover:bg-gray-100 cursor-pointer"
+                  onClick={() =>
+                    handleFeatureChange(item.label, !featuresData?.[item.label])
+                  }
+                >
+                  <div
+                    className={`h-6 w-6 flex items-center justify-center rounded-md border-2 transition-all duration-300 ${
+                      featuresData?.[item.label]
+                        ? "bg-green-300 border-green-500 text-white"
+                        : "bg-white border-gray-300"
+                    }`}
+                  >
+                    {featuresData?.[item.label] && (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 00-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    )}
+                  </div>
+                  <h2 className="text-gray-700">{item.label}</h2>
                 </div>
               ))}
             </div>
           </div>
-          {/* Car Images */}
-          <Separator className="my-6" />
-          <UploadImages onImagesChange={setImages} 
-          setLoader={(v)=>setLoader(v)}/>
+          <Separator className="my-6 h-px w-full bg-gray-300" />
+          <UploadImages
+            carInfo={carInfo}
+            mode={mode}
+            onImagesChange={setNewImages} 
+            onExistingImageDelete={(imageId) => setDeletedImageIds(prev => [...prev, imageId])}
+            setLoader={(v)=>setLoader(v)}/>
           <div className="mt-10 flex justify-end">
             <Button
               className="bg-red-500 text-white hover:scale-110"

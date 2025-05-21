@@ -9,12 +9,13 @@ import { useState } from 'react'
 import Service from '@/Shared/Service'
 import CarItem from '@/components/CarItem'
 import { FaTrashAlt } from 'react-icons/fa'
-
+import { toast } from 'sonner';
+import { BiLoaderAlt } from 'react-icons/bi';
 function MyListing() {
 
   const {user}=useUser();
-  //console.log(user);
   const [carList,setCarList]=useState([]);
+  const [deletingId, setDeletingId] = useState(null); 
 
   useEffect(()=>{
     user && GetUserCarListing();
@@ -39,6 +40,27 @@ function MyListing() {
     }
   };
   
+  const handleDeleteCar = async (carId) => {
+    if (!window.confirm('Bạn có chắc chắn muốn xóa xe này?')) return;
+    
+    try {
+      setDeletingId(carId);
+      
+      await db.delete(CarImages)
+        .where(eq(CarImages.carListingId, carId));
+
+      await db.delete(CarListing)
+        .where(eq(CarListing.id, carId));
+
+      setCarList(prev => prev.filter(item => item.id !== carId));
+      toast.success('Xóa xe thành công');
+    } catch (error) {
+      console.error("Lỗi khi xóa xe:", error);
+      toast.error('Xóa xe thất bại');
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
 
   return (
@@ -55,11 +77,19 @@ function MyListing() {
             <div key={index}>
                 <CarItem car={item} />
                 <div className='p-3 bg-gray-100 rounded-lg flex justify-between mt-2 gap-5'>
-                    <Link to={'/add-listing?profile?mode=edit&id='+ item?.id} >
+                    <Link to={'/add-listing?mode=edit&id='+ item?.id} >
                         <Button className='flex-1 border-gray-300 bg-white text-center hover:bg-gray-200'>Chỉnh Sửa</Button>
                     </Link>
-                    <Button className='text-white bg-red-400 flex-shrink-0 hover:bg-red-600'>
-                      <FaTrashAlt />
+                    <Button 
+                      className='text-white bg-red-400 flex-shrink-0 hover:bg-red-600'
+                      onClick={() => handleDeleteCar(item?.id)}
+                      disabled={deletingId === item?.id}
+                    >
+                      {deletingId === item?.id ? (
+                        <BiLoaderAlt className="animate-spin" />
+                      ) : (
+                        <FaTrashAlt />
+                      )}
                     </Button>
                 </div>
               </div>

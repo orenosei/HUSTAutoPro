@@ -10,10 +10,12 @@ function Features({ features }) {
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-10">
             {Object.entries(features).map(([feature, value], index) => (
-              <div key={index} className="flex gap-2 items-center">
-                <FaCheck className="text-red-500 text-lg p-1 rounded-full bg-red-100" />
-                <h2>{feature}</h2>
-              </div>
+              value && (
+                <div key={index} className="flex gap-2 items-center">
+                  <FaCheck className="text-red-500 text-lg p-1 rounded-full bg-red-100" />
+                  <h2>{feature}</h2>
+                </div>
+              )
             ))}
           </div>
         </div>
