@@ -29,7 +29,7 @@ function MyListing() {
         .from(CarListing)
         .leftJoin(CarImages, eq(CarListing.id, CarImages.carListingId))
         .innerJoin(User, eq(CarListing.createdBy, User.id))
-        .where(eq(CarListing.createdBy, User.id))
+        .where(eq(user.id, User.clerkUserId))
         .orderBy(desc(CarListing.id));
   
       const resp = Service.FormatResult(result);
@@ -46,8 +46,8 @@ function MyListing() {
     try {
       setDeletingId(carId);
       
-      await db.delete(CarImages)
-        .where(eq(CarImages.carListingId, carId));
+      // await db.delete(CarImages)
+      //   .where(eq(CarImages.carListingId, carId));
 
       await db.delete(CarListing)
         .where(eq(CarListing.id, carId));

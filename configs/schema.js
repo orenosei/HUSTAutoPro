@@ -11,15 +11,15 @@ export const CarListing = pgTable('carListing', {
     make: varchar('make', { length: 50 }).notNull(),
     model: varchar('model', { length: 50 }).notNull(),
     year: integer('year').notNull(),
-    driveType: varchar('driveType', { length: 20 }).notNull(),
-    transmission: varchar('transmission', { length: 20 }).notNull(),
-    fuelType: varchar('fuelType', { length: 20 }).notNull(),
+    driveType: varchar('driveType', { length: 50 }).notNull(),
+    transmission: varchar('transmission', { length: 50 }).notNull(),
+    fuelType: varchar('fuelType', { length: 50 }).notNull(),
     mileage: integer('mileage').notNull(),
     engineSize: numeric('engineSize', { precision: 3, scale: 1 }),
     cylinder: integer('cylinder'),
     color: varchar('color', { length: 30 }).notNull(),
     door: integer('door').notNull(),
-    vin: varchar('vin', { length: 17 }),
+    vin: varchar('vin', { length: 50 }),
     offerType: varchar('offerType', { length: 20 }),
     listingDescription: text('listingDescription').notNull(),
     features: json('features'),
@@ -30,7 +30,7 @@ export const CarListing = pgTable('carListing', {
 export const CarImages = pgTable('carImages', {
     id: serial('id').primaryKey(),
     imageUrl: varchar('imageUrl').notNull(),
-    carListingId: integer('carListingId').notNull().references(() => CarListing.id),
+    carListingId: integer('carListingId').notNull().references(() => CarListing.id, { onDelete: 'cascade' }) 
 });
 
 

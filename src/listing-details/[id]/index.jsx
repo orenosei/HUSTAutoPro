@@ -23,7 +23,7 @@ function ListingDetail() {
   const {id} = useParams();
   const location = useLocation();
   const [carDetail, setCarDetail] = useState();
-  console.log(id);
+  //console.log(id);
 
   useEffect(() => {
     window.scrollTo({
