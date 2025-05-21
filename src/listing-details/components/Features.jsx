@@ -6,7 +6,7 @@ function Features({ features }) {
     <div>
       {features && Object.keys(features).length > 0 ? (
         <div className="p-10 rounded-xl bg-white shadow-md mt-6 border border-gray-200">
-          <h2 className="text-2xl font-semibold">Features</h2>
+          <h2 className="text-2xl font-semibold">Tính Năng Nổi Bật</h2>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-10">
             {Object.entries(features).map(([feature, value], index) => (

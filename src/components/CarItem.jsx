@@ -36,10 +36,10 @@ function CarItem({ car }) {
   };
 
   return (
-    <div className="h-full">
+    <div className="">
       {car ? (
-        <Link to={`/listing-details/${car.id}`} className="w-full h-full block">
-          <div className="rounded-2xl bg-white border-3 border-gray-300 hover:shadow-md cursor-pointer hover:scale-105 transition-transform h-full">
+        <Link to={`/listing-details/${car.id}`} className="w-full block">
+          <div className="rounded-2xl bg-white border-3 border-gray-300 hover:shadow-md cursor-pointer hover:scale-105 transition-transform">
             <h2 className="absolute m-2 bg-green-500 px-2 rounded-full text-sm text-white">New</h2>
             <img
               src={car?.images?.[0]?.imageUrl || '/path/to/placeholder.jpg'}
@@ -62,11 +62,11 @@ function CarItem({ car }) {
 
               <div className="grid grid-cols-3 mt-5">
                 <div className="flex flex-col items-center">
-                  <LuFuel className="text-lg mb-2" />
-                  <h2>{car?.mileage ? `${car.mileage} Miles` : 'N/A'}</h2>
+                  <TbBrandSpeedtest className="text-lg mb-2" />
+                  <h2>{car?.mileage ? `${car.mileage} Dặm` : 'N/A'}</h2>
                 </div>
                 <div className="flex flex-col items-center">
-                  <TbBrandSpeedtest className="text-lg mb-2" />
+                  <LuFuel className="text-lg mb-2" />
                   <h2>{car?.fuelType || 'N/A'}</h2>
                 </div>
                 <div className="flex flex-col items-center">
@@ -76,7 +76,9 @@ function CarItem({ car }) {
               </div>
               <Separator className="my-2 bg-gray-200" />
               <div className="flex items-center justify-between">
-                <h2 className="font-bold text-xl">{car?.sellingPrice?.toLocaleString('en-US') + ' VNĐ' || 'N/A'}</h2>
+                <h2 className="font-bold text-xl">{car?.sellingPrice 
+                  ? Math.floor(Number(car?.sellingPrice)).toLocaleString('en-US')
+                  : 'N/A'} VNĐ</h2>
                 <h2 className="text-primary text-sm flex gap-2 items-center">
                   Chi Tiết <MdOpenInNew />
                 </h2>
