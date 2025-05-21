@@ -33,14 +33,16 @@ function FavoriteCar() {
   }, [user]);
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Xe Yêu Thích</h1>
+    <div className="mt-6">
+      <div className='flex justify-between items-center'>
+        <h2 className='font-bold text-4xl'>Xe Yêu Thích Của Tôi</h2>
+      </div>
       {loading ? (
         <p>Đang tải...</p>
       ) : favoriteCars.length === 0 ? (
-        <p>Chưa có xe yêu thích nào.</p>
+        <p className='text-red-400 italic mt-8 text-center'>Chưa có xe yêu thích nào.</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-7'>
           {favoriteCars.map((car) => (
             <CarItem key={car.id} car={car} />
           ))}
