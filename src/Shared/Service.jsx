@@ -202,6 +202,27 @@ const getCommentsWithUsers = async (carListingId) => {
 };
 
 
+export const UpdateUserProfile = async (userId, { firstName, lastName, phoneNumber, address }) => {
+  try {
+    await db.update(User)
+      .set({
+        firstName,
+        lastName,
+        phoneNumber,
+        address
+      })
+      .where(eq(User.id, userId))
+      .execute()
+
+    return { success: true }
+  } catch (error) {
+    console.error("Lỗi cập nhật hồ sơ:", error)
+    return { success: false }
+  }
+}
+
+
+
 
 
 
@@ -243,6 +264,7 @@ export default{
     AddToFavorite,
     getCommentsWithUsers,
       GetUserByClerkId,
+    UpdateUserProfile,
 
     // CreateSendBirdUser,
     // CreateSendBirdChannel
