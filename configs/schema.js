@@ -44,3 +44,8 @@ export const User = pgTable('user', {
     address: json('address'),
 });
 
+export const favorites = pgTable('favorites', {
+  id: serial('id').primaryKey(),
+  userId: integer('userId').notNull().references(() => User.id, { onDelete: 'cascade' }),
+  carListingId: integer('carListingId').notNull().references(() => CarListing.id, { onDelete: 'cascade' }),
+});
