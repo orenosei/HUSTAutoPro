@@ -8,10 +8,10 @@ import { Link } from 'react-router-dom';
 
 function CarItem({ car }) {
   return (
-    <div>
+    <div className="h-full">
       {car ? (
-        <Link to={'/listing-details/' + car?.id}>
-          <div className='rounded-2xl bg-white border-3  border-gray-300 hover:shadow-md cursor-pointer '>
+        <Link to={'/listing-details/' + car?.id} className="w-full h-full block">
+          <div className='rounded-2xl bg-white border-3  border-gray-300 hover:shadow-md cursor-pointer hover:scale-105 transition-transform h-full'>
             <h2 className='absolute m-2 bg-green-500 px-2 rounded-full text-sm text-white'>New</h2>
             <img 
               src={car?.images?.[0]?.imageUrl || '/path/to/placeholder.jpg'} 
