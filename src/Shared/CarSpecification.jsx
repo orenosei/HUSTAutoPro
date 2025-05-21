@@ -1,69 +1,67 @@
-export default[
-        {
-            "label": "Category",
-            "name": "category",
-            "icon": "FaCar"
-        },
-        {
-            "label": "Condition",
-            "name": "condition",
-            "icon": "FaCheckCircle"
-        },
-        {
-            "label": "Make",
-            "name": "make",
-            "icon": "FaIndustry"
-        },
-        {
-            "label": "Model",
-            "name": "model",
-            "icon": "FaCarSide"
-        },
-        {
-            "label": "Year",
-            "name": "year",
-            "icon": "FaCalendarAlt"
-        },
-        {
-            "label": "Drive Type",
-            "name": "driveType",
-            "icon": "FaRoad"
-        },
-        {
-            "label": "Transmission",
-            "name": "transmission",
-            "icon": "FaCogs"
-        },
-        {
-            "label": "Fuel Type",
-            "name": "fuelType",
-            "icon": "FaGasPump"
-        },
-        {
-            "label": "Mileage",
-            "name": "mileage",
-            "icon": "FaTachometerAlt"
-        },
-        {
-            "label": "Engine Size",
-            "name": "engineSize",
-            "icon": "FaWrench"
-        },
-        {
-            "label": "Cylinder",
-            "name": "cylinder",
-            "icon": "FaCircle"
-        },
-        {
-            "label": "Color",
-            "name": "color",
-            "icon": "FaPalette"
-        },
-        {
-            "label": "Door",
-            "name": "door",
-            "icon": "FaDoorClosed"
-        }
-    
-    
+export default [
+    {
+        "label": "Dáng xe",
+        "name": "category",
+        "icon": "FaCar"
+    },
+    {
+        "label": "Tình trạng",
+        "name": "condition",
+        "icon": "FaCheckCircle"
+    },
+    {
+        "label": "Hãng xe",
+        "name": "make",
+        "icon": "FaIndustry"
+    },
+    {
+        "label": "Mẫu xe",
+        "name": "model",
+        "icon": "FaCarSide"
+    },
+    {
+        "label": "Năm sản xuất",
+        "name": "year",
+        "icon": "FaCalendarAlt"
+    },
+    {
+        "label": "Loại dẫn động",
+        "name": "driveType",
+        "icon": "FaRoad"
+    },
+    {
+        "label": "Hộp số",
+        "name": "transmission",
+        "icon": "FaCogs"
+    },
+    {
+        "label": "Loại nhiên liệu",
+        "name": "fuelType",
+        "icon": "FaGasPump"
+    },
+    {
+        "label": "Số km đã đi",
+        "name": "mileage",
+        "icon": "FaTachometerAlt"
+    },
+    {
+        "label": "Dung tích động cơ",
+        "name": "engineSize",
+        "icon": "FaWrench"
+    },
+    {
+        "label": "Số xi-lanh",
+        "name": "cylinder",
+        "icon": "FaCircle"
+    },
+    {
+        "label": "Màu sắc",
+        "name": "color",
+        "icon": "FaPalette"
+    },
+    {
+        "label": "Số cửa",
+        "name": "door",
+        "icon": "FaDoorClosed"
+    }
 ];
