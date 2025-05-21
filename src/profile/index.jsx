@@ -2,7 +2,7 @@ import React from 'react'
 import MyListing from './components/MyListing'
 import Header from '@/components/Header'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-
+import FavoriteList from './components/FavoriteCar'
 
 function Profile() {
   return (
@@ -27,7 +27,7 @@ function Profile() {
 
 
         <TabsContent value="favorite">
-        <MyListing />
+        <FavoriteList />
         </TabsContent>
         </Tabs>
     </div>

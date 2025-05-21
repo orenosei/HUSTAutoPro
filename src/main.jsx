@@ -12,6 +12,7 @@ import Search from './components/Search'
 import SearchByCategory from './search/[category]'
 import SearchByOptions from './search'
 import ListingDetail from './listing-details/[id]'
+import FavoriteList from './profile/components/FavoriteCar'
 
 const router = createBrowserRouter([
   {
@@ -39,7 +40,14 @@ const router = createBrowserRouter([
   {
     path: '/listing-details/:id',
     element: <ListingDetail/>
-  }
+  },
+  {
+    path: '/profile/favorites',
+    element: <FavoriteList />
+  } 
+
+  
+
 ])
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
