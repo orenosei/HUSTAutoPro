@@ -144,7 +144,7 @@
       "icon": "FaGasPump"
     },
     {
-      "label": "Số km đã đi",
+      "label": "Số dặm đã đi",
       "name": "mileage",
       "fieldType": "number",
       "required": true,
