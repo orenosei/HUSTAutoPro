@@ -5,6 +5,8 @@ import { TbBrandSpeedtest } from "react-icons/tb";
 import { GiGearStickPattern } from "react-icons/gi";
 import { MdOpenInNew } from "react-icons/md";
 import { Link } from 'react-router-dom';
+import { AiOutlineHeart } from "react-icons/ai";
+
 
 function CarItem({ car }) {
   return (
@@ -21,8 +23,15 @@ function CarItem({ car }) {
               className='rounded-t-xl h-[180px] object-cover'
             />
             <div className='p-4'>
-              <h2 className='font-bold text-black text-lg mb-2'>{car?.listingTitle || 'Unknown Title'}</h2>
+              <div className="flex items-center justify-between mb-2">
+                <h2 className='font-bold text-black text-lg'>{car?.listingTitle || 'Unknown Title'}</h2>
+                  <button className="text-red-400 text-xl transition-all duration-300 hover:text-red-600 hover:scale-125">
+                  <AiOutlineHeart />
+                </button>
+              </div>
               <Separator className="bg-gray-200" />
+
+
               <div className='grid grid-cols-3 mt-5'>
                 <div className='flex flex-col items-center'>
                   <LuFuel className='text-lg mb-2' />

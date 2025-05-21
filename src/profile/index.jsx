@@ -14,6 +14,8 @@ function Profile() {
             <TabsTrigger value="my-listing">Danh Sách Của Tôi</TabsTrigger>
             <TabsTrigger value="inbox">Hộp Thư</TabsTrigger>
             <TabsTrigger value="profile">Hồ Sơ</TabsTrigger>
+            <TabsTrigger value="favorite">Xe Yêu Thích</TabsTrigger>
+            <TabsTrigger value="history">Lịch Sử</TabsTrigger>
         </TabsList>
 
         <TabsContent value="my-listing">
@@ -22,6 +24,11 @@ function Profile() {
 
         <TabsContent value="inbox">Hộp Thư</TabsContent>
         <TabsContent value="profile">Hồ Sơ</TabsContent>
+
+
+        <TabsContent value="favorite">
+        <MyListing />
+        </TabsContent>
         </Tabs>
     </div>
     </div>
