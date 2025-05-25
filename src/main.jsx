@@ -15,7 +15,7 @@ import ListingDetail from './listing-details/[id]'
 import FavoriteList from './profile/components/FavoriteCar'
 import Blog from './blog'
 import AddBlog from './blog/pages/AddBlog'
-import BlogDetail from './blog/pages/[id]'
+
 
 const router = createBrowserRouter([
   {
@@ -56,12 +56,6 @@ const router = createBrowserRouter([
     path: '/blog/add',
     element: <AddBlog />
   },
-  {
-
-    path: '/blog/:id',
-    element: <BlogDetail />
-  }
-
   
 
 ])

@@ -7,41 +7,11 @@
 import { useEffect } from 'react';
 import { useUser } from '@clerk/clerk-react';
 import { db } from './../../configs';
-import { User, BlogPost, BlogImages } from './../../configs/schema'; 
+import { User, BlogPost, BlogImages, BlogFavourite } from './../../configs/schema'; 
 import { eq } from 'drizzle-orm';
 import { and } from 'drizzle-orm';
 import { favorites, CarListing, CarImages } from './../../configs/schema';
 
-
-
-// const FormatResult=(resp)=>{
-//     let result=[];
-//     let finalResult=[];
-//     resp.forEach((item)=>{
-//         const listingId=item.carListing?.id;
-//         if(!result[listingId])
-//         {
-//             result[listingId]={
-//                 car:item.carListing,
-//                 images:[]
-//             }
-//         }
-
-//         if(item.carImages)
-//         {
-//             result[listingId].images.push(item.carImages)
-//         }
-//     })
-   
-//     result.forEach((item)=>{
-//         finalResult.push({
-//             ...item.car,
-//             images:item.images
-//         })
-//     })
- 
-//     return finalResult;
-// }
 
 const FormatResult = (resp) => {
   const resultMap = new Map();
@@ -238,11 +208,13 @@ const FormatBlogResult = (resp) => {
     }
 
     const currentBlog = resultMap.get(blogId);
-    
-    if (item.blogImages) {
-      currentBlog.images.push(item.blogImages);
+    //console.log("Item:", item);
+    if (item.blog_images) {
+      currentBlog.images.push(item.blog_images.imageUrl);
     }
+    //console.log("Current Blog:", currentBlog);
   });
+  
 
   resultMap.forEach((value) => {
     finalResult.push(value);
@@ -257,6 +229,7 @@ export const GetBlogPosts = async () => {
       .from(BlogPost)
       .innerJoin(User, eq(BlogPost.userId, User.id))
       .leftJoin(BlogImages, eq(BlogPost.id, BlogImages.blogPostId))
+      .leftJoin(BlogFavourite, eq(BlogPost.id, BlogFavourite.blogPostId))
       .execute();
 
     return {
@@ -270,6 +243,31 @@ export const GetBlogPosts = async () => {
     };
   }
 };
+
+export const GetUserBlogPosts = async (userId) => {
+    const result = await db
+      .select()
+      .from(BlogPost)
+      .innerJoin(User, eq(BlogPost.userId, User.id))
+      .leftJoin(BlogImages, eq(BlogPost.id, BlogImages.blogPostId))
+      .leftJoin(BlogFavourite, eq(BlogPost.id, BlogFavourite.blogPostId))
+      .where(eq(User.id, userId))
+      .execute();
+
+    return FormatBlogResult(result)
+};
+
+export const GetBlogPostById = async (id) => {
+  const result = await db.select()
+    .from(BlogPost)
+    .innerJoin(User, eq(BlogPost.userId, User.id))
+    .leftJoin(BlogImages, eq(BlogPost.id, BlogImages.blogPostId))
+    .where(eq(BlogPost.id, id))
+    .execute();
+
+  return FormatBlogResult(result)[0] || null;
+};
+
 
 export const GetSingleBlogPost = async (id) => {
   try {
@@ -403,7 +401,9 @@ export default{
     GetBlogPosts,
     GetSingleBlogPost,
     CreateBlogPost,
-    UpdateBlogPost
+    UpdateBlogPost,
+    GetUserBlogPosts,
+    GetBlogPostById,
 
 
     // CreateSendBirdUser,

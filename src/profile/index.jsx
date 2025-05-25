@@ -4,6 +4,7 @@ import Header from '@/components/Header'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import FavoriteList from './components/FavoriteCar'
 import ProfileInfo from './components/ProfileInfo'
+import MyBlog from './components/MyBlog'
 
 
 function Profile() {
@@ -14,6 +15,7 @@ function Profile() {
         <Tabs defaultValue="my-listing" className="w-full" >
         <TabsList className="w-full justify-start">
             <TabsTrigger value="my-listing">Danh Sách Của Tôi</TabsTrigger>
+            <TabsTrigger value="my-blog">Blog Của Tôi</TabsTrigger>
             <TabsTrigger value="inbox">Hộp Thư</TabsTrigger>
             <TabsTrigger value="profile">Hồ Sơ</TabsTrigger>
             <TabsTrigger value="favorite">Xe Yêu Thích</TabsTrigger>
@@ -22,6 +24,10 @@ function Profile() {
 
         <TabsContent value="my-listing">
         <MyListing />
+        </TabsContent>
+
+        <TabsContent value="my-blog">
+        <MyBlog />
         </TabsContent>
 
         <TabsContent value="inbox">Hộp Thư</TabsContent>

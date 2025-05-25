@@ -14,6 +14,8 @@ function Blog() {
   const isMdUp = useMediaQuery(theme.breakpoints.up('md'))
 
   useEffect(() => {
+
+
     const fetchBlogs = async () => {
       try {
         const response = await Service.GetBlogPosts()
@@ -39,7 +41,15 @@ function Blog() {
     <div>
       <Header />
       <div className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-8">Blog</h1>
+        <h1 className="text-3xl font-bold text-gray-800 mb-8 ml-6">Blog</h1>
+        <div className="flex justify-end mb-6">
+          <button
+            className="px-4 py-2 mr-6 bg-green-500 text-white rounded-lg hover:bg-green-700 transition-colors"
+            onClick={() => window.location.href = '/blog/add'}
+          >
+            + Viết blog mới
+          </button>
+        </div>
 
         <Masonry
           columns={{ xs: 1, sm: 2, md:2 , lg: 3 }}
