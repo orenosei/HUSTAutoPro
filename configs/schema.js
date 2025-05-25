@@ -1,4 +1,4 @@
-import { integer, json, pgTable, serial, varchar, numeric, text, timestamp } from "drizzle-orm/pg-core";
+import { integer, json, pgTable, serial, varchar, numeric, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
 
 export const CarListing = pgTable('carListing', {
     id: serial('id').primaryKey(),
@@ -62,6 +62,7 @@ export const Comment = pgTable('comment', {
 export const BlogPost = pgTable('blogPost', {
     id: serial('id').primaryKey(),
     title: varchar('title', { length: 255 }).notNull(),
+    tag: varchar('tag', { length: 100 }),
     content: text('content').notNull(),
     imageUrls: json('imageUrls').notNull(),
     userId: integer('userId').notNull().references(() => User.id, { onDelete: 'cascade' }),
@@ -69,18 +70,24 @@ export const BlogPost = pgTable('blogPost', {
     updatedAt: timestamp('updatedAt', { mode: 'date' }).defaultNow()
   });
   
-export const BlogComment = pgTable('blogComment', {
-    id: serial('id').primaryKey(),
-    content: text('content').notNull(),
-    blogPostId: integer('blogPostId').notNull().references(() => BlogPost.id, { onDelete: 'cascade' }),
-    userId: integer('userId').notNull().references(() => User.id, { onDelete: 'cascade' }),
-    createdAt: timestamp('createdAt', { mode: 'date' }).defaultNow()
-  });
 
-  // schema.ts
 export const BlogImages = pgTable('blog_images', {
     id: serial('id').primaryKey(),
     imageUrl: varchar('image_url', { length: 2048 }).notNull(),
     blogPostId: integer('blog_post_id').references(() => BlogPost.id, { onDelete: 'cascade' }),
     createdAt: timestamp('created_at').defaultNow(),
   });
+
+export const BlogFavourite = pgTable('blog_favourite', {
+    id: serial('id').primaryKey(),
+    userId: integer('userId')
+        .notNull()
+        .references(() => User.id, { onDelete: 'cascade' }),
+    blogPostId: integer('blogPostId')
+        .notNull()
+        .references(() => BlogPost.id, { onDelete: 'cascade' }),
+  }, 
+  (table) => ({
+      // Đảm bảo mỗi user chỉ thích 1 bài viết 1 lần
+    uniqueLike: uniqueIndex('unique_user_post').on(table.userId, table.blogPostId),
+}));
