@@ -13,36 +13,6 @@ import { and } from 'drizzle-orm';
 import { favorites, CarListing, CarImages } from './../../configs/schema';
 
 
-
-// const FormatResult=(resp)=>{
-//     let result=[];
-//     let finalResult=[];
-//     resp.forEach((item)=>{
-//         const listingId=item.carListing?.id;
-//         if(!result[listingId])
-//         {
-//             result[listingId]={
-//                 car:item.carListing,
-//                 images:[]
-//             }
-//         }
-
-//         if(item.carImages)
-//         {
-//             result[listingId].images.push(item.carImages)
-//         }
-//     })
-   
-//     result.forEach((item)=>{
-//         finalResult.push({
-//             ...item.car,
-//             images:item.images
-//         })
-//     })
- 
-//     return finalResult;
-// }
-
 const FormatResult = (resp) => {
   const resultMap = new Map();
   const finalResult = [];
@@ -238,11 +208,13 @@ const FormatBlogResult = (resp) => {
     }
 
     const currentBlog = resultMap.get(blogId);
-    
-    if (item.blogImages) {
-      currentBlog.images.push(item.blogImages);
+    //console.log("Item:", item);
+    if (item.blog_images) {
+      currentBlog.images.push(item.blog_images.imageUrl);
     }
+    //console.log("Current Blog:", currentBlog);
   });
+  
 
   resultMap.forEach((value) => {
     finalResult.push(value);

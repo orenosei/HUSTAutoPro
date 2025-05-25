@@ -14,6 +14,8 @@ function Blog() {
   const isMdUp = useMediaQuery(theme.breakpoints.up('md'))
 
   useEffect(() => {
+
+
     const fetchBlogs = async () => {
       try {
         const response = await Service.GetBlogPosts()

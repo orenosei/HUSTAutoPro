@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
 import { db } from './../../../configs'
-import { eq } from 'drizzle-orm'
+import { eq, inArray } from 'drizzle-orm'
 import { BlogPost, BlogImages, User } from './../../../configs/schema'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useUser } from '@clerk/clerk-react'
@@ -18,7 +18,7 @@ const AddBlog = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { user } = useUser();
-
+  const [currentPost , setCurrentPost] = useState(null);
   const [formData, setFormData] = useState({
     title: '',
     tag: '',
@@ -40,12 +40,13 @@ const AddBlog = () => {
 
   const getBlogPost = async () => {
     const currentPost = await Service.GetBlogPostById(postId);
+    setCurrentPost(currentPost);
     setFormData({
       title: currentPost.title,
       tag: currentPost.tag || 'Chưa phân loại',
       content: currentPost.content,
     });
-    console.log("Current Post:", currentPost);
+
     setExistingImages(currentPost.imageUrls || []);
   };
 
@@ -190,7 +191,7 @@ const AddBlog = () => {
             </div>
 
             <BlogImageUploader
-              postInfo={{ images: existingImages }}
+              postInfo={currentPost}
               mode={mode}
               onImagesChange={setNewImages}
               onExistingImageDelete={setDeletedImageIds}
