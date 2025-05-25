@@ -10,6 +10,7 @@ import { useUser } from '@clerk/clerk-react'
 import { toast } from 'sonner'
 import BlogImageUploader from './components/BlogImageUploader'
 import { BiLoaderAlt } from 'react-icons/bi'
+import Service from '@/Shared/Service'
 
 const AddBlog = () => {
   const CLOUD_NAME = "dql9a2fi8";
@@ -20,6 +21,7 @@ const AddBlog = () => {
 
   const [formData, setFormData] = useState({
     title: '',
+    tag: '',
     content: '',
   });
   const [existingImages, setExistingImages] = useState([]);
@@ -37,18 +39,14 @@ const AddBlog = () => {
   }, []);
 
   const getBlogPost = async () => {
-    const result = await db.select()
-      .from(BlogPost)
-      .innerJoin(BlogImages, eq(BlogPost.id, BlogImages.blogPostId))
-      .innerJoin(User, eq(BlogPost.userId, User.id))
-      .where(eq(BlogPost.id, Number(postId)));
-
-    const formattedData = Service.FormatResult(result)[0];
+    const currentPost = await Service.GetBlogPostById(postId);
     setFormData({
-      title: formattedData.title,
-      content: formattedData.content,
+      title: currentPost.title,
+      tag: currentPost.tag || 'Chưa phân loại',
+      content: currentPost.content,
     });
-    setExistingImages(formattedData.images || []);
+    console.log("Current Post:", currentPost);
+    setExistingImages(currentPost.imageUrls || []);
   };
 
   const handleInputChange = (name, value) => {
@@ -166,6 +164,16 @@ const AddBlog = () => {
                 type="text"
                 value={formData.title}
                 onChange={(e) => handleInputChange('title', e.target.value)}
+                className="w-full p-3 border rounded-lg"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">Thẻ</label>
+              <input
+                type="text"
+                value={formData.tag}
+                onChange={(e) => handleInputChange('tag', e.target.value)}
                 className="w-full p-3 border rounded-lg"
                 required
               />
