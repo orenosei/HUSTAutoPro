@@ -3,13 +3,14 @@ import React, { useEffect, useState } from 'react'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
 import { db } from './../../../configs'
-import { eq } from 'drizzle-orm'
+import { eq, inArray } from 'drizzle-orm'
 import { BlogPost, BlogImages, User } from './../../../configs/schema'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useUser } from '@clerk/clerk-react'
 import { toast } from 'sonner'
 import BlogImageUploader from './components/BlogImageUploader'
 import { BiLoaderAlt } from 'react-icons/bi'
+import Service from '@/Shared/Service'
 
 const AddBlog = () => {
   const CLOUD_NAME = "dql9a2fi8";
@@ -17,9 +18,10 @@ const AddBlog = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { user } = useUser();
-
+  const [currentPost , setCurrentPost] = useState(null);
   const [formData, setFormData] = useState({
     title: '',
+    tag: '',
     content: '',
   });
   const [existingImages, setExistingImages] = useState([]);
@@ -37,18 +39,15 @@ const AddBlog = () => {
   }, []);
 
   const getBlogPost = async () => {
-    const result = await db.select()
-      .from(BlogPost)
-      .innerJoin(BlogImages, eq(BlogPost.id, BlogImages.blogPostId))
-      .innerJoin(User, eq(BlogPost.userId, User.id))
-      .where(eq(BlogPost.id, Number(postId)));
-
-    const formattedData = Service.FormatResult(result)[0];
+    const currentPost = await Service.GetBlogPostById(postId);
+    setCurrentPost(currentPost);
     setFormData({
-      title: formattedData.title,
-      content: formattedData.content,
+      title: currentPost.title,
+      tag: currentPost.tag || 'Chưa phân loại',
+      content: currentPost.content,
     });
-    setExistingImages(formattedData.images || []);
+
+    setExistingImages(currentPost.imageUrls || []);
   };
 
   const handleInputChange = (name, value) => {
@@ -170,6 +169,16 @@ const AddBlog = () => {
                 required
               />
             </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">Thẻ</label>
+              <input
+                type="text"
+                value={formData.tag}
+                onChange={(e) => handleInputChange('tag', e.target.value)}
+                className="w-full p-3 border rounded-lg"
+                required
+              />
+            </div>
 
             <div>
               <label className="block text-sm font-medium mb-2">Nội dung</label>
@@ -182,7 +191,7 @@ const AddBlog = () => {
             </div>
 
             <BlogImageUploader
-              postInfo={{ images: existingImages }}
+              postInfo={currentPost}
               mode={mode}
               onImagesChange={setNewImages}
               onExistingImageDelete={setDeletedImageIds}

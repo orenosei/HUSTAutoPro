@@ -9,15 +9,46 @@ const BlogImageUploader = ({
   postInfo, 
   mode, 
   onExistingImageDelete 
-}) => {
+  }) => {
   const [selectedFileList, setSelectedFileList] = useState([]);
   const [existingImages, setExistingImages] = useState([]);
 
   useEffect(() => {
-    if (mode === 'edit' && postInfo?.images) {
-      setExistingImages(postInfo.images.filter(img => img?.imageUrl));
+    if (mode === 'edit' && postInfo?.id) {
+      fetchImageIds(); 
     }
-  }, [mode, postInfo]);
+  }, [postInfo?.id]);
+
+  const fetchImageIds = async () => {
+    try {
+      const images = await db.select()
+        .from(BlogImages)
+        .where(eq(BlogImages.blogPostId, postInfo.id))
+        .execute();
+
+      setExistingImages(images)
+      console.log("Fetched Image IDs:", images);
+    } catch (error) {
+      console.error("Lỗi tải IDs ảnh:", error);
+    }
+  };
+
+  const removeExistingImage = async (id) => {
+    try {
+      const imageToDelete = existingImages.find(img => img.id === id);
+
+      if (!imageToDelete) return;
+
+      await db.delete(BlogImages)
+        .where(eq(BlogImages.id, imageToDelete.id))
+        .execute();
+
+      setExistingImages(prev => prev.filter(img => img.id !== id));
+      onExistingImageDelete(prev => [...prev, imageToDelete.id]);
+    } catch (error) {
+      console.error("Lỗi xóa ảnh:", error);
+    }
+  };
 
   const handleFileSelect = (e) => {
     const files = Array.from(e.target.files);
@@ -33,21 +64,13 @@ const BlogImageUploader = ({
     });
   };
 
-  const removeExistingImage = async (imageId) => {
-    try {
-      await db.delete(BlogImages).where(eq(BlogImages.id, imageId));
-      setExistingImages(prev => prev.filter(img => img.id !== imageId));
-      onExistingImageDelete(imageId);
-    } catch (error) {
-      console.error("Lỗi xóa ảnh:", error);
-    }
-  };
+  
 
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-medium">Hình ảnh bài viết</h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        {existingImages.map((image) => (
+          {existingImages.map((image) => (
           <div key={image.id} className="relative group">
             <img
               src={image.imageUrl}

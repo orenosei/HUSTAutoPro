@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Separator } from './../../../components/ui/separator';
 import { FiUser, FiCalendar, FiTag, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { AiOutlineHeart } from "react-icons/ai";
 
 function BlogItem({ blog }) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const images = blog?.imageUrls || [];
+  const images = blog?.images || [];
 
   useEffect(() => {
     setActiveIndex(0);
@@ -17,6 +18,7 @@ function BlogItem({ blog }) {
   const handleNext = () => {
     setActiveIndex(prev => (prev < images.length - 1 ? prev + 1 : 0));
   };
+
 
   return (
     <div className="col-span-1 h-full">
@@ -78,16 +80,16 @@ function BlogItem({ blog }) {
 
           {/* Blog Content Section */}
           <div className="p-6 flex-1 flex flex-col">
-            <h2 className="font-bold text-2xl text-gray-800 mb-4">
+            <h2 className="font-bold text-2xl text-gray-800 mb-4 text-center">
               {blog.title}
             </h2>
 
             <Separator className="bg-gray-200 mb-4" />
 
-            <div className="flex flex-wrap gap-4 text-gray-500 mb-4">
+            <div className="flex flex-wrap gap-4 text-gray-500 mb-4 justify-center">
               <div className="flex items-center gap-1">
                 <FiUser className="text-lg" />
-                <span>{blog?.author?.firstName + blog?.author?.lastName  || 'Ẩn danh'}</span>
+                <span>{blog?.author?.firstName + blog?.author?.lastName || 'Ẩn danh'}</span>
               </div>
               
               <div className="flex items-center gap-1">
@@ -97,16 +99,24 @@ function BlogItem({ blog }) {
               
               <div className="flex items-center gap-1">
                 <FiTag className="text-lg" />
-                <span>{blog?.category || 'Chưa phân loại'}</span>
+                <span>{blog?.tag || 'Chưa phân loại'}</span>
               </div>
             </div>
 
             {blog?.content && (
               <div 
-                className="prose max-w-none text-gray-600"
+                className="prose max-w-none text-gray-600 text-justify"
                 dangerouslySetInnerHTML={{ __html: blog.content }} 
               />
             )}
+          </div>
+          <div className="flex items-center justify-center gap-2 pb-4">
+            <button
+              className="text-red-400 text-3xl transition-all duration-300 hover:text-red-600 hover:scale-125"
+            >
+              <AiOutlineHeart />
+            </button>
+            <span className="text-gray-500 text-base">{blog?.likes || 0}</span>
           </div>
         </div>
       ) : (
