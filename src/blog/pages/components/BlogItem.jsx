@@ -5,7 +5,7 @@ import { AiOutlineHeart } from "react-icons/ai";
 
 function BlogItem({ blog }) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const images = blog?.imageUrls || [];
+  const images = blog?.images || [];
 
   useEffect(() => {
     setActiveIndex(0);
@@ -19,7 +19,6 @@ function BlogItem({ blog }) {
     setActiveIndex(prev => (prev < images.length - 1 ? prev + 1 : 0));
   };
 
-  console.log("BlogItem rendered with blog:", blog);
 
   return (
     <div className="col-span-1 h-full">

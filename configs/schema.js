@@ -64,7 +64,6 @@ export const BlogPost = pgTable('blogPost', {
     title: varchar('title', { length: 255 }).notNull(),
     tag: varchar('tag', { length: 100 }),
     content: text('content').notNull(),
-    imageUrls: json('imageUrls').notNull(),
     userId: integer('userId').notNull().references(() => User.id, { onDelete: 'cascade' }),
     createdAt: timestamp('createdAt', { mode: 'date' }).defaultNow(),
     updatedAt: timestamp('updatedAt', { mode: 'date' }).defaultNow()
