@@ -61,10 +61,10 @@ function MyBlog() {
   return (
     <div className='mt-6'>
       <div className='flex justify-between items-center'>
-        <h2 className='font-bold text-4xl'>Bài Viết Của Tôi</h2>
-        <Link to={'/add-blog'}>
+        <h2 className='font-bold text-4xl'>Blog Của Tôi</h2>
+        <Link to={'/blog/add'}>
           <Button className='bg-blue-500 text-white hover:scale-110'>
-            Viết Bài Mới
+            Viết Blog Mới
           </Button>
         </Link>
       </div>

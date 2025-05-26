@@ -41,7 +41,7 @@ function CarListingManagement() {
 
       setListings(result)
     } catch (error) {
-      toast.error('Không tải được danh sách xe')
+      toast.error('Không tải được danh sách bài đăng xe')
     } finally {
       setLoading(false)
     }
@@ -66,9 +66,9 @@ function CarListingManagement() {
       setDeletingId(listingId)
       await db.delete(CarListing).where(eq(CarListing.id, listingId))
       setListings(prev => prev.filter(l => l.carListing.id !== listingId))
-      toast.success("Xóa xe thành công")
+      toast.success("Xóa bài đăng xe thành công")
     } catch (error) {
-      toast.error(error.message || "Xóa xe thất bại")
+      toast.error(error.message || "Xóa bài đăng xe thất bại")
     } finally {
       setDeletingId(null)
       setOpenDialog(false)
@@ -172,6 +172,7 @@ function CarListingManagement() {
                       
                       <TableCell className="text-right">
                         <Dialog open={openDialog && selectedListing?.id === carListing.id} 
+                                
                                 onOpenChange={(open) => {
                                   if (!open) setSelectedListing(null)
                                   setOpenDialog(open)
@@ -194,7 +195,7 @@ function CarListingManagement() {
                             </Button>
                           </DialogTrigger>
                           
-                          <DialogContent className="sm:max-w-[425px]">
+                          <DialogContent className="sm:max-w-[425px] bg-gray-100 border border-gray-300 shadow-lg">
                             <DialogHeader>
                               <DialogTitle className="text-red-600">
                                 Xác nhận xóa
@@ -223,8 +224,9 @@ function CarListingManagement() {
                             
                             <DialogFooter>
                               <Button 
-                                variant="outline" 
+                                variant="destructive" 
                                 onClick={() => setOpenDialog(false)}
+                                className="shadow-sm hover:scale-105 transition-transform text-gray-600 hover:text-green-600"
                               >
                                 Hủy bỏ
                               </Button>
@@ -232,6 +234,7 @@ function CarListingManagement() {
                                 variant="destructive"
                                 onClick={() => handleDeleteListing(carListing.id)}
                                 disabled={deletingId === carListing.id}
+                                className="shadow-sm hover:scale-105 transition-transform text-gray-600 hover:text-red-600"
                               >
                                 {deletingId === carListing.id ? (
                                   <BiLoaderAlt className="animate-spin h-4 w-4 mr-2" />

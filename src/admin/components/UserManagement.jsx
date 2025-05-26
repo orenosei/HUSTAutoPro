@@ -34,7 +34,7 @@ function UserManagement() {
       const result = await db.select().from(User)
       setUsers(result)
     } catch (error) {
-      toast.error('Failed to load users')
+      toast.error('Không tải được danh sách người dùng')
     } finally {
       setLoading(false)
     }
@@ -51,9 +51,9 @@ function UserManagement() {
       setDeletingId(userId)
       await db.delete(User).where(eq(User.id, userId))
       setUsers(prev => prev.filter(u => u.id !== userId))
-      toast.success("User deleted successfully")
+      toast.success("Xoá người dùng thành công")
     } catch (error) {
-      toast.error(error.message || "Failed to delete user")
+      toast.error(error.message || "Xoá người dùng thất bại")
     } finally {
       setDeletingId(null)
       setOpenDialog(false)
@@ -171,7 +171,7 @@ function UserManagement() {
                             </Button>
                           </DialogTrigger>
                           
-                          <DialogContent className="sm:max-w-[425px]">
+                          <DialogContent className="sm:max-w-[425px] bg-gray-100 border border-gray-300 shadow-lg">
                             <DialogHeader>
                               <DialogTitle className="text-red-600">
                                 Xác nhận xóa
@@ -197,8 +197,9 @@ function UserManagement() {
                             
                             <DialogFooter>
                               <Button 
-                                variant="outline" 
+                                variant="destructive" 
                                 onClick={() => setOpenDialog(false)}
+                                className="shadow-sm hover:scale-105 transition-transform text-gray-600 hover:text-green-600"
                               >
                                 Hủy bỏ
                               </Button>
@@ -206,6 +207,7 @@ function UserManagement() {
                                 variant="destructive"
                                 onClick={() => handleDeleteUser(selectedUser.id)}
                                 disabled={deletingId === selectedUser?.id}
+                                className="shadow-sm hover:scale-105 transition-transform text-gray-600 hover:text-red-600"
                               >
                                 {deletingId === selectedUser?.id ? (
                                   <BiLoaderAlt className="animate-spin h-4 w-4 mr-2" />
