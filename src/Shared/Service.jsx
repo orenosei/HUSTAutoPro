@@ -191,7 +191,6 @@ export const UpdateUserProfile = async (userId, { firstName, lastName, phoneNumb
   }
 }
 
-
 const FormatBlogResult = (resp) => {
   const resultMap = new Map();
   const finalResult = [];
@@ -203,20 +202,29 @@ const FormatBlogResult = (resp) => {
       resultMap.set(blogId, {
         ...item.blogPost,
         images: [],
-        author: item.user
+        author: item.user,
+        likeCount: 0,
+        favourites: new Set()
       });
     }
 
     const currentBlog = resultMap.get(blogId);
-    //console.log("Item:", item);
+
     if (item.blog_images) {
       currentBlog.images.push(item.blog_images.imageUrl);
     }
-    //console.log("Current Blog:", currentBlog);
+
+    if (item.blog_favourite) {
+      const favId = item.blog_favourite.id;
+      if (!currentBlog.favourites.has(favId)) {
+        currentBlog.favourites.add(favId);
+        currentBlog.likeCount += 1;
+      }
+    }
   });
-  
 
   resultMap.forEach((value) => {
+    delete value.favourites;
     finalResult.push(value);
   });
 
@@ -288,6 +296,97 @@ export const GetSingleBlogPost = async (id) => {
       success: false,
       message: 'Lỗi tải bài viết'
     };
+  }
+};
+
+export const AddBlogToFavorite = async (clerkUserId, blogPostId) => {
+  try {
+    // 1. Tìm user theo clerk ID
+    const existingUser = await db
+      .select()
+      .from(User)
+      .where(eq(User.clerkUserId, clerkUserId))
+      .execute();
+
+    if (!existingUser || existingUser.length === 0) {
+      return { success: false, message: "Không tìm thấy người dùng." };
+    }
+
+    const userId = existingUser[0].id;
+
+    // 2. Kiểm tra đã có trong bảng BlogFavourite chưa
+    const existed = await db
+      .select()
+      .from(BlogFavourite)
+      .where(
+        and(eq(BlogFavourite.userId, userId), 
+        eq(BlogFavourite.blogPostId, blogPostId)))
+      .execute();
+
+    if (existed.length > 0) {
+      return { success: false, message: "Bài viết đã có trong mục yêu thích." };
+    }
+
+    // 3. Thêm vào bảng BlogFavourite
+    await db.insert(BlogFavourite).values({
+      userId,
+      blogPostId,
+    }).execute();
+
+    return { success: true, message: "Đã thêm bài viết vào yêu thích!" };
+  } catch (error) {
+    console.error("Lỗi khi thêm yêu thích:", error);
+    return { success: false, message: 'Lỗi khi thêm vào yêu thích' };
+  }
+};
+
+// Service.js
+export const CheckBlogLikeStatus = async (clerkUserId, blogPostId) => {
+  try {
+    const existingUser = await db.select()
+      .from(User)
+      .where(eq(User.clerkUserId, clerkUserId))
+      .execute();
+
+    if (!existingUser?.length) return false;
+
+    const existed = await db.select()
+      .from(BlogFavourite)
+      .where(and(
+        eq(BlogFavourite.userId, existingUser[0].id),
+        eq(BlogFavourite.blogPostId, blogPostId)
+      ))
+      .execute();
+
+    return existed.length > 0;
+  } catch (error) {
+    console.error("Lỗi kiểm tra like:", error);
+    return false;
+  }
+};
+
+export const RemoveBlogFromFavorite = async (clerkUserId, blogPostId) => {
+  try {
+    const existingUser = await db.select()
+      .from(User)
+      .where(eq(User.clerkUserId, clerkUserId))
+      .execute();
+
+    if (!existingUser?.length) {
+      return { success: false, message: "Không tìm thấy người dùng" };
+    }
+
+    await db.delete(BlogFavourite)
+      .where(and(
+        eq(BlogFavourite.userId, existingUser[0].id),
+        eq(BlogFavourite.blogPostId, blogPostId)
+      ))
+      .execute();
+
+    return { success: true };
+  } catch (error) {
+    console.error("Lỗi khi bỏ like:", error);
+    return { success: false };
   }
 };
 
@@ -404,6 +503,10 @@ export default{
     UpdateBlogPost,
     GetUserBlogPosts,
     GetBlogPostById,
+    AddBlogToFavorite,
+    CheckBlogLikeStatus,
+    RemoveBlogFromFavorite,
+  
 
 
     // CreateSendBirdUser,
