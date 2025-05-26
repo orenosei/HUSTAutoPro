@@ -64,7 +64,7 @@ function FavoriteCar() {
 
   return (
     <div className="mt-6">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center"> 
         <h2 className="font-bold text-4xl">Xe Yêu Thích Của Tôi</h2>
       </div>
       {loading ? (
