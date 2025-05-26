@@ -23,7 +23,7 @@ export const CarListing = pgTable('carListing', {
     offerType: varchar('offerType', { length: 20 }),
     listingDescription: text('listingDescription').notNull(),
     features: json('features'),
-    createdBy: integer('createdBy').notNull().references(() => User.id),
+    createdBy: integer('createdBy').notNull().references(() => User.id, { onDelete: 'cascade' }),
     postedOn: timestamp('postedOn', { mode: 'date' }).defaultNow()
 });
 
