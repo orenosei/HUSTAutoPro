@@ -1,15 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { Separator } from './../../../components/ui/separator';
 import { FiUser, FiCalendar, FiTag, FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import { AiOutlineHeart } from "react-icons/ai";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { useUser } from '@clerk/clerk-react';
+import Service from '@/Shared/Service';
 
 function BlogItem({ blog }) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
   const images = blog?.images || [];
+  const { user } = useUser();
 
   useEffect(() => {
     setActiveIndex(0);
-  }, [blog]);
+    if (blog) {
+      setLikeCount(blog.likeCount || 0);
+      checkLikeStatus();
+    }
+  }, [blog, user]);
 
   const handlePrev = () => {
     setActiveIndex(prev => (prev > 0 ? prev - 1 : images.length - 1));
@@ -17,6 +26,42 @@ function BlogItem({ blog }) {
 
   const handleNext = () => {
     setActiveIndex(prev => (prev < images.length - 1 ? prev + 1 : 0));
+  };
+
+
+  const checkLikeStatus = async () => {
+    if (user && blog?.id) {
+      try {
+        const result = await Service.CheckBlogLikeStatus(user.id, blog.id);
+        setIsLiked(result);
+      } catch (error) {
+        console.error("Lỗi kiểm tra trạng thái like:", error);
+      }
+    }
+  };
+
+  const handleLikeButtonClick = async () => {
+    if (!user) return;
+
+    const previousIsLiked = isLiked;
+    const newLikeCount = previousIsLiked ? likeCount - 1 : likeCount + 1;
+    
+    // Cập nhật UI ngay lập tức
+    setIsLiked(!previousIsLiked);
+    setLikeCount(newLikeCount);
+
+    try {
+      if (previousIsLiked) {
+        await Service.RemoveBlogFromFavorite(user.id, blog.id);
+      } else {
+        await Service.AddBlogToFavorite(user.id, blog.id);
+      }
+    } catch (error) {
+      // Rollback nếu có lỗi
+      setIsLiked(previousIsLiked);
+      setLikeCount(previousIsLiked ? likeCount : likeCount + 1);
+      console.error("Lỗi khi thao tác like:", error);
+    }
   };
 
 
@@ -110,14 +155,18 @@ function BlogItem({ blog }) {
               />
             )}
           </div>
-          <div className="flex items-center justify-center gap-2 pb-4">
-            <button
-              className="text-red-400 text-3xl transition-all duration-300 hover:text-red-600 hover:scale-125"
-            >
-              <AiOutlineHeart />
-            </button>
-            <span className="text-gray-500 text-base">{blog?.likes || 0}</span>
-          </div>
+
+      <div className="flex items-center justify-center gap-2 pb-4">
+        <button
+          className={`text-3xl transition-all duration-300 hover:scale-125 ${
+            isLiked ? 'text-red-600' : 'text-red-400 hover:text-red-600'
+          }`}
+          onClick={handleLikeButtonClick}
+        >
+          {isLiked ? <AiFillHeart /> : <AiOutlineHeart />}
+        </button>
+        <span className="text-gray-500 text-base">{likeCount}</span>
+      </div>
         </div>
       ) : (
         <div className="rounded-xl bg-slate-200 animate-pulse h-[500px] w-full"></div>
