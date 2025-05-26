@@ -15,6 +15,7 @@ import ListingDetail from './listing-details/[id]'
 import FavoriteList from './profile/components/FavoriteCar'
 import Blog from './blog'
 import AddBlog from './blog/pages/AddBlog'
+import User from './user'
 
 
 const router = createBrowserRouter([
@@ -55,6 +56,11 @@ const router = createBrowserRouter([
   {
     path: '/blog/add',
     element: <AddBlog />
+  },
+
+  {
+    path: '/user/:id',
+    element: <User />
   },
   
 
