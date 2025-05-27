@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { LockKeyhole, Car, Newspaper, Users, Flag } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -16,10 +16,16 @@ function Admin() {
     const [inputKey, setInputKey] = useState('');
     const [error, setError] = useState('');
 
+    useEffect(() => {
+        const signOutAsync = async () => {
+            await signOut({ redirectUrl: '/admin' });
+        };
+        signOutAsync();
+    }, []);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (inputKey === adminKey) {
-            await signOut({ redirectUrl: null });
             setShowDashboard(true);
             setError('');
         } else {
@@ -84,7 +90,7 @@ function Admin() {
                     </header>
 
                     <Tabs defaultValue="car-listing-management" className="w-full">
-                        <TabsList className="w-full bg-transparent p-0 h-auto flex flex-wrap gap-4 border-b border-slate-200 rounded-none">
+                        <TabsList className="w-full bg-transparent p-0 h-auto flex flex-wrap gap-1 border-b border-slate-200 rounded-none">
                             {[
                                 { value: "car-listing-management", icon: Car, label: "Bài đăng xe" },
                                 { value: "blog-management", icon: Newspaper, label: "Blog" },
@@ -94,7 +100,7 @@ function Admin() {
                                 <TabsTrigger 
                                     key={tab.value}
                                     value={tab.value}
-                                    className="group px-4 py-3 data-[state=active]:border-b-2 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600 rounded-none bg-transparent hover:bg-slate-100 gap-2 transition-all shadow-none"
+                                    className="group px-4 py-3 data-[state=active]:border-b-2 border-0 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600 rounded-none bg-transparent hover:bg-slate-100 gap-2 transition-all shadow-none"
                                 >
                                     <tab.icon className="w-5 h-5 text-current" />
                                     <span className="text-lg">{tab.label}</span>
