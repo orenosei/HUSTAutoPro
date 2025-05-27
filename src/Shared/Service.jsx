@@ -7,10 +7,16 @@
 import { useEffect } from 'react';
 import { useUser } from '@clerk/clerk-react';
 import { db } from './../../configs';
-import { User, BlogPost, BlogImages, BlogFavourite } from './../../configs/schema'; 
+import { User, BlogPost, BlogImages, BlogFavourite,
+  ReportCarListing, ReportBlogPost, ReportUser  
+
+} from './../../configs/schema'; 
 import { eq } from 'drizzle-orm';
 import { and } from 'drizzle-orm';
 import { favorites, CarListing, CarImages } from './../../configs/schema';
+
+import { inArray } from 'drizzle-orm';
+import { Comment } from './../../configs/schema';
 
 
 const FormatResult = (resp) => {
@@ -455,7 +461,35 @@ export const UpdateBlogPost = async (id, updateData, newImages = [], deletedImag
   }
 };
 
+export const createCarReport = async (data) => {
+  return await db.insert(ReportCarListing).values({
+    reporterId: data.reporterId,
+    carListingId: data.carListingId,
+    reason: data.reason,
+    details: data.details,
+    status: data.status
+  }).returning();
+};
 
+export const createBlogReport = async (data) => {
+  return await db.insert(ReportBlogPost).values({
+    reporterId: data.reporterId,
+    blogPostId: data.blogPostId,
+    reason: data.reason,
+    details: data.details,
+    status: data.status
+  }).returning();
+};
+
+export const createUserReport = async (data) => {
+  return await db.insert(ReportUser).values({
+    reporterId: data.reporterId,
+    reportedUserId: data.reportedUserId,
+    reason: data.reason,
+    details: data.details,
+    status: data.status
+  }).returning();
+};
 
 
 // const CreateSendBirdUser=(userId,nickName,profileUrl)=>{
@@ -506,8 +540,10 @@ export default{
     AddBlogToFavorite,
     CheckBlogLikeStatus,
     RemoveBlogFromFavorite,
-  
 
+    createCarReport,
+    createBlogReport,
+    createUserReport
 
     // CreateSendBirdUser,
     // CreateSendBirdChannel

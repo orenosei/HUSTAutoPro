@@ -17,6 +17,7 @@ import CommentSection from '../components/CommentSection';
 import Footer from '@/components/Footer';
 import { useLocation } from 'react-router-dom';
 import OwnerDetail from '../components/OwnerDetail';
+import Report from '@/components/Report';
 
 function ListingDetail() {
 
@@ -78,6 +79,11 @@ function ListingDetail() {
                 <Specification carDetail={carDetail} />
                 {/* Owners Details */}
                 <OwnerDetail carDetail={carDetail} />
+
+                <div className='mt-5'>
+                  
+                  <Report entityType="carListing" entity={carDetail} />
+                </div>
               </div>
             </div>
             <CommentSection carListingId={id} />
