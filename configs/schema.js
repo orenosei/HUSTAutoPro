@@ -86,7 +86,51 @@ export const BlogFavourite = pgTable('blog_favourite', {
         .notNull()
         .references(() => BlogPost.id, { onDelete: 'cascade' }),
   }, 
-  (table) => ({
+  (table) => [
       // Đảm bảo mỗi user chỉ thích 1 bài viết 1 lần
-    uniqueLike: uniqueIndex('unique_user_post').on(table.userId, table.blogPostId),
-}));
+        uniqueIndex('unique_user_post').on(table.userId, table.blogPostId)
+    ]
+);
+
+
+export const ReportCarListing = pgTable("report_car_listing", {
+  id: serial("id").primaryKey(),
+  reporterId: integer("reporterId")
+    .notNull()
+    .references(() => User.id, { onDelete: "cascade" }),
+  carListingId: integer("carListingId")
+    .notNull()
+    .references(() => CarListing.id, { onDelete: "cascade" }),
+  reason: text("reason").notNull(),
+  status: varchar("status", { length: 20 })
+    .default("Đang chờ xử lý"),
+  createdAt: timestamp("createdAt", { mode: "date" }).defaultNow(),
+});
+
+export const ReportBlogPost = pgTable("report_blog_post", {
+  id: serial("id").primaryKey(),
+  reporterId: integer("reporterId")
+    .notNull()
+    .references(() => User.id, { onDelete: "cascade" }),
+  blogPostId: integer("blogPostId")
+    .notNull()
+    .references(() => BlogPost.id, { onDelete: "cascade" }),
+  reason: text("reason").notNull(),
+  status: varchar("status", { length: 20 })
+    .default("Đang chờ xử lý"),
+  createdAt: timestamp("createdAt", { mode: "date" }).defaultNow(),
+});
+
+export const ReportUser = pgTable("report_user", {
+  id: serial("id").primaryKey(),
+  reporterId: integer("reporterId")
+    .notNull()
+    .references(() => User.id, { onDelete: "cascade" }),
+  reportedUserId: integer("reportedUserId")
+    .notNull()
+    .references(() => User.id, { onDelete: "cascade" }),
+  reason: text("reason").notNull(),
+  status: varchar("status", { length: 20 })
+    .default("Đang chờ xử lý"),
+  createdAt: timestamp("createdAt", { mode: "date" }).defaultNow(),
+});
