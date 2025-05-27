@@ -16,6 +16,7 @@ import FavoriteList from './profile/components/FavoriteCar'
 import Blog from './blog'
 import AddBlog from './blog/pages/AddBlog'
 import User from './user'
+import Admin from './admin'
 
 
 const router = createBrowserRouter([
@@ -62,6 +63,11 @@ const router = createBrowserRouter([
     path: '/user/:id',
     element: <User />
   },
+  {
+    path: '/admin',
+    element: <Admin />
+  },
+  
   
 
 ])
@@ -72,13 +78,15 @@ if (!PUBLISHABLE_KEY) {
   throw new Error("Missing Publishable Key")
 }
 
-const checkClerk = () => {
-  
-}
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
+    <ClerkProvider 
+    publishableKey={PUBLISHABLE_KEY}
+    authorizationParams={{
+        role: 'admin' // Role mặc định cho các action nhạy cảm
+      }}
+     afterSignOutUrl="/">
       <RouterProvider router={router}/> 
       <Toaster 
         position="bottom-right" 

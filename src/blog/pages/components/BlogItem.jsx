@@ -4,6 +4,7 @@ import { FiUser, FiCalendar, FiTag, FiChevronLeft, FiChevronRight } from "react-
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { useUser } from '@clerk/clerk-react';
 import Service from '@/Shared/Service';
+import Report from '@/components/Report';
 
 function BlogItem({ blog }) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -156,17 +157,20 @@ function BlogItem({ blog }) {
             )}
           </div>
 
-      <div className="flex items-center justify-center gap-2 pb-4">
-        <button
-          className={`text-3xl transition-all duration-300 hover:scale-125 ${
-            isLiked ? 'text-red-600' : 'text-red-400 hover:text-red-600'
-          }`}
-          onClick={handleLikeButtonClick}
-        >
-          {isLiked ? <AiFillHeart /> : <AiOutlineHeart />}
-        </button>
-        <span className="text-gray-500 text-base">{likeCount}</span>
-      </div>
+          <div className="flex items-center justify-between gap-2 pb-4 px-6">
+            <div className="flex items-center gap-2">
+              <button
+                className={`text-3xl transition-all duration-300 hover:scale-125 ${
+                  isLiked ? 'text-red-600' : 'text-red-400 hover:text-red-600'
+                }`}
+                onClick={handleLikeButtonClick}
+              >
+                {isLiked ? <AiFillHeart /> : <AiOutlineHeart />}
+              </button>
+              <span className="text-gray-500 text-base">{likeCount}</span>
+            </div>
+            <Report entityType="blogPost" entity={blog} />
+          </div>
         </div>
       ) : (
         <div className="rounded-xl bg-slate-200 animate-pulse h-[500px] w-full"></div>
