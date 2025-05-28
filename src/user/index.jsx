@@ -1,47 +1,39 @@
-import React from 'react'
-import Header from './../components/Header'
-import Footer from './../components/Footer'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import UserListingCar from './components/UserCarListing'
-import UserBlog from './components/UserBlog'
-import UserProfileInfo from './components/UserProfileInfo'
-import UserCarListing from './components/UserCarListing'
+import React from 'react';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import UserBlog from './components/UserBlog';
+import UserCarListing from './components/UserCarListing';
+import UserProfileInfo from './components/UserProfileInfo';
+
 function User() {
   return (
-    <div>
-      <Header/>
-
+    <div className="min-h-screen flex flex-col">
+      <Header />
       
-      
-      <div className='px-10 md:px-20 my-10'>
-        <Tabs defaultValue="user-listing" className="w-full">
-          <TabsList className="w-full justify-start">
-            <TabsTrigger value="user-listing">Danh Sách Xe</TabsTrigger>
-            <TabsTrigger value="user-blog">Blog</TabsTrigger>
-            <TabsTrigger value="user-profile">Hồ Sơ</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="user-listing">
-            <UserCarListing />
-          </TabsContent>
-
-          <TabsContent value="user-blog">
-            <UserBlog />
-          </TabsContent>
-
-          <TabsContent value="user-profile">
+      <div className="flex-1 container mx-auto px-4 md:px-6 py-8">
+          <div className="flex flex-col md:flex-row gap-8">
             <UserProfileInfo />
-          </TabsContent>
 
+          <div className="md:w-4/5">
+            <Tabs defaultValue="user-listing" className="w-full">
+              <TabsList className="w-full justify-end p-2 rounded-lg">
+                <TabsTrigger value="user-listing"> Danh Sách Xe</TabsTrigger>
+                <TabsTrigger value="user-blog"> Blog</TabsTrigger>
+              </TabsList>
 
-
-
-        </Tabs>
+              <div className="mt-6">
+                <TabsContent value="user-listing" ><UserCarListing /></TabsContent>
+                <TabsContent value="user-blog" ><UserBlog /></TabsContent>
+              </div>
+            </Tabs>
+          </div>
+        </div>
       </div>
 
-      <Footer />
+    <Footer />
     </div>
-  )
+  );
 }
 
-export default User
+export default User;
