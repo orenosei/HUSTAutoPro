@@ -28,7 +28,7 @@ function UserCarListing() {
       const resp = Service.FormatResult(result)
       setCarList(resp)
     } catch (error) {
-      console.error("Error fetching user car listings:", error)
+      console.error("Lỗi. Không có dữ liệu về xe", error)
     }
   }
 
