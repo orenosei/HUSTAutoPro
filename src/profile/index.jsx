@@ -5,9 +5,34 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import FavoriteList from './components/FavoriteCar'
 import ProfileInfo from './components/ProfileInfo'
 import MyBlog from './components/MyBlog'
+import { useUser } from '@clerk/clerk-react'
+import Service from '@/Shared/Service'
+import { useState, useEffect } from 'react'
 
 
 function Profile() {
+
+  const { user } = useUser()
+  const [currentUser, setCurrentUser] = useState(null)
+  
+  useEffect(() => {
+    const getCurrentUser = async () => {
+      if (!user) return;
+      const fetchedUser = await Service.GetUserByClerkId(user.id);
+      if (!fetchedUser) {
+        console.error("Không tìm thấy user trong database.");
+        return;
+      }
+      //console.log("Fetched user:", fetchedUser.id);
+      setCurrentUser(fetchedUser);
+    };
+    getCurrentUser();
+  }, [user]);
+
+  if (!user) {
+  return <div>Đang tải...</div>;
+}
+
   return (
     <div>
         <Header/>
@@ -23,11 +48,17 @@ function Profile() {
         </TabsList>
 
         <TabsContent value="my-listing">
-        <MyListing />
+        <MyListing 
+          currentUserId={currentUser?.id} 
+          showEditButton={true}
+        />
         </TabsContent>
 
         <TabsContent value="my-blog">
-        <MyBlog />
+        <MyBlog 
+          currentUserId={currentUser?.id} 
+          showEditButton={true}
+        />
         </TabsContent>
 
         <TabsContent value="inbox">Hộp Thư</TabsContent>
