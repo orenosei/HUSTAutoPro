@@ -1,48 +1,44 @@
 import React from 'react'
 import Header from './../components/Header'
 import Footer from './../components/Footer'
-import MyListing from "../profile/components/MyListing.jsx";
-import ProfileInfo from "../profile/components/ProfileInfo.jsx";
-import MyBlog from "../profile/components/MyBlog.jsx";
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-
-
-
+import UserListingCar from './components/UserListingCar'
+import UserBlog from './components/UserBlog'
+import UserProfileInfo from './components/UserProfileInfo'
 function User() {
   return (
     <div>
+      <Header/>
 
-      <div>
-        <Header/>
-        <div className='px-10 md:px-20 my-10'>
-        <Tabs defaultValue="my-listing" className="w-full" >
-        <TabsList className="w-full justify-start">
-            <TabsTrigger value="my-listing">Danh Sách Của Tôi</TabsTrigger>
-            <TabsTrigger value="my-blog">Blog Của Tôi</TabsTrigger>
-            <TabsTrigger value="profile">Hồ Sơ</TabsTrigger>
-        </TabsList>
+      
+      
+      <div className='px-10 md:px-20 my-10'>
+        <Tabs defaultValue="user-listing" className="w-full">
+          <TabsList className="w-full justify-start">
+            <TabsTrigger value="user-listing">Danh Sách Xe</TabsTrigger>
+            <TabsTrigger value="user-blog">Blog</TabsTrigger>
+            <TabsTrigger value="user-profile">Hồ Sơ</TabsTrigger>
+          </TabsList>
 
-        <TabsContent value="my-listing">
-        <MyListing />
-        </TabsContent>
+          <TabsContent value="user-listing">
+            <UserListingCar />
+          </TabsContent>
 
-        <TabsContent value="my-blog">
-        <MyBlog />
-        </TabsContent>
+          <TabsContent value="user-blog">
+            <UserBlog />
+          </TabsContent>
 
-        <TabsContent value="profile">
-          <ProfileInfo />
-        </TabsContent>
+          <TabsContent value="user-profile">
+            <UserProfileInfo />
+          </TabsContent>
+
+
 
 
         </Tabs>
-    </div>
-    </div>
+      </div>
 
-      {/*<Footer /> */}
       <Footer />
-
     </div>
   )
 }
