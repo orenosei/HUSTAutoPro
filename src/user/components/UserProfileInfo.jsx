@@ -36,7 +36,7 @@ const UserProfileInfo = () => {
       {/* Avatar */}
       <div className="flex flex-col items-center mb-6">
         <img
-          src={user.imageUrl}
+          src={user.avatar}
           alt="avatar"
           className="w-32 h-32 rounded-full object-cover border-4 border-blue-200 shadow-md transition-transform hover:scale-105"
         />

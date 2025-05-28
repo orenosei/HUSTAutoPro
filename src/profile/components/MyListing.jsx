@@ -61,44 +61,46 @@ function MyListing({currentUserId, showEditButton}) {
     <div className='mt-6'>
       <div className='flex justify-between items-center'>
         <h2 className='font-bold text-4xl'>
-          {showEditButton ? 'Danh Sách Xe Của  Tôi':''}
+          {showEditButton ? 'Danh Sách Xe Của  Tôi' : ''}
         </h2>
 
         {showEditButton && (
-                  <Link to={'/add-listing'}>
-                    <Button className='bg-red-500 text-white hover:scale-110'>
-                      Đăng Xe Mới
+          <Link to={'/add-listing'}>
+            <Button className='bg-red-500 text-white hover:scale-110'>
+              Đăng Xe Mới
+            </Button>
+          </Link>
+        )}
+      </div>
+      <div className="overflow-x-auto mt-7 py-4 px-4">
+        <div className="flex gap-5">
+          {carList.map((item, index) => (
+            <div key={index} className="relative group min-w-[280px] max-w-xs flex-shrink-0">
+              <CarItem car={item} />
+
+              {showEditButton && (
+                <div className='absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity'>
+                  <Link to={`/add-listing?mode=edit&id=${item?.id}`}>
+                    <Button className='bg-green-500 hover:bg-green-600 text-white p-2'>
+                      Chỉnh Sửa
                     </Button>
                   </Link>
-                )}
-      </div>
-      <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-7'>
-        {carList.map((item, index) => (
-          <div key={index} className="relative group">
-            <CarItem car={item} />
-
-          { showEditButton && (
-            <div className='absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity'>
-              <Link to={`/add-listing?mode=edit&id=${item?.id}`}>
-                <Button className='bg-green-500 hover:bg-green-600 text-white p-2'>
-                  Chỉnh Sửa
-                </Button>
-              </Link>
-              <Button
-                className='bg-red-500 hover:bg-red-600 text-white p-2'
-                onClick={() => handleDeleteCar(item?.id)}
-                disabled={deletingId === item?.id}
-              >
-                {deletingId === item?.id ? (
-                  <BiLoaderAlt className="animate-spin" />
-                ) : (
-                  <FaTrashAlt />
-                )}
-              </Button>
+                  <Button
+                    className='bg-red-500 hover:bg-red-600 text-white p-2'
+                    onClick={() => handleDeleteCar(item?.id)}
+                    disabled={deletingId === item?.id}
+                  >
+                    {deletingId === item?.id ? (
+                      <BiLoaderAlt className="animate-spin" />
+                    ) : (
+                      <FaTrashAlt />
+                    )}
+                  </Button>
+                </div>
+              )}
             </div>
-            )}
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   )
