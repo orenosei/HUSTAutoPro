@@ -60,10 +60,17 @@ function MyListing({currentUserId, showEditButton}) {
   return (
     <div className='mt-6'>
       <div className='flex justify-between items-center'>
-        <h2 className='font-bold text-4xl'>Danh Sách Của Tôi</h2>
-        <Link to={'/add-listing'}>
-          <Button className='bg-red-500 text-white hover:scale-110'>Đăng Xe Mới</Button>
-        </Link>
+        <h2 className='font-bold text-4xl'>
+          {showEditButton ? 'Danh Sách Xe Của  Tôi':''}
+        </h2>
+
+        {showEditButton && (
+                  <Link to={'/add-listing'}>
+                    <Button className='bg-red-500 text-white hover:scale-110'>
+                      Đăng Xe Mới
+                    </Button>
+                  </Link>
+                )}
       </div>
       <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-7'>
         {carList.map((item, index) => (

@@ -2,9 +2,10 @@ import React from 'react'
 import Header from './../components/Header'
 import Footer from './../components/Footer'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import UserListingCar from './components/UserListingCar'
+import UserListingCar from './components/UserCarListing'
 import UserBlog from './components/UserBlog'
 import UserProfileInfo from './components/UserProfileInfo'
+import UserCarListing from './components/UserCarListing'
 function User() {
   return (
     <div>
@@ -21,7 +22,7 @@ function User() {
           </TabsList>
 
           <TabsContent value="user-listing">
-            <UserListingCar />
+            <UserCarListing />
           </TabsContent>
 
           <TabsContent value="user-blog">
