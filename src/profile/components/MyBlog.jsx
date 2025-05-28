@@ -43,12 +43,16 @@ function MyBlog({ currentUserId, showEditButton}) {
   return (
     <div className='mt-6'>
       <div className='flex justify-between items-center'>
-        <h2 className='font-bold text-4xl'>Blog Của Tôi</h2>
-        <Link to={'/blog/add'}>
-          <Button className='bg-blue-500 text-white hover:scale-110'>
-            Viết Blog Mới
-          </Button>
-        </Link>
+        <h2 className='font-bold text-4xl'>
+          {showEditButton ? 'Blog Của Tôi':''}
+        </h2>
+        {showEditButton && (
+          <Link to={'/blog/add'}>
+            <Button className='bg-blue-500 text-white hover:scale-110'>
+              Viết Blog Mới
+            </Button>
+          </Link>
+        )}
       </div>
 
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-7'>
