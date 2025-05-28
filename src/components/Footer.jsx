@@ -4,9 +4,7 @@ import {
   FaTiktok,
   FaGithub,
   FaUniversity,
-  FaBarcode,
   FaMapMarkerAlt,
-  FaCode,
   FaEnvelope,
   FaPhone
 } from 'react-icons/fa';
@@ -37,7 +35,7 @@ function Footer() {
           </div>
           <div className="flex items-start gap-3">
             <FaPhone className="mt-1" />
-            <span>034567890</span>
+            <span>01234567890</span>
           </div>
         </div>
 
@@ -64,8 +62,6 @@ function Footer() {
 
       </div>
 
-
-      {/* Social & Copyright */}
       <div className="border-t border-gray-300 py-6 text-center space-y-4">
         <div className="flex justify-center gap-6">
           <a href="https://www.facebook.com/profile.php?id=61576990521955" target="_blank" rel="noreferrer" className="hover:text-red-400">
