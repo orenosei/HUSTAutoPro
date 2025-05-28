@@ -15,7 +15,7 @@ function User() {
           <div className="flex flex-col md:flex-row gap-8">
             <UserProfileInfo />
 
-          <div className="md:w-4/5">
+          <div className="md:w-2/3">
             <Tabs defaultValue="user-listing" className="w-full">
               <TabsList className="w-full justify-end p-2 rounded-lg">
                 <TabsTrigger value="user-listing"> Danh Sách Xe</TabsTrigger>
