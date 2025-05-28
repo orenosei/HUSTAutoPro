@@ -1,53 +1,35 @@
 import React, { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/Button'
-import { useUser } from '@clerk/clerk-react'
-import { db } from './../../../configs'
-import { BlogPost, BlogImages, User, BlogFavourite } from './../../../configs/schema'
-import { eq, desc } from 'drizzle-orm'
 import { Link } from 'react-router-dom'
 import Service from '@/Shared/Service'
 import { FaTrashAlt } from 'react-icons/fa'
 import { toast } from 'sonner'
 import { BiLoaderAlt } from 'react-icons/bi'
+import BlogItem from '@/blog/pages/components/BlogItem'
+import { db } from './../../../configs'
+import { BlogPost } from './../../../configs/schema'
 
-function MyBlog() {
-  const { user } = useUser()
+function MyBlog({ currentUserId, showEditButton}) {
   const [blogPosts, setBlogPosts] = useState([])
   const [deletingId, setDeletingId] = useState(null)
 
-    useEffect(() => {
-    const fetchFavorites = async () => {
-      if (!user) return;
-      try {
-        const foundUser = await Service.GetUserByClerkId(user.id);
-        if (!foundUser) {
-          console.error("Không tìm thấy user trong database.");
-          //setLoading(false);
-          return;
-        }
+  useEffect(() => {
+    currentUserId && fetchMyBlogs()
+  }, [currentUserId])
 
-        const myBlogs = await Service.GetUserBlogPosts(foundUser.id);
-        setBlogPosts(myBlogs);
-      } catch (error) {
-        console.error('Lỗi khi lấy danh sách bài viết:', error);
-      } finally {
-        //setLoading(false);
-      }
-    };
 
-    fetchFavorites();
-  }, [user]);
+  const fetchMyBlogs = async () => {
+      const myBlogs = await Service.GetUserBlogPosts(currentUserId)
+      setBlogPosts(myBlogs || [])
+    }
 
   const handleDeleteBlog = async (blogId) => {
     if (!window.confirm('Bạn có chắc chắn muốn xóa bài viết này?')) return
 
     try {
       setDeletingId(blogId)
-      
-      // Cascade delete will handle images and favourites
       await db.delete(BlogPost)
         .where(eq(BlogPost.id, blogId))
-
       setBlogPosts(prev => prev.filter(post => post.id !== blogId))
       toast.success('Xóa bài viết thành công')
     } catch (error) {
@@ -68,37 +50,22 @@ function MyBlog() {
           </Button>
         </Link>
       </div>
-      
+
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-7'>
         {blogPosts.map((post) => (
-          <div key={post.id} className='border rounded-lg shadow-lg overflow-hidden'>
-            {/* Blog Images */}
-            {post.images?.[0]?.imageUrl && (
-              <img 
-                src={post.images[0].imageUrl} 
-                alt={post.title}
-                className='w-full h-48 object-cover'
-              />
-            )}
-            
-            <div className='p-4'>
-              <h3 className='font-bold text-xl mb-2'>{post.title}</h3>
-              <p className='text-gray-600 mb-4 line-clamp-3'>{post.content}</p>
-              {post.tag && (
-                <span className='inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2'>
-                  #{post.tag}
-                </span>
-              )}
+          <div key={post.id} className='relative group'>
+            <BlogItem blog={post} />
+
+          { showEditButton && (
+            <div className='absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity'>
+              <Link to={`/blog/add?mode=edit&id=${post.id}`}>
+                <Button className='bg-green-500 hover:bg-green-600 text-white p-2'>
+                  Chỉnh Sửa
+                </Button>
+              </Link>
               
-              <div className='flex justify-between mt-4 gap-3'>
-                <Link to={`/blog/add?mode=edit&id=${post.id}`}>
-                  <Button className='bg-green-500 hover:bg-green-600 text-white'>
-                    Chỉnh Sửa
-                  </Button>
-                </Link>
-                
                 <Button 
-                  className='bg-red-500 hover:bg-red-600 text-white'
+                  className='bg-red-500 hover:bg-red-600 text-white p-2'
                   onClick={() => handleDeleteBlog(post.id)}
                   disabled={deletingId === post.id}
                 >
@@ -108,8 +75,9 @@ function MyBlog() {
                     <FaTrashAlt />
                   )}
                 </Button>
-              </div>
+              
             </div>
+          )}
           </div>
         ))}
       </div>
