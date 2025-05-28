@@ -32,7 +32,7 @@ const UserProfileInfo = () => {
   if (!user) return <div>User not found</div>;
 
   return (
-    <div className="md:w-1/4 w-full bg-white rounded-2xl p-6 shadow-xl h-fit">
+    <div className="md:w-1/3 w-full bg-white rounded-2xl p-6 shadow-xl h-fit">
       {/* Avatar */}
       <div className="flex flex-col items-center mb-6">
         <img
