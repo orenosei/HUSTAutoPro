@@ -34,6 +34,17 @@ function CarItem({ car }) {
     }
   };
 
+  // Helper to format mileage with 'k' if ends with '000'
+  const formatMileage = (mileage) => {
+    if (!mileage) return 'N/A';
+    const num = Number(mileage);
+    if (isNaN(num)) return mileage;
+    if (num % 1000 === 0 && num >= 1000) {
+      return `${num / 1000}k Dặm`;
+    }
+    return `${num} Dặm`;
+  };
+
   return (
     <div className="">
       {car ? (
@@ -62,15 +73,15 @@ function CarItem({ car }) {
               <div className="grid grid-cols-3 mt-5">
                 <div className="flex flex-col items-center">
                   <TbBrandSpeedtest className="text-lg mb-2" />
-                  <h2>{car?.mileage ? `${car.mileage} Dặm` : 'N/A'}</h2>
+                  <h2 className="text-sm">{car?.mileage ? formatMileage(car.mileage) : 'N/A'}</h2>
                 </div>
                 <div className="flex flex-col items-center">
                   <LuFuel className="text-lg mb-2" />
-                  <h2>{car?.fuelType || 'N/A'}</h2>
+                  <h2 className="text-sm">{car?.fuelType || 'N/A'}</h2>
                 </div>
                 <div className="flex flex-col items-center">
                   <GiGearStickPattern className="text-lg mb-2" />
-                  <h2>{car?.transmission || 'N/A'}</h2>
+                  <h2 className="text-sm">{car?.transmission || 'N/A'}</h2>
                 </div>
               </div>
               <Separator className="my-2 bg-gray-200" />
@@ -78,9 +89,7 @@ function CarItem({ car }) {
                 <h2 className="font-bold text-xl">{car?.sellingPrice 
                   ? Math.floor(Number(car?.sellingPrice)).toLocaleString('en-US')
                   : 'N/A'} VNĐ</h2>
-                <h2 className="text-primary text-sm flex gap-2 items-center">
-                  Chi Tiết <MdOpenInNew />
-                </h2>
+
               </div>
             </div>
           </div>

@@ -56,48 +56,83 @@ const FormatResult = (resp) => {
   return finalResult;
 };
 
-
 export function checkUserInDb() {
   const { user } = useUser();
 
   useEffect(() => {
-    const addUserToDB = async () => {
+    const syncUserWithDb = async () => {
       if (!user) {
         console.log('User chưa đăng nhập.');
         return;
       }
 
       try {
-        const existingUser = await db
+        // 1. Tìm user trong database
+        const [existingUser] = await db
           .select()
           .from(User)
           .where(eq(User.clerkUserId, user.id))
           .execute();
 
-        if (existingUser.length > 0) {
-          console.log('Người dùng đã tồn tại trong DB.');
+        // 2. Xử lý khi không tìm thấy user
+        if (!existingUser) {
+          const newUser = {
+            clerkUserId: user.id,
+            firstName: user.firstName || '',
+            lastName: user.lastName || '',
+            email: user.primaryEmailAddress?.emailAddress || '',
+            phoneNumber: user.primaryPhoneNumber?.phoneNumber || null,
+            avatar: user.imageUrl || null,
+            address: null,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          };
+          await db.insert(User).values(newUser).execute();
+          console.log('Đã thêm người dùng mới vào DB');
           return;
         }
 
-        const newUser = {
-          clerkUserId: user.id,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.primaryEmailAddress.emailAddress,
+        // 3. Chuẩn bị dữ liệu hiện tại từ Clerk
+        const currentUserData = {
+          firstName: user.firstName || '',
+          lastName: user.lastName || '',
+          email: user.primaryEmailAddress?.emailAddress || '',
           phoneNumber: user.primaryPhoneNumber?.phoneNumber || null,
-          address: null, // Nếu cần xử lý thêm địa chỉ
-          createdAt: new Date(),
-          updatedAt: new Date(),
+          avatar: user.imageUrl || null,
         };
 
-        await db.insert(User).values(newUser).execute();
-        console.log('Người dùng mới đã được thêm vào DB:', newUser);
+        // 4. Kiểm tra thay đổi
+        const changes = {};
+        if (existingUser.firstName !== currentUserData.firstName)
+          changes.firstName = currentUserData.firstName;
+        if (existingUser.lastName !== currentUserData.lastName)
+          changes.lastName = currentUserData.lastName;
+        if (existingUser.email !== currentUserData.email)
+          changes.email = currentUserData.email;
+        if (existingUser.phoneNumber !== currentUserData.phoneNumber)
+          changes.phoneNumber = currentUserData.phoneNumber;
+        if (existingUser.avatar !== currentUserData.avatar)
+          changes.avatar = currentUserData.avatar;
+
+        // 5. Cập nhật nếu có thay đổi
+        if (Object.keys(changes).length > 0) {
+          changes.updatedAt = new Date();
+          await db
+            .update(User)
+            .set(changes)
+            .where(eq(User.id, existingUser.id))
+            .execute();
+
+          console.log('Đã cập nhật thông tin người dùng:', changes);
+        } else {
+          console.log('Không có thay đổi thông tin người dùng');
+        }
       } catch (error) {
-        console.error('Lỗi khi kiểm tra/thêm người dùng trong DB:', error);
+        console.error('Lỗi đồng bộ người dùng với DB:', error);
       }
     };
 
-    addUserToDB();
+    syncUserWithDb();
   }, [user]);
 }
 
@@ -530,6 +565,7 @@ export default{
     getCommentsWithUsers,
     GetUserByClerkId,
     UpdateUserProfile,
+    checkUserInDb,
 
     GetBlogPosts,
     GetSingleBlogPost,
