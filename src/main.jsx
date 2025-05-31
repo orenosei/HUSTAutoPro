@@ -17,6 +17,7 @@ import Blog from './blog'
 import AddBlog from './blog/pages/AddBlog'
 import User from './user'
 import Admin from './admin'
+import { ChatProvider } from './context/ChatContext'
 
 
 const router = createBrowserRouter([
@@ -79,6 +80,7 @@ if (!PUBLISHABLE_KEY) {
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    <ChatProvider>
     <ClerkProvider 
     publishableKey={PUBLISHABLE_KEY}
     authorizationParams={{
@@ -98,6 +100,7 @@ createRoot(document.getElementById('root')).render(
         }}
       />
     </ClerkProvider>
+    </ChatProvider>
   </StrictMode>,
 )
  
