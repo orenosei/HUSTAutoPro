@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import React from 'react'
 import { MdOutlineLocalOffer } from 'react-icons/md'
+import MoreInfo from './MoreInfo'
 
 function Pricing({carDetail}) {
   return (
@@ -14,6 +15,7 @@ function Pricing({carDetail}) {
             <MdOutlineLocalOffer className='text-white text-lg mr-2' />
             Liên Hệ Đặt Cọc Ngay
         </Button>
+        <MoreInfo carDetail={carDetail} />
         <p className='mt-4 text-gray-600'>* Giá có thể thay đổi tùy theo tình trạng xe.</p>
     </div>
   )

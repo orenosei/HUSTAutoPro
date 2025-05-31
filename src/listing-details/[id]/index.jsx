@@ -11,6 +11,7 @@ import Description from '../components/Description';
 import Features from '../components/Features';
 import Pricing from '../components/Pricing';
 import Specification from '../components/Specification';
+import MoreInfo from '../components/MoreInfo';
 import FinancialCalculator from '../components/FinancialCalculator';
 import MostSearchedCar from '@/components/MostSearchedCar';
 import CommentSection from '../components/CommentSection';
@@ -18,6 +19,7 @@ import Footer from '@/components/Footer';
 import { useLocation } from 'react-router-dom';
 import OwnerDetail from '../components/OwnerDetail';
 import Report from '@/components/Report';
+import ChatWidget from '@/components/ChatWidget';
 
 function ListingDetail() {
 
@@ -77,6 +79,7 @@ function ListingDetail() {
                 <Pricing carDetail={carDetail} />
                 {/* Car Specification */}
                 <Specification carDetail={carDetail} />
+
                 {/* Owners Details */}
                 <OwnerDetail carDetail={carDetail} />
 
@@ -91,6 +94,8 @@ function ListingDetail() {
         </div>
 
         <Footer/>
+
+        <ChatWidget />
         
     </div>
   )
