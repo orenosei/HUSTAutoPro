@@ -55,9 +55,10 @@ function MyBlog({ currentUserId, showEditButton}) {
         )}
       </div>
 
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-7'>
+      <div className="overflow-x-auto mt-7 py-4 px-4">
+        <div className="flex gap-5">
         {blogPosts.map((post) => (
-          <div key={post.id} className='relative group'>
+          <div key={post.id} className='relative group min-w-[400px] max-w-xs flex-shrink-0'>
             <BlogItem blog={post} />
 
           { showEditButton && (
@@ -84,6 +85,7 @@ function MyBlog({ currentUserId, showEditButton}) {
           )}
           </div>
         ))}
+        </div>
       </div>
     </div>
   )
