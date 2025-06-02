@@ -25,7 +25,8 @@ import { inArray } from 'drizzle-orm'
 
 function AddListing() {    
   
-  const CLOUD_NAME = "dql9a2fi8"; 
+  //const CLOUD_NAME = "dql9a2fi8"; 
+  const CLOUD_NAME = "dqie3avyy"; 
   const UPLOAD_PRESET = "hustautopro_preset"; 
   const [searchParams]= useSearchParams();
   const [images, setImages] = useState([]);
