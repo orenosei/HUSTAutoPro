@@ -1,14 +1,8 @@
-// import axios from "axios";
-
-// const SendBirdApplicationId=import.meta.env.VITE_SENDBIRD_APP_ID;
-// const SendBirdApiToken=import.meta.env.VITE_SENDBIRD_API_TOKEN;
-
-
 import { useEffect } from 'react';
 import { useUser } from '@clerk/clerk-react';
 import { db } from './../../configs';
 import { User, BlogPost, BlogImages, BlogFavourite,
-  ReportCarListing, ReportBlogPost, ReportUser  
+  ReportCarListing, ReportBlogPost, ReportUser, Appointment  
 
 } from './../../configs/schema'; 
 import { eq } from 'drizzle-orm';
@@ -527,36 +521,27 @@ export const createUserReport = async (data) => {
 };
 
 
-// const CreateSendBirdUser=(userId,nickName,profileUrl)=>{
-    
-//     return axios.post('https://api-'+SendBirdApplicationId+'.sendbird.com/v3/users',{
-//         user_id:userId,
-//         nickname:nickName,
-//         profile_url:profileUrl,
-//         issue_access_token:false
-//     },{
-//         headers:{
-//             'Content-Type':'application/json',
-//             'Api-Token':SendBirdApiToken
-//         }
-//     });
-// }
+export const CreateAppointment = async (data) => {
+  try {
+    const result = await db.insert(Appointment).values(data).returning();
+    return { success: true, data: result[0] };
+  } catch (error) {
+    console.error("Lỗi tạo cuộc hẹn:", error);
+    return { success: false, message: 'Lỗi khi tạo cuộc hẹn' };
+  }
+};
 
-
-// const CreateSendBirdChannel=(users,title)=>{
-//     return axios.post('https://api-'+SendBirdApplicationId+'.sendbird.com/v3/group_channels',{
-//         user_ids:users,
-//         is_distinct:true,
-//         name:title,
-//         operator_ids:[users[0]]
-
-//     },{
-//         headers:{
-//             'Content-Type':'application/json',
-//             'Api-Token':SendBirdApiToken
-//         }
-//     })
-// }
+export const GetUserAppointments = async (userId) => {
+  try {
+    return await db.select()
+      .from(Appointment)
+      .innerJoin(CarListing, eq(Appointment.carListingId, CarListing.id))
+      .where(eq(Appointment.userId, userId));
+  } catch (error) {
+    console.error("Lỗi lấy danh sách hẹn:", error);
+    return [];
+  }
+};
 
 export default{
     FormatResult,
@@ -579,9 +564,8 @@ export default{
 
     createCarReport,
     createBlogReport,
-    createUserReport
+    createUserReport,
+    CreateAppointment,
+    GetUserAppointments
 
-    // CreateSendBirdUser,
-    // CreateSendBirdChannel
-    //checkUserInDB
 }
