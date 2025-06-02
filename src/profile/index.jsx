@@ -8,6 +8,7 @@ import MyBlog from './components/MyBlog'
 import { useUser } from '@clerk/clerk-react'
 import Service from '@/Shared/Service'
 import { useState, useEffect } from 'react'
+import Footer from '@/components/Footer'
 
 
 function Profile() {
@@ -74,6 +75,7 @@ function Profile() {
         </TabsContent>
         </Tabs>
     </div>
+    <Footer />
     </div>
     
   )
