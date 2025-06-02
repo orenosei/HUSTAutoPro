@@ -13,7 +13,8 @@ import { BiLoaderAlt } from 'react-icons/bi'
 import Service from '@/Shared/Service'
 
 const AddBlog = () => {
-  const CLOUD_NAME = "dql9a2fi8";
+  // const CLOUD_NAME = "dql9a2fi8";
+  const CLOUD_NAME = "dqie3avyy"; 
   const UPLOAD_PRESET = "hustautopro_preset";
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
