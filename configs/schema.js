@@ -1,4 +1,4 @@
-import { integer, json, pgTable, serial, varchar, numeric, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
+import { integer, json, pgTable, serial, varchar, numeric, text, timestamp, uniqueIndex, boolean } from "drizzle-orm/pg-core";
 
 export const CarListing = pgTable('carListing', {
     id: serial('id').primaryKey(),
@@ -135,6 +135,31 @@ export const ReportUser = pgTable("report_user", {
     .default("Đang chờ xử lý"),
   createdAt: timestamp("createdAt", { mode: "date" }).defaultNow(),
 });
+
+export const Notifications = pgTable("notifications", {
+  id: serial("id").primaryKey(),
+  userId: integer("userId")
+    .notNull()
+    .references(() => User.id, { onDelete: "cascade" }),
+  content: text("content").notNull(),
+  type: varchar("type", { length: 50 }).notNull(),
+  isRead: boolean("isRead").notNull().default(false),
+  createAt: timestamp("createAt", { mode: "timestamp" })
+    .notNull()
+    .defaultNow(),
+});
+
+
+export const Appointment = pgTable("appointment", {
+  id: serial("id").primaryKey(),
+  userId: integer("userId").notNull().references(() => User.id, { onDelete: 'cascade' }),
+  carListingId: integer("carListingId").notNull().references(() => CarListing.id, { onDelete: 'cascade' }),
+  scheduledTime: timestamp("scheduled_time").notNull(),
+  status: varchar("status", { length: 20 }).default("pending"),
+  reason: text("reason"), //lý do từ chối/chấp nhận
+  notes: text("notes"),
+  createdAt: timestamp("createdAt", { mode: "date" }).defaultNow(),
+});	
 
 export const ViewHistory = pgTable('view_history', {
   id: serial('id').primaryKey(),
