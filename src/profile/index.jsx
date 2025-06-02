@@ -8,6 +8,7 @@ import MyBlog from './components/MyBlog'
 import { useUser } from '@clerk/clerk-react'
 import Service from '@/Shared/Service'
 import { useState, useEffect } from 'react'
+import ViewHistory from './components/ViewHistory'
 
 
 function Profile() {
@@ -71,6 +72,10 @@ function Profile() {
 
         <TabsContent value="favorite">
         <FavoriteList />
+        </TabsContent>
+
+        <TabsContent value="history">
+          <ViewHistory currentUserId={currentUser?.id} />
         </TabsContent>
         </Tabs>
     </div>
