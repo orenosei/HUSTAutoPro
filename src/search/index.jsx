@@ -8,6 +8,8 @@ import { eq, lte, and } from 'drizzle-orm';
 import { useSearchParams } from 'react-router-dom';
 import CarItem from '@/components/CarItem';
 import Service from '@/Shared/Service';
+import Footer from '@/components/Footer';
+import ChatWidget from '@/components/ChatWidget';
 
 
 function SearchByOptions() {
@@ -92,6 +94,9 @@ function SearchByOptions() {
               )}
           </div>
       </div>
+
+      <ChatWidget />        
+      <Footer />
     </div>
   )
 }
