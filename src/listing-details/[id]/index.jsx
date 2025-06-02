@@ -20,6 +20,7 @@ import { useLocation } from 'react-router-dom';
 import OwnerDetail from '../components/OwnerDetail';
 import Report from '@/components/Report';
 import ChatWidget from '@/components/ChatWidget';
+import Appointment from '../components/Appointment';
 
 function ListingDetail() {
 
@@ -82,6 +83,11 @@ function ListingDetail() {
 
                 {/* Owners Details */}
                 <OwnerDetail carDetail={carDetail} />
+
+                <Appointment 
+                  carListingId={id} 
+                  ownerId={carDetail?.createdBy} 
+                />
 
                 <div className='mt-5'>
                   
