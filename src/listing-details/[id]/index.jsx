@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import DetailHeader from '../components/DetailHeader'
 import { useParams } from 'react-router-dom'
 import { db } from './../../../configs';
-import { CarImages, CarListing, User } from './../../../configs/schema';
+import { CarImages, CarListing, User, ViewHistory as ViewHistoryTable } from './../../../configs/schema';
 import Service from '@/Shared/Service';
 import { eq } from 'drizzle-orm';
 import ImageGallery from '../components/ImageGallery';
@@ -20,13 +20,14 @@ import { useLocation } from 'react-router-dom';
 import OwnerDetail from '../components/OwnerDetail';
 import Report from '@/components/Report';
 import ChatWidget from '@/components/ChatWidget';
+import { useUser } from '@clerk/clerk-react';
 
 function ListingDetail() {
 
   const {id} = useParams();
   const location = useLocation();
   const [carDetail, setCarDetail] = useState();
-  //console.log(id);
+  const { user } = useUser();
 
   useEffect(() => {
     window.scrollTo({
@@ -34,9 +35,27 @@ function ListingDetail() {
       behavior: 'smooth' 
     });
     GetCarDetail();
+  },[id, location.pathname])
 
-  }
-  ,[id, location.pathname])
+  // Lưu lịch sử xem xe khi vào trang chi tiết
+  useEffect(() => {
+    const saveViewHistory = async () => {
+      if (!user || !id) return;
+      try {
+        const foundUser = await Service.GetUserByClerkId(user.id);
+        if (!foundUser) return;
+        await db.insert(ViewHistoryTable).values({
+          userId: foundUser.id,
+          carListingId: Number(id),
+          viewedAt: new Date()
+        });
+      } catch (err) {
+        // Không cần báo lỗi cho user, chỉ log
+        console.error('Lỗi lưu lịch sử xem xe:', err);
+      }
+    };
+    saveViewHistory();
+  }, [user, id]);
 
   const GetCarDetail = async () => {
     if (!id) return;
