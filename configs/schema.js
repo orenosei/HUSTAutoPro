@@ -1,4 +1,4 @@
-import { integer, json, pgTable, serial, varchar, numeric, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
+import { integer, json, pgTable, serial, varchar, numeric, text, timestamp, uniqueIndex, boolean } from "drizzle-orm/pg-core";
 
 export const CarListing = pgTable('carListing', {
     id: serial('id').primaryKey(),
@@ -134,4 +134,17 @@ export const ReportUser = pgTable("report_user", {
   status: varchar("status", { length: 20 })
     .default("Đang chờ xử lý"),
   createdAt: timestamp("createdAt", { mode: "date" }).defaultNow(),
+});
+
+export const Notifications = pgTable("notifications", {
+  id: serial("id").primaryKey(),
+  userId: integer("userId")
+    .notNull()
+    .references(() => User.id, { onDelete: "cascade" }),
+  content: text("content").notNull(),
+  type: varchar("type", { length: 50 }).notNull(),
+  isRead: boolean("isRead").notNull().default(false),
+  createAt: timestamp("createAt", { mode: "timestamp" })
+    .notNull()
+    .defaultNow(),
 });
