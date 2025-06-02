@@ -135,3 +135,14 @@ export const ReportUser = pgTable("report_user", {
     .default("Đang chờ xử lý"),
   createdAt: timestamp("createdAt", { mode: "date" }).defaultNow(),
 });
+
+export const Appointment = pgTable("appointment", {
+  id: serial("id").primaryKey(),
+  userId: integer("userId").notNull().references(() => User.id, { onDelete: 'cascade' }),
+  carListingId: integer("carListingId").notNull().references(() => CarListing.id, { onDelete: 'cascade' }),
+  scheduledTime: timestamp("scheduled_time").notNull(),
+  status: varchar("status", { length: 20 }).default("pending"),
+  reason: text("reason"), //lý do từ chối/chấp nhận
+  notes: text("notes"),
+  createdAt: timestamp("createdAt", { mode: "date" }).defaultNow(),
+});	
