@@ -10,6 +10,7 @@ import Service from '@/Shared/Service'
 import { useState, useEffect } from 'react'
 import ViewHistory from './components/ViewHistory'
 import Footer from '@/components/Footer'
+import MyAppointment from './components/MyAppointment'
 
 
 function Profile() {
@@ -43,7 +44,7 @@ function Profile() {
         <TabsList className="w-full justify-start">
             <TabsTrigger value="my-listing">Danh Sách Của Tôi</TabsTrigger>
             <TabsTrigger value="my-blog">Blog Của Tôi</TabsTrigger>
-            <TabsTrigger value="inbox">Hộp Thư</TabsTrigger>
+            <TabsTrigger value="my-appointment">Lịch Hẹn Xem Xe</TabsTrigger>
             <TabsTrigger value="profile">Hồ Sơ</TabsTrigger>
             <TabsTrigger value="favorite">Xe Yêu Thích</TabsTrigger>
             <TabsTrigger value="history">Lịch Sử</TabsTrigger>
@@ -63,7 +64,9 @@ function Profile() {
         />
         </TabsContent>
 
-        <TabsContent value="inbox">Hộp Thư</TabsContent>
+        <TabsContent value="my-appointment">
+          <MyAppointment />
+        </TabsContent>
 
 
         <TabsContent value="profile">

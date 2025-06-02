@@ -7,6 +7,7 @@ import { User, BlogPost, BlogImages, BlogFavourite,
 } from './../../configs/schema'; 
 import { eq } from 'drizzle-orm';
 import { and } from 'drizzle-orm';
+import { sql } from 'drizzle-orm';
 import { favorites, CarListing, CarImages } from './../../configs/schema';
 
 import { inArray } from 'drizzle-orm';
@@ -531,15 +532,56 @@ export const CreateAppointment = async (data) => {
   }
 };
 
+
 export const GetUserAppointments = async (userId) => {
   try {
-    return await db.select()
-      .from(Appointment)
-      .innerJoin(CarListing, eq(Appointment.carListingId, CarListing.id))
-      .where(eq(Appointment.userId, userId));
+    const buyerAppointments = await db.select({
+      id: Appointment.id,
+      scheduledTime: Appointment.scheduledTime,
+      status: Appointment.status,
+      notes: Appointment.notes,
+      carListingId: Appointment.carListingId,
+      carTitle: CarListing.listingTitle,
+      owner: User, 
+      role: sql`'buyer'` 
+    })
+    .from(Appointment)
+    .innerJoin(CarListing, eq(Appointment.carListingId, CarListing.id))
+    .innerJoin(User, eq(CarListing.createdBy, User.id))
+    .where(eq(Appointment.userId, userId))
+
+    const sellerAppointments = await db.select({
+      id: Appointment.id,
+      scheduledTime: Appointment.scheduledTime,
+      status: Appointment.status,
+      notes: Appointment.notes,
+      carListingId: Appointment.carListingId,
+      carTitle: CarListing.listingTitle,
+      buyer: User, 
+      role: sql`'seller'`
+    })
+    .from(Appointment)
+    .innerJoin(CarListing, eq(Appointment.carListingId, CarListing.id))
+    .innerJoin(User, eq(Appointment.userId, User.id))
+    .where(eq(CarListing.createdBy, userId))
+
+    return [...buyerAppointments, ...sellerAppointments];
   } catch (error) {
-    console.error("Lỗi lấy danh sách hẹn:", error);
+    console.error("Error fetching appointments:", error);
     return [];
+  }
+};
+
+export const UpdateAppointmentStatus = async (appointmentId, status, reason = null) => {
+  try {
+    await db.update(Appointment)
+      .set({ status, reason })
+      .where(eq(Appointment.id, appointmentId))
+      .execute();
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating appointment status:", error);
+    return { success: false, message: error.message };
   }
 };
 
@@ -566,6 +608,7 @@ export default{
     createBlogReport,
     createUserReport,
     CreateAppointment,
-    GetUserAppointments
+    GetUserAppointments,
+    UpdateAppointmentStatus
 
 }
