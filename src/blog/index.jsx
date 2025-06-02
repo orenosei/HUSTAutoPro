@@ -5,6 +5,8 @@ import Service from '@/Shared/Service'
 import Header from '@/components/Header'
 import { useTheme } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
+import ChatWidget from '@/components/ChatWidget'
+import Footer from '@/components/Footer'
 
 function Blog() {
   const [blogs, setBlogs] = useState([])
@@ -79,6 +81,9 @@ function Blog() {
           </div>
         )}
       </div>
+
+      <ChatWidget />
+      <Footer />
     </div>
   )
 }
