@@ -160,3 +160,10 @@ export const Appointment = pgTable("appointment", {
   notes: text("notes"),
   createdAt: timestamp("createdAt", { mode: "date" }).defaultNow(),
 });	
+
+export const ViewHistory = pgTable('view_history', {
+  id: serial('id').primaryKey(),
+  userId: integer('userId').notNull().references(() => User.id, { onDelete: 'cascade' }),
+  carListingId: integer('carListingId').notNull().references(() => CarListing.id, { onDelete: 'cascade' }),
+  viewedAt: timestamp('viewedAt', { mode: 'date' }).defaultNow(),
+});
