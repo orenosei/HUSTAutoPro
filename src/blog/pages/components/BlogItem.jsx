@@ -47,7 +47,6 @@ function BlogItem({ blog }) {
     const previousIsLiked = isLiked;
     const newLikeCount = previousIsLiked ? likeCount - 1 : likeCount + 1;
     
-    // Cập nhật UI ngay lập tức
     setIsLiked(!previousIsLiked);
     setLikeCount(newLikeCount);
 
@@ -58,7 +57,6 @@ function BlogItem({ blog }) {
         await Service.AddBlogToFavorite(user.id, blog.id);
       }
     } catch (error) {
-      // Rollback nếu có lỗi
       setIsLiked(previousIsLiked);
       setLikeCount(previousIsLiked ? likeCount : likeCount + 1);
       console.error("Lỗi khi thao tác like:", error);
