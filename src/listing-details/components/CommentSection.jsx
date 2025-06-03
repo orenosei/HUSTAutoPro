@@ -5,6 +5,7 @@ import { Comment, User } from './../../../configs/schema';
 import { eq } from 'drizzle-orm';
 import Service from '@/Shared/Service';
 import { toast} from 'sonner'
+import { Link } from 'react-router-dom';
 
 
 
@@ -131,12 +132,14 @@ return (
                     <div key={comment.comment.id} className="border-b border-gray-200 py-4 last:border-b-0">
                         <div className="flex items-center gap-3 mb-2">
                             <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-gray-500 font-bold">
-                                {comment.user.firstName[0]}
+                                <img src={comment.user.avatar} alt="" className="w-full h-full object-cover rounded-full" />
                             </div>
                             <div>
-                                <h4 className="font-semibold text-gray-800">
-                                    {comment.user.firstName} {comment.user.lastName}
-                                </h4>
+                                <Link to={`/user/${comment.user.id}`}>
+                                    <h4 className="font-semibold text-gray-800">
+                                        {comment.user.firstName} {comment.user.lastName}
+                                    </h4>
+                                </Link>
                                 <div className="flex items-center text-yellow-400">
                                     {[...Array(comment.comment.rating)].map((_, i) => (
                                         <span key={i} className="text-sm">★</span>

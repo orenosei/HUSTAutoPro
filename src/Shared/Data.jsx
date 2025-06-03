@@ -169,6 +169,12 @@ const CarMakes = [
     }
 ]
 
+const BodyTypes = ["Sedan", "SUV", "Truck", "Coupe", "Convertible", "Van", "Hatchback", "Electric", "Hybrid"];
+const Transmissions = ["Tự động", "Số sàn", "CVT"];
+const DriveTypes = ["Dẫn động cầu trước", "Dẫn động cầu sau", "Dẫn động 4 bánh", "Dẫn động 4 bánh toàn thời gian"];
+const FuelTypes = ["Xăng", "Dầu", "Điện", "Hybrid"];
+const Colors = ["Đen", "Xanh dương", "Vàng", "Hồng", "Đỏ", "Bạc", "Trắng"];
+
 const Pricing=[
     {
         id:1,
@@ -241,5 +247,10 @@ const Category=[
 export default{
     CarMakes,
     Pricing,
-    Category
+    Category,
+    BodyTypes,
+    Transmissions,
+    DriveTypes,
+    FuelTypes,
+    Colors
 }
