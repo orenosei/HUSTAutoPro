@@ -35,6 +35,16 @@ export default function ListingPage() {
         <div className='text-sm text-gray-500 mt-2'>
           {carList.length} xe đang được đăng bán
         </div>
+
+        <div className="flex justify-end mb-6">
+          <button
+            className="px-4 py-2 mr-2 bg-green-500 text-white rounded-lg hover:bg-green-700 transition-colors"
+            onClick={() => window.location.href = '/add-listing'}
+          >
+            + Đăng Xe Mới
+          </button>
+        </div>
+
         <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-7'>
           {carList?.length > 0 ? (
             carList.map((item) => (

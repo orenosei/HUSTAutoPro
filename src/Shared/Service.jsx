@@ -101,11 +101,11 @@ export function checkUserInDb() {
           changes.firstName = currentUserData.firstName;
         if (existingUser.lastName !== currentUserData.lastName)
           changes.lastName = currentUserData.lastName;
-        if (existingUser.email !== currentUserData.email)
+        if (existingUser.email !== currentUserData.email && existingUser.email === null)
           changes.email = currentUserData.email;
-        if (existingUser.phoneNumber !== currentUserData.phoneNumber)
+        if (existingUser.phoneNumber !== currentUserData.phoneNumber && existingUser.phoneNumber === null)
           changes.phoneNumber = currentUserData.phoneNumber;
-        if (existingUser.avatar !== currentUserData.avatar)
+        if (existingUser.avatar !== currentUserData.avatar && existingUser.avatar === null)
           changes.avatar = currentUserData.avatar;
 
         // 5. Cập nhật nếu có thay đổi
