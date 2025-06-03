@@ -11,6 +11,7 @@ import Service from '@/Shared/Service';
 import Footer from '@/components/Footer';
 import ChatWidget from '@/components/ChatWidget';
 import MostSearchedCar from '@/components/MostSearchedCar';
+import { or, ilike, gte } from 'drizzle-orm';
 
 
 function SearchByOptions() {
@@ -20,11 +21,20 @@ function SearchByOptions() {
   const condition=searchParam.get('cars');
   const make=searchParam.get('make');
   const price=searchParam.get('price');
+  const minYear = searchParam.get('minYear');
+  const maxYear = searchParam.get('maxYear');
+  const bodyType = searchParam.get('bodyType');
+  const transmission = searchParam.get('transmission');
+  const driveType = searchParam.get('driveType');
+  const fuelType = searchParam.get('fuelType');
+  const color = searchParam.get('color');
+  const mileage = searchParam.get('mileage');
+  const keyword = searchParam.get('keyword');
 
 
   useEffect(() => {
     GetCarList();
-  }, [condition, make, price]);
+  }, [condition, make, price, minYear, maxYear, bodyType, transmission, driveType, fuelType, color, mileage, keyword]);
 
   const GetCarList = async () => {
     try {
@@ -33,22 +43,28 @@ function SearchByOptions() {
         .from(CarListing)
         .leftJoin(CarImages, eq(CarListing.id, CarImages.carListingId));
   
-      // Thêm các điều kiện lọc
       const conditions = [];
       
-      if (condition) {
-        conditions.push(eq(CarListing.condition, condition));
+      if (condition) conditions.push(eq(CarListing.condition, condition));
+      if (make) conditions.push(eq(CarListing.make, make));
+      if (price) conditions.push(lte(CarListing.sellingPrice, Number(price)));
+      if (minYear) conditions.push(gte(CarListing.year, Number(minYear)));
+      if (maxYear) conditions.push(lte(CarListing.year, Number(maxYear)));
+      if (bodyType) conditions.push(eq(CarListing.category, bodyType));
+      if (transmission) conditions.push(eq(CarListing.transmission, transmission));
+      if (driveType) conditions.push(eq(CarListing.driveType, driveType));
+      if (fuelType) conditions.push(eq(CarListing.fuelType, fuelType));
+      if (color) conditions.push(eq(CarListing.color, color));
+      if (mileage) conditions.push(gte(CarListing.mileage, Number(mileage)));
+
+      if (keyword) {
+        conditions.push(or(
+          ilike(CarListing.listingTitle, `%${keyword}%`),
+          ilike(CarListing.tagline, `%${keyword}%`),
+          ilike(CarListing.listingDescription, `%${keyword}%`)
+        ));
       }
-      
-      if (make) {
-        conditions.push(eq(CarListing.make, make));
-      }
-      
-      if (price) {
-        conditions.push(lte(CarListing.sellingPrice, Number(price)));
-      }
-  
-      // Áp dụng tất cả điều kiện
+
       if (conditions.length > 0) {
         query = query.where(and(...conditions));
       }
@@ -57,9 +73,6 @@ function SearchByOptions() {
       const resp = Service.FormatResult(result) || [];
       
       setCarList(resp);
-      console.log('Filter params:', { condition, make, price });
-      console.log(CarListing.sellingPrice)
-      console.log('Filtered results:', resp);
   
     } catch (error) {
       console.error('Error fetching cars:', error);
@@ -76,14 +89,14 @@ function SearchByOptions() {
       </div>
       <div className='p-10 md:px-20'>
           <h2 className='font-bold text-4xl '>Kết Quả Tìm Kiếm </h2>
-          {(condition || make || price) && (
+          {(condition || make || price || minYear || maxYear || bodyType || transmission || driveType || fuelType || color || mileage || keyword) && (
             <div className='text-sm text-gray-500 mt-2'>
               {carList.length} xe được tìm thấy
             </div>
           )}
           
           {/* List of CarList */}
-          {condition || make || price ? (
+          {condition || make || price || minYear || maxYear || bodyType || transmission || driveType || fuelType || color || mileage || keyword ? (
             <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-7'>
               {carList?.length > 0 ? (
                 carList.map((item) => (
