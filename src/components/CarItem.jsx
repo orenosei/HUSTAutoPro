@@ -71,7 +71,8 @@ function CarItem({ car }) {
       {car ? (
         <Link to={`/listing-details/${car.id}`} className="w-full block">
           <div className="rounded-2xl bg-white border-3 border-gray-300 hover:shadow-md cursor-pointer hover:scale-105 transition-transform">
-            <h2 className="absolute m-2 bg-green-500 px-2 rounded-full text-sm text-white">New</h2>
+            {car?.postedOn && new Date().getTime() - new Date(car.postedOn).getTime() <= 3 * 24 * 60 * 60 * 1000 ? 
+              <h2 className="absolute m-2 bg-green-500 px-2 rounded-full text-sm text-white">New</h2> : null}
             <img
               src={car?.images?.[0]?.imageUrl || '/path/to/placeholder.jpg'}
               alt={car?.listingTitle || 'Car Image'}
