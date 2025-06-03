@@ -344,7 +344,10 @@ const FormatBlogResult = (resp) => {
     const currentBlog = resultMap.get(blogId);
 
     if (item.blog_images) {
-      currentBlog.images.push(item.blog_images.imageUrl);
+      const imageUrl = item.blog_images.imageUrl;
+      if (!currentBlog.images.includes(imageUrl)) {
+        currentBlog.images.push(imageUrl);
+      }
     }
 
     if (item.blog_favourite) {
