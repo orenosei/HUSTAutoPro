@@ -44,7 +44,7 @@
       "name": "condition",
       "fieldType": "dropdown",
       "required": true,
-      "options": ["Xe Mới", "Xe Cũ", "Xe Đã Được Chứng Nhận"],
+      "options": ["Xe Mới", "Xe Cũ"],
       "column": 1,
       "icon": "FaCheckCircle"
     },
