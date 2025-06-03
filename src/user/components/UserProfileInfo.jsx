@@ -6,6 +6,17 @@ import { User } from './../../../configs/schema';
 import { Phone, Home, Mail, Contact, Flag } from 'lucide-react'
 import Report from '@/components/Report';
 
+const formatAddress = (address) => {
+  if (!address) return 'N/A';
+  if (typeof address === 'string') return address;
+  const parts = [];
+  if (address.detail) parts.push(address.detail);
+  if (address.ward?.name) parts.push(address.ward.name);
+  if (address.district?.name) parts.push(address.district.name);
+  if (address.province?.name) parts.push(address.province.name);
+  
+  return parts.length > 0 ? parts.join(', ') : 'N/A';
+};
 
 const UserProfileInfo = () => {
   const { id } = useParams();
@@ -31,6 +42,8 @@ const UserProfileInfo = () => {
 
   if (loading) return <div>Loading...</div>;
   if (!user) return <div>User not found</div>;
+
+  const formattedAddress = formatAddress(user.address);
 
   return (
     <div className="w-full bg-white rounded-2xl p-6 shadow-xl h-fit">
@@ -65,7 +78,7 @@ const UserProfileInfo = () => {
             <Phone className="w-4 h-4 text-blue-600" />
           </div>
           <div>
-            <p className="text-xs text-gray-500 font-medium">Phone</p>
+            <p className="text-xs text-gray-500 font-medium">Số điện thoại</p>
             <p className="text-sm">{user.phoneNumber || 'N/A'}</p>
           </div>
         </div>
@@ -74,8 +87,8 @@ const UserProfileInfo = () => {
             <Home className="w-4 h-4 text-blue-600" />
           </div>
           <div>
-            <p className="text-xs text-gray-500 font-medium">Address</p>
-            <p className="text-sm">{user.address || 'N/A'}</p>
+            <p className="text-xs text-gray-500 font-medium">Địa chỉ</p>
+            <p className="text-sm">{formattedAddress}</p>
           </div>
         </div>
       </div>

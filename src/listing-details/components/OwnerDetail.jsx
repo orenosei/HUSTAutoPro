@@ -2,10 +2,27 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FaUser, FaEnvelope, FaPhone, FaMapMarker } from 'react-icons/fa'
 
+// Hàm định dạng địa chỉ từ JSON
+const formatAddress = (address) => {
+  if (!address) return '';
+  
+  // Nếu là string thì trả về luôn
+  if (typeof address === 'string') return address;
+  
+  // Nếu là JSON object thì ghép các thành phần
+  const parts = [];
+  if (address.detail) parts.push(address.detail);
+  if (address.ward?.name) parts.push(address.ward.name);
+  if (address.district?.name) parts.push(address.district.name);
+  if (address.province?.name) parts.push(address.province.name);
+  
+  return parts.join(', ');
+};
+
 function OwnerDetail({ carDetail }) {
   const navigate = useNavigate()
   const owner = carDetail?.user
-  const address = owner?.address || ''
+  const formattedAddress = formatAddress(owner?.address)
 
   if (!owner) {
     return (
@@ -28,17 +45,26 @@ function OwnerDetail({ carDetail }) {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100 mt-5">
-      {/* Clickable Header */}
       <div 
         className="flex items-center gap-3 mb-6 cursor-pointer hover:text-blue-600 transition-colors"
         onClick={handleNavigateToUser}
       >
-        <FaUser className="h-6 w-6 text-gray-400" />
         <h3 className="text-xl font-semibold">Thông tin người đăng</h3>
       </div>
 
       <div className="space-y-4">
-        <div>
+        <div className="flex items-center gap-3">
+          {owner.avatar ? (
+            <img 
+              src={owner.avatar} 
+              alt="Avatar" 
+              className="w-8 h-8 rounded-full object-cover border border-gray-200"
+            />
+          ) : (
+            <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
+              <FaUser className="h-4 w-4 text-gray-500" />
+            </div>
+          )}
           <p className="font-medium text-gray-900">
             {owner.firstName || owner.lastName 
               ? `${owner.firstName} ${owner.lastName}` 
@@ -49,7 +75,7 @@ function OwnerDetail({ carDetail }) {
         <div className="space-y-2">
           {contactInfo.map((info, index) => (
             <div key={index} className="flex items-center gap-3">
-              <span className="text-gray-400">{info.icon}</span>
+              <span className="text-gray-400 w-5 flex justify-center">{info.icon}</span>
               <a
                 href={`${info.type}:${info.value}`}
                 className="text-blue-600 hover:text-blue-800 hover:underline break-all"
@@ -60,10 +86,10 @@ function OwnerDetail({ carDetail }) {
           ))}
         </div>
 
-        {address && (
+        {formattedAddress && (
           <div className="flex items-start gap-3 pt-2">
             <FaMapMarker className="h-5 w-5 text-gray-400 flex-shrink-0 mt-1" />
-            <p className="text-gray-600 leading-relaxed">{address}</p>
+            <p className="text-gray-600 leading-relaxed">{formattedAddress}</p>
           </div>
         )}
       </div>
