@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { toast } from 'sonner'
-import { BiLoaderAlt, BiSearch, BiTrash, BiCar, BiTime, BiXCircle, BiLinkExternal } from 'react-icons/bi'
+import { BiLoaderAlt, BiSearch, BiTrash, BiCar, BiTime, BiXCircle, BiLinkExternal, BiCommentDetail } from 'react-icons/bi'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogTrigger } from '@/components/ui/dialog'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Link } from 'react-router-dom'
@@ -131,6 +131,7 @@ function CarListingReport() {
     <TableRow>
       <TableCell><div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse" /></TableCell>
       <TableCell><div className="h-4 bg-gray-200 rounded w-1/2 animate-pulse" /></TableCell>
+      <TableCell><div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse" /></TableCell>
       <TableCell><div className="h-4 bg-gray-200 rounded w-1/2 animate-pulse" /></TableCell>
       <TableCell><div className="h-4 bg-gray-200 rounded w-1/2 animate-pulse" /></TableCell>
       <TableCell className="text-right"><div className="h-8 w-16 bg-gray-200 rounded-md animate-pulse" /></TableCell>
@@ -167,6 +168,7 @@ function CarListingReport() {
                 <TableRow>
                   <TableHead className="text-gray-600 font-medium">Người báo cáo</TableHead>
                   <TableHead className="text-gray-600 font-medium">ID bài đăng</TableHead>
+                  <TableHead className="text-gray-600 font-medium">Lý do</TableHead>
                   <TableHead className="text-gray-600 font-medium">Trạng thái</TableHead>
                   <TableHead className="text-gray-600 font-medium">Thời gian</TableHead>
                   <TableHead className="text-gray-600 font-medium text-right"></TableHead>
@@ -196,6 +198,18 @@ function CarListingReport() {
                       
                       <TableCell>
                         {reportData.carListing?.id || 'Đã xóa'}
+                      </TableCell>
+
+                      <TableCell>
+                        <div className="flex items-center gap-2 max-w-[250px]">
+                          <BiCommentDetail className="flex-shrink-0 text-gray-400" />
+                          <span 
+                            className="truncate" 
+                            title={reportData.report.reason}
+                          >
+                            {reportData.report.reason}
+                          </span>
+                        </div>
                       </TableCell>
 
                       <TableCell>
