@@ -22,7 +22,7 @@ function Header() {
             <Link to='/blog'>Blog</Link>
           </li>
           <li className=' rounded-xl font-medium hover:scale-105 transition-transform cursor-pointer hover:text-red-500'>
-            <Link to='/'>Liên Hệ</Link>
+            <Link to='/intro'>Giới Thiệu</Link>
           </li>
         </ul>
       </nav>

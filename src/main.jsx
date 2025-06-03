@@ -18,6 +18,7 @@ import AddBlog from './blog/pages/AddBlog'
 import User from './user'
 import Admin from './admin'
 import { ChatProvider } from './context/ChatContext'
+import Intro from './intro'
 
 
 const router = createBrowserRouter([
@@ -68,7 +69,10 @@ const router = createBrowserRouter([
     path: '/admin',
     element: <Admin />
   },
-  
+  {
+    path: '/intro',
+    element: <Intro />
+  },
 ])
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
