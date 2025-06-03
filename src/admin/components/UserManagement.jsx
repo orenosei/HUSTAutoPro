@@ -129,9 +129,21 @@ function UserManagement() {
                     <TableRow key={user.id} className="hover:bg-gray-50 transition-colors">
                       <TableCell>
                         <div className="flex items-center space-x-3">
-                          <div className="flex items-center justify-center h-9 w-9 rounded-full bg-blue-100 text-blue-800 font-medium">
-                            {getInitials(user.firstName, user.lastName)}
-                          </div>
+                          {user.avatar ? (
+                            <img 
+                              src={user.avatar} 
+                              alt={`${user.firstName} ${user.lastName}`}
+                              className="h-9 w-9 rounded-full object-cover"
+                              onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src = `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="%23dbeafe" stroke="%231e40af"><text x="50%" y="50%" font-size="12" text-anchor="middle" dy=".3em" font-family="Arial" font-weight="bold" fill="%231e40af">${getInitials(user.firstName, user.lastName)}</text></svg>`;
+                              }}
+                            />
+                          ) : (
+                            <div className="flex items-center justify-center h-9 w-9 rounded-full bg-blue-100 text-blue-800 font-medium">
+                              {getInitials(user.firstName, user.lastName)}
+                            </div>
+                          )}
                           <div>
                             <p className="font-medium text-gray-900">
                               {user.firstName} {user.lastName}
@@ -182,9 +194,21 @@ function UserManagement() {
                             </DialogHeader>
                             
                             <div className="flex items-center space-x-4 py-4">
-                              <div className="flex items-center justify-center h-12 w-12 rounded-full bg-red-100 text-red-600 font-medium text-xl">
-                                {getInitials(selectedUser?.firstName, selectedUser?.lastName)}
-                              </div>
+                              {selectedUser?.avatar ? (
+                                <img 
+                                  src={selectedUser.avatar} 
+                                  alt={`${selectedUser.firstName} ${selectedUser.lastName}`}
+                                  className="h-12 w-12 rounded-full object-cover"
+                                  onError={(e) => {
+                                    e.target.onerror = null;
+                                    e.target.src = `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="%23fee2e2" stroke="%23dc2626"><text x="50%" y="50%" font-size="14" text-anchor="middle" dy=".3em" font-family="Arial" font-weight="bold" fill="%23dc2626">${getInitials(selectedUser.firstName, selectedUser.lastName)}</text></svg>`;
+                                  }}
+                                />
+                              ) : (
+                                <div className="flex items-center justify-center h-12 w-12 rounded-full bg-red-100 text-red-600 font-medium text-xl">
+                                  {getInitials(selectedUser?.firstName, selectedUser?.lastName)}
+                                </div>
+                              )}
                               <div>
                                 <p className="font-medium">
                                   {selectedUser?.firstName} {selectedUser?.lastName}
