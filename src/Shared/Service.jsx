@@ -212,6 +212,56 @@ const AddToFavorite = async (clerkUserId, carListingId) => {
   }
 };
 
+export const CheckCarLikeStatus = async (clerkUserId, carId) => {
+  try {
+    const existingUser = await db.select()
+      .from(User)
+      .where(eq(User.clerkUserId, clerkUserId))
+      .execute();
+
+    if (!existingUser?.length) return false;
+
+    const existed = await db.select()
+      .from(favorites)
+      .where(and(
+        eq(favorites.userId, existingUser[0].id),
+        eq(favorites.carListingId, carId)
+      ))
+      .execute();
+
+    return existed.length > 0;
+  } catch (error) {
+    console.error("Lỗi kiểm tra like:", error);
+    return false;
+  }
+};
+
+// Xóa khỏi danh sách yêu thích
+export const RemoveFromFavorite = async (clerkUserId, carId) => {
+  try {
+    const existingUser = await db.select()
+      .from(User)
+      .where(eq(User.clerkUserId, clerkUserId))
+      .execute();
+
+    if (!existingUser?.length) {
+      return { success: false, message: "Không tìm thấy người dùng" };
+    }
+
+    await db.delete(favorites)
+      .where(and(
+        eq(favorites.userId, existingUser[0].id),
+        eq(favorites.carListingId, carId)
+      ))
+      .execute();
+
+    return { success: true, message: "Đã xóa khỏi yêu thích" };
+  } catch (error) {
+    console.error("Lỗi khi bỏ yêu thích:", error);
+    return { success: false, message: "Lỗi khi xóa khỏi yêu thích" };
+  }
+};
+
 const getCommentsWithUsers = async (carListingId) => {
   return db.select()
     .from(Comment)
@@ -705,6 +755,8 @@ export default{
     FormatResult,
     GetFavoriteCars,
     AddToFavorite,
+    CheckCarLikeStatus,
+    RemoveFromFavorite,
     getCommentsWithUsers,
     GetUserByClerkId,
     UpdateUserProfile,

@@ -1,40 +1,61 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 import { LuFuel } from "react-icons/lu";
 import { Separator } from './ui/separator';
 import { TbBrandSpeedtest } from "react-icons/tb";
 import { GiGearStickPattern } from "react-icons/gi";
-import { MdOpenInNew } from "react-icons/md";
 import { Link } from 'react-router-dom';
-import { AiOutlineHeart } from "react-icons/ai";
-import { useAuth, useUser } from "@clerk/clerk-react";
+import { useUser } from "@clerk/clerk-react";
 import { toast } from "sonner";
 import  Service from '@/Shared/Service';
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 
 function CarItem({ car }) {
   const { user } = useUser();
+  const [isLiked, setIsLiked] = useState(false);
 
-  const handleAddToFavorites = async (e) => {
-    e.preventDefault(); 
+    useEffect(() => {
+    if (car) {
+      checkLikeStatus();
+    }
+  }, [car, user]);
+
+  const checkLikeStatus = async () => {
+    if (user && car?.id) {
+      try {
+        const result = await Service.CheckCarLikeStatus(user.id, car.id);
+        setIsLiked(result);
+      } catch (error) {
+        console.error("Lỗi kiểm tra trạng thái like:", error);
+      }
+    }
+  };
+
+  const handleLikeButtonClick = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
 
     if (!user) {
       toast.error("Vui lòng đăng nhập để thêm vào yêu thích.");
       return;
     }
 
+    const previousIsLiked = isLiked;
+  
+    setIsLiked(!previousIsLiked);
+
     try {
-      const res = await Service.AddToFavorite(user.id, car.id);
-      if (res.success) {
-        toast.success(res.message);
+      if (previousIsLiked) {
+        await Service.RemoveFromFavorite(user.id, car.id);
       } else {
-        toast.warning(res.message);
+        await Service.AddToFavorite(user.id, car.id);
       }
-    } catch (err) {
-      console.error(err);
-      toast.error("Lỗi khi thêm vào xe yêu thích.");
+    } catch (error) {
+      setIsLiked(previousIsLiked);
+      toast.error("Lỗi khi thao tác yêu thích");
     }
   };
 
-  // Helper to format mileage with 'k' if ends with '000'
   const formatMileage = (mileage) => {
     if (!mileage) return 'N/A';
     const num = Number(mileage);
@@ -61,12 +82,18 @@ function CarItem({ car }) {
             <div className="p-4">
               <div className="flex items-center justify-between mb-2">
                 <h2 className="font-bold text-black text-lg">{car?.listingTitle || 'Unknown Title'}</h2>
-                <button
-                  onClick={handleAddToFavorites}
-                  className="text-red-400 text-xl transition-all duration-300 hover:text-red-600 hover:scale-125"
-                >
-                  <AiOutlineHeart />
-                </button>
+
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={handleLikeButtonClick}
+                    className={`text-xl transition-all duration-300 hover:scale-125 ${
+                      isLiked ? 'text-red-600' : 'text-gray-400 hover:text-red-500'
+                    }`}
+                  >
+                    {isLiked ? <AiFillHeart /> : <AiOutlineHeart />}
+                  </button>
+                </div>
+
               </div>
               <Separator className="bg-gray-200" />
 
