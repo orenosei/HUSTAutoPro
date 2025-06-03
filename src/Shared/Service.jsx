@@ -7,7 +7,7 @@ import { User, BlogPost, BlogImages, BlogFavourite,
 import { eq, desc } from 'drizzle-orm';
 import { and } from 'drizzle-orm';
 import { sql } from 'drizzle-orm';
-import { favorites, CarListing, CarImages } from './../../configs/schema';
+import { CarFavourite, CarListing, CarImages } from './../../configs/schema';
 
 import { inArray } from 'drizzle-orm';
 import { Comment } from './../../configs/schema';
@@ -146,10 +146,10 @@ export const GetUserByClerkId = async (clerkUserId) => {
 const GetFavoriteCars = async (userId) => {
   const result = await db
     .select()
-    .from(favorites)
-    .leftJoin(CarListing, eq(favorites.carListingId, CarListing.id))
+    .from(CarFavourite)
+    .leftJoin(CarListing, eq(CarFavourite.carListingId, CarListing.id))
     .leftJoin(CarImages, eq(CarImages.carListingId, CarListing.id))
-    .where(eq(favorites.userId, userId))
+    .where(eq(CarFavourite.userId, userId))
     .execute();
 
   return FormatResult(result);
@@ -177,9 +177,9 @@ const AddToFavorite = async (clerkUserId, carListingId) => {
     // 2. Kiểm tra đã có trong bảng favorites chưa
     const existed = await db
       .select()
-      .from(favorites)
+      .from(CarFavourite)
       .where(
-        and(eq(favorites.userId, userId), eq(favorites.carListingId, carListingId))
+        and(eq(CarFavourite.userId, userId), eq(CarFavourite.carListingId, carListingId))
       )
       .execute();
 
@@ -188,7 +188,7 @@ const AddToFavorite = async (clerkUserId, carListingId) => {
     }
 
     // 3. Thêm vào bảng favorites
-    await db.insert(favorites).values({
+    await db.insert(CarFavourite).values({
       userId,
       carListingId,
     }).execute();
@@ -222,10 +222,10 @@ export const CheckCarLikeStatus = async (clerkUserId, carId) => {
     if (!existingUser?.length) return false;
 
     const existed = await db.select()
-      .from(favorites)
+      .from(CarFavourite)
       .where(and(
-        eq(favorites.userId, existingUser[0].id),
-        eq(favorites.carListingId, carId)
+        eq(CarFavourite.userId, existingUser[0].id),
+        eq(CarFavourite.carListingId, carId)
       ))
       .execute();
 
@@ -248,10 +248,10 @@ export const RemoveFromFavorite = async (clerkUserId, carId) => {
       return { success: false, message: "Không tìm thấy người dùng" };
     }
 
-    await db.delete(favorites)
+    await db.delete(CarFavourite)
       .where(and(
-        eq(favorites.userId, existingUser[0].id),
-        eq(favorites.carListingId, carId)
+        eq(CarFavourite.userId, existingUser[0].id),
+        eq(CarFavourite.carListingId, carId)
       ))
       .execute();
 
@@ -267,12 +267,12 @@ export const GetPopularCars = async () => {
     const carWithCounts = await db
       .select({
         carListingId: CarListing.id,
-        favouritesCount: sql`COUNT(${favorites.id})::int`
+        favouritesCount: sql`COUNT(${CarFavourite.id})::int`
       })
       .from(CarListing)
-      .leftJoin(favorites, eq(CarListing.id, favorites.carListingId))
+      .leftJoin(CarFavourite, eq(CarListing.id, CarFavourite.carListingId))
       .groupBy(CarListing.id)
-      .orderBy(desc(sql`COUNT(${favorites.id})`))
+      .orderBy(desc(sql`COUNT(${CarFavourite.id})`))
       .limit(10);
 
     if (carWithCounts.length === 0) return [];
