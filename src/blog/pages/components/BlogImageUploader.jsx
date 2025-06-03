@@ -68,7 +68,6 @@ const BlogImageUploader = ({
 
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-medium">Hình ảnh bài viết</h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {existingImages.map((image) => (
           <div key={image.id} className="relative group">
