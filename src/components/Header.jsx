@@ -36,7 +36,7 @@ function Header() {
 
   return (
     <header className='flex justify-between items-center shadow-sm p-5 bg-white'>
-      <img src='/shingeki.png' alt='Logo' className='w-12 h-12 cursor-pointer hover:scale-110 transition-transform' />
+      <img src='/hustautopro.png' alt='Logo' className='h-15 cursor-pointer hover:scale-110 transition-transform' />
 
       <nav>
         <ul className='hidden md:flex gap-20 text-gray-700'>

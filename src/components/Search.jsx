@@ -72,7 +72,6 @@ import { useState, useEffect } from 'react';
           <SelectContent className="bg-white outline-none border-none shadow-none rounded-md">
             <SelectItem value="Xe Mới">Xe Mới</SelectItem>
             <SelectItem value="Xe Cũ">Xe Cũ</SelectItem>
-            <SelectItem value="Xe Đã Được Chứng Nhận">Xe Đã Được Chứng Nhận</SelectItem>
           </SelectContent>
         </Select>
         <CiTrash
