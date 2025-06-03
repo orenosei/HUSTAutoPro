@@ -19,6 +19,7 @@ import User from './user'
 import Admin from './admin'
 import { ChatProvider } from './context/ChatContext'
 import Intro from './intro'
+import ListingPage from './listings'
 
 
 const router = createBrowserRouter([
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
   {
     path: '/intro',
     element: <Intro />
+  },
+  {
+    path: '/listings',
+    element: <ListingPage />
   },
 ])
 
