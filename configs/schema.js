@@ -45,7 +45,7 @@ export const User = pgTable('user', {
     avatar: varchar('avatar', { length: 2048 }),
 });
 
-export const favorites = pgTable('favorites', {
+export const CarFavourite = pgTable('carFavourites', {
   id: serial('id').primaryKey(),
   userId: integer('userId').notNull().references(() => User.id, { onDelete: 'cascade' }),
   carListingId: integer('carListingId').notNull().references(() => CarListing.id, { onDelete: 'cascade' }),
@@ -71,14 +71,14 @@ export const BlogPost = pgTable('blogPost', {
   });
   
 
-export const BlogImages = pgTable('blog_images', {
+export const BlogImages = pgTable('blogImages', {
     id: serial('id').primaryKey(),
     imageUrl: varchar('image_url', { length: 2048 }).notNull(),
     blogPostId: integer('blog_post_id').references(() => BlogPost.id, { onDelete: 'cascade' }),
     createdAt: timestamp('created_at').defaultNow(),
   });
 
-export const BlogFavourite = pgTable('blog_favourite', {
+export const BlogFavourite = pgTable('blogFavourites', {
     id: serial('id').primaryKey(),
     userId: integer('userId')
         .notNull()
@@ -94,7 +94,7 @@ export const BlogFavourite = pgTable('blog_favourite', {
 );
 
 
-export const ReportCarListing = pgTable("report_car_listing", {
+export const ReportCarListing = pgTable("reportCarListing", {
   id: serial("id").primaryKey(),
   reporterId: integer("reporterId")
     .notNull()
@@ -108,7 +108,7 @@ export const ReportCarListing = pgTable("report_car_listing", {
   createdAt: timestamp("createdAt", { mode: "date" }).defaultNow(),
 });
 
-export const ReportBlogPost = pgTable("report_blog_post", {
+export const ReportBlogPost = pgTable("reportBlogPost", {
   id: serial("id").primaryKey(),
   reporterId: integer("reporterId")
     .notNull()
@@ -122,7 +122,7 @@ export const ReportBlogPost = pgTable("report_blog_post", {
   createdAt: timestamp("createdAt", { mode: "date" }).defaultNow(),
 });
 
-export const ReportUser = pgTable("report_user", {
+export const ReportUser = pgTable("reportUser", {
   id: serial("id").primaryKey(),
   reporterId: integer("reporterId")
     .notNull()
@@ -161,7 +161,7 @@ export const Appointment = pgTable("appointment", {
   createdAt: timestamp("createdAt", { mode: "date" }).defaultNow(),
 });	
 
-export const ViewHistory = pgTable('view_history', {
+export const ViewHistory = pgTable('viewHistory', {
   id: serial('id').primaryKey(),
   userId: integer('userId').notNull().references(() => User.id, { onDelete: 'cascade' }),
   carListingId: integer('carListingId').notNull().references(() => CarListing.id, { onDelete: 'cascade' }),
