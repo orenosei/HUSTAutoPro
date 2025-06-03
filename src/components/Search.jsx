@@ -62,7 +62,7 @@ import { useState, useEffect } from 'react';
     };
 
   return (
-    <div className="p-4 bg-white rounded-4xl shadow-lg flex flex-col md:flex-row gap-3 items-center w-full max-w-6xl mx-auto">
+    <div className="p-4 bg-white rounded-4xl shadow-lg flex flex-col md:flex-row gap-3 items-center w-full max-w-7xl mx-auto">
       {/* Condition Filter */}
       <div className="relative group w-full md:w-auto">
         <Select value={cars} onValueChange={setCars}>
@@ -106,13 +106,13 @@ import { useState, useEffect } from 'react';
       <Separator className="md:h-8 md:w-px bg-gray-200" orientation="vertical" />
 
      {/* Price Slider */}
-     <div className="relative w-full md:w-64 px-4">
+     <div className="relative w-full md:w-96 px-4">
         <div className="p-4 bg-white shadow-md rounded-lg flex flex-col gap-3">
           <div className="flex justify-between items-center">
             <span className="text-sm font-medium text-gray-600 flex items-center gap-2">
               Giá tối đa:
               <span className="text-red-500 font-semibold">
-                {price > minPrice ? `VND ${price.toLocaleString()}` : "Bất kỳ"}
+                {price > minPrice ? `${price.toLocaleString()} VND` : "Bất kỳ"}
               </span>
             </span>
             {/* {price > minPrice && (
