@@ -1,4 +1,3 @@
-import FakeData from '@/Shared/FakeData'
 import React, { useState, useEffect } from 'react';
 import CarItem from './CarItem'
 import {
