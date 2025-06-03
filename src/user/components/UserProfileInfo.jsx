@@ -82,17 +82,23 @@ const UserProfileInfo = () => {
 
       {/* Actions */}
       <div className="space-y-4">
-        <button className="w-full bg-blue-600 text-white py-2.5 rounded-lg hover:bg-blue-700 transition shadow-md flex items-center justify-center gap-2 font-medium">
+        <a
+          href={`mailto:${user.email}`}
+          className=" w-full bg-blue-600 text-white py-2.5 rounded-lg hover:bg-blue-700 transition shadow-md flex items-center justify-center gap-2 font-medium"
+        >
           <Mail className="w-4 h-4" />
-          Send Message
-        </button>
+          Gửi email
+        </a>
 
-        <div className="flex gap-2">
-          <button className="flex-1 border border-gray-300 py-2.5 rounded-lg hover:bg-gray-100 transition flex items-center justify-center gap-2 font-medium">
-            <Contact className="w-4 h-4" />
-            Contacts
-          </button>
-        </div>
+        {user.phoneNumber && (
+          <a
+            href={`tel:${user.phoneNumber}`}
+            className=" w-full bg-green-600 hover:bg-green-700 text-white text-center font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2"
+          >
+            <Phone className="w-4 h-4" />
+            Gọi điện thoại
+          </a>
+        )}
         <div className="flex gap-2 justify-end">
           <Report entityType="user" entity={user} />
         </div>
