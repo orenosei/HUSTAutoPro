@@ -78,27 +78,23 @@ function MyListing({currentUserId, showEditButton}) {
           {carList.map((item, index) => (
             <div key={index} className="relative group min-w-[280px] max-w-xs flex-shrink-0">
               <CarItem car={item} />
-
-              {showEditButton && (
-                <div className='absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity'>
-                  <Link to={`/add-listing?mode=edit&id=${item?.id}`}>
-                    <Button className='bg-green-500 hover:bg-green-600 text-white p-2'>
-                      Chỉnh Sửa
-                    </Button>
-                  </Link>
-                  <Button
-                    className='bg-red-500 hover:bg-red-600 text-white p-2'
-                    onClick={() => handleDeleteCar(item?.id)}
-                    disabled={deletingId === item?.id}
-                  >
-                    {deletingId === item?.id ? (
-                      <BiLoaderAlt className="animate-spin" />
-                    ) : (
-                      <FaTrashAlt />
-                    )}
-                  </Button>
+              <div className='absolute top-2 right-2 flex gap-2'>
+                <Link to={`/add-listing?mode=edit&id=${item?.id}`}>
+                  <div className='bg-green-500 hover:bg-green-600 text-white p-2 rounded-lg transition-colors cursor-pointer'>
+                    Chỉnh Sửa
+                  </div>
+                </Link>
+                <div
+                  className='bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg transition-colors cursor-pointer'
+                  onClick={() => handleDeleteCar(item?.id)}
+                >
+                  {deletingId === item?.id ? (
+                    <BiLoaderAlt className="animate-spin" />
+                  ) : (
+                    <FaTrashAlt />
+                  )}
                 </div>
-              )}
+              </div>
             </div>
           ))}
         </div>
