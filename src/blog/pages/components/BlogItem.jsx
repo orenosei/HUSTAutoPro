@@ -5,6 +5,7 @@ import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { useUser } from '@clerk/clerk-react';
 import Service from '@/Shared/Service';
 import Report from '@/components/Report';
+import { Link } from 'react-router-dom';
 
 function BlogItem({ blog }) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -67,7 +68,7 @@ function BlogItem({ blog }) {
   return (
     <div className="col-span-1 h-full">
       {blog ? (
-        <div className="rounded-2xl bg-white border-2 border-gray-100 hover:shadow-xl cursor-pointer h-full flex flex-col">
+        <div className="rounded-2xl bg-white border-2 border-gray-100 h-full flex flex-col">
           {/* Image Gallery Section */}
           <div className="aspect-video overflow-hidden rounded-t-xl relative group">
             {images.length > 0 ? (
@@ -131,11 +132,13 @@ function BlogItem({ blog }) {
             <Separator className="bg-gray-200 mb-4" />
 
             <div className="flex flex-wrap gap-4 text-gray-500 mb-4 justify-center">
-              <div className="flex items-center gap-1">
-                <FiUser className="text-lg" />
-                <span>{blog?.author?.firstName +' ' + blog?.author?.lastName || 'Ẩn danh'}</span>
-              </div>
-              
+              <Link to={`/user/${blog?.author?.id}`}>
+                <div className="flex items-center gap-1 hover:text-red-500 transition-colors">
+                  <FiUser className="text-lg" />
+                  <span>{blog?.author?.firstName +' ' + blog?.author?.lastName || 'Ẩn danh'}</span>
+                </div>
+              </Link>
+
               <div className="flex items-center gap-1">
                 <FiCalendar className="text-lg" />
                 <span>{new Date(blog?.createdAt).toLocaleDateString()}</span>
