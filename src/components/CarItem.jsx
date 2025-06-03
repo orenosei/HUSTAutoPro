@@ -101,7 +101,7 @@ function CarItem({ car }) {
               <div className="grid grid-cols-3 mt-5">
                 <div className="flex flex-col items-center">
                   <TbBrandSpeedtest className="text-lg mb-2" />
-                  <h2 className="text-sm">{car?.mileage ? formatMileage(car.mileage) : 'N/A'}</h2>
+                  <h2 className="text-sm">{car?.mileage ? formatMileage(car.mileage) : 'Xe mới'}</h2>
                 </div>
                 <div className="flex flex-col items-center">
                   <LuFuel className="text-lg mb-2" />
