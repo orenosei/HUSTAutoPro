@@ -29,6 +29,56 @@ export default function ProfileInfo() {
     wards: false
   });
 
+    useEffect(() => {
+    const fetchUserData = async () => {
+      if (!user) return;
+      
+      try {
+        const foundUser = await Service.GetUserByClerkId(user.id);
+        if (foundUser) {
+          console.log("User data từ DB:", foundUser);
+          console.log("Address data từ DB:", foundUser.address);
+
+          let addressData = {};
+          if (typeof foundUser.address === 'string') {
+            addressData = { detail: foundUser.address };
+          } else if (foundUser.address) {
+            addressData = foundUser.address;
+          }
+          
+          // Đảm bảo province, district, ward là đúng định dạng
+          const provinceData = addressData.province && typeof addressData.province === 'object' && addressData.province.code 
+            ? addressData.province 
+            : null;
+            
+          const districtData = addressData.district && typeof addressData.district === 'object' && addressData.district.code 
+            ? addressData.district 
+            : null;
+            
+          const wardData = addressData.ward && typeof addressData.ward === 'object' && addressData.ward.code 
+            ? addressData.ward 
+            : null;
+          
+          setForm({
+            firstName: foundUser.firstName || "",
+            lastName: foundUser.lastName || "",
+            phoneNumber: foundUser.phoneNumber || "",
+            address: {
+              detail: addressData.detail || "",
+              province: provinceData,
+              district: districtData,
+              ward: wardData
+            }
+          });
+        }
+      } catch (error) {
+        console.error("Error loading user data:", error);
+        toast.error("Không thể tải thông tin người dùng");
+      }
+    };
+
+    fetchUserData();
+  }, [user]);
   // Fetch provinces
   useEffect(() => {
     const fetchProvinces = async () => {
@@ -57,16 +107,18 @@ export default function ProfileInfo() {
           const data = await response.json();
           setDistricts(data.districts);
           
-          // Reset district and ward
-          setForm(prev => ({
-            ...prev,
-            address: {
-              ...prev.address,
-              district: null,
-              ward: null
-            }
-          }));
-          setWards([]);
+          // Chỉ reset district và ward nếu không có dữ liệu sẵn
+          if (!form.address.district) {
+            setForm(prev => ({
+              ...prev,
+              address: {
+                ...prev.address,
+                district: null,
+                ward: null
+              }
+            }));
+            setWards([]);
+          }
         } catch (error) {
           console.error("Error fetching districts:", error);
           toast.error("Không thể tải danh sách quận/huyện");
@@ -82,7 +134,6 @@ export default function ProfileInfo() {
     fetchDistricts();
   }, [form.address.province]);
 
-  // Fetch wards when district changes
   useEffect(() => {
     const fetchWards = async () => {
       if (form.address.district?.code) {
@@ -92,14 +143,16 @@ export default function ProfileInfo() {
           const data = await response.json();
           setWards(data.wards);
           
-          // Reset ward
-          setForm(prev => ({
-            ...prev,
-            address: {
-              ...prev.address,
-              ward: null
-            }
-          }));
+          // Chỉ reset ward nếu không có dữ liệu sẵn
+          if (!form.address.ward) {
+            setForm(prev => ({
+              ...prev,
+              address: {
+                ...prev.address,
+                ward: null
+              }
+            }));
+          }
         } catch (error) {
           console.error("Error fetching wards:", error);
           toast.error("Không thể tải danh sách phường/xã");
@@ -114,42 +167,7 @@ export default function ProfileInfo() {
     fetchWards();
   }, [form.address.district]);
 
-  // Load user data
-  useEffect(() => {
-    const fetchUserData = async () => {
-      if (!user) return;
-      
-      try {
-        const foundUser = await Service.GetUserByClerkId(user.id);
-        if (foundUser) {
-          // Handle address conversion
-          let addressData = {};
-          if (typeof foundUser.address === 'string') {
-            addressData = { detail: foundUser.address };
-          } else if (foundUser.address) {
-            addressData = foundUser.address;
-          }
-          
-          setForm({
-            firstName: foundUser.firstName || "",
-            lastName: foundUser.lastName || "",
-            phoneNumber: foundUser.phoneNumber || "",
-            address: {
-              detail: addressData.detail || "",
-              province: addressData.province || null,
-              district: addressData.district || null,
-              ward: addressData.ward || null
-            }
-          });
-        }
-      } catch (error) {
-        console.error("Error loading user data:", error);
-        toast.error("Không thể tải thông tin người dùng");
-      }
-    };
 
-    fetchUserData();
-  }, [user]);
 
   const handleChange = (e) => {
     setForm({ 
