@@ -20,13 +20,8 @@ const CommentSection = ({ carListingId }) => {
         console.log('Submitting comment...', { dbUser, newComment, rating });
       
         try {
-          // Thêm comment mới
-          const insertResult = await db.insert(Comment).values({
-            userId: dbUser.id,
-            carListingId,
-            commentText: newComment,
-            rating,
-          }).returning(); 
+          // Thêm comment mới và gửi thông báo
+          const insertResult = await Service.AddCarComment(dbUser.id, carListingId, newComment, rating);
           
           // Fetch lại comments
           const updatedComments = await db.select({
