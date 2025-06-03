@@ -2,10 +2,9 @@ import { useEffect } from 'react';
 import { useUser } from '@clerk/clerk-react';
 import { db } from './../../configs';
 import { User, BlogPost, BlogImages, BlogFavourite,
-  ReportCarListing, ReportBlogPost, ReportUser, Appointment  
-
+  ReportCarListing, ReportBlogPost, ReportUser, Appointment, Notifications  
 } from './../../configs/schema'; 
-import { eq } from 'drizzle-orm';
+import { eq, desc } from 'drizzle-orm';
 import { and } from 'drizzle-orm';
 import { sql } from 'drizzle-orm';
 import { favorites, CarListing, CarImages } from './../../configs/schema';
@@ -173,6 +172,7 @@ const AddToFavorite = async (clerkUserId, carListingId) => {
     }
 
     const userId = existingUser[0].id;
+    const userName = `${existingUser[0].firstName || ''} ${existingUser[0].lastName || ''}`.trim() || existingUser[0].email;
 
     // 2. Kiểm tra đã có trong bảng favorites chưa
     const existed = await db
@@ -192,6 +192,18 @@ const AddToFavorite = async (clerkUserId, carListingId) => {
       userId,
       carListingId,
     }).execute();
+
+    // 4. Tạo thông báo cho chủ xe
+    // Lấy thông tin xe và chủ xe
+    const car = await db.select().from(CarListing).where(eq(CarListing.id, carListingId)).execute();
+    if (car && car[0] && car[0].createdBy !== userId) {
+      await db.insert(Notifications).values({
+        userId: car[0].createdBy,
+        content: `${userName} đã thích xe của bạn.`,
+        type: 'favorite',
+        isRead: false
+      }).execute();
+    }
 
     return { success: true, message: "Đã thêm vào xe yêu thích!" };
   } catch (error) {
@@ -349,6 +361,7 @@ export const AddBlogToFavorite = async (clerkUserId, blogPostId) => {
     }
 
     const userId = existingUser[0].id;
+    const userName = `${existingUser[0].firstName || ''} ${existingUser[0].lastName || ''}`.trim() || existingUser[0].email;
 
     // 2. Kiểm tra đã có trong bảng BlogFavourite chưa
     const existed = await db
@@ -368,6 +381,17 @@ export const AddBlogToFavorite = async (clerkUserId, blogPostId) => {
       userId,
       blogPostId,
     }).execute();
+
+    // 4. Tạo thông báo cho chủ blog
+    const blog = await db.select().from(BlogPost).where(eq(BlogPost.id, blogPostId)).execute();
+    if (blog && blog[0] && blog[0].userId !== userId) {
+      await db.insert(Notifications).values({
+        userId: blog[0].userId,
+        content: `${userName} đã thích blog của bạn.`,
+        type: 'favorite_blog',
+        isRead: false
+      }).execute();
+    }
 
     return { success: true, message: "Đã thêm bài viết vào yêu thích!" };
   } catch (error) {
@@ -525,6 +549,18 @@ export const createUserReport = async (data) => {
 export const CreateAppointment = async (data) => {
   try {
     const result = await db.insert(Appointment).values(data).returning();
+    // Lấy thông tin người đặt và chủ xe
+    const user = await db.select().from(User).where(eq(User.id, data.userId)).execute();
+    const car = await db.select().from(CarListing).where(eq(CarListing.id, data.carListingId)).execute();
+    if (user && user[0] && car && car[0] && car[0].createdBy !== data.userId) {
+      const userName = `${user[0].firstName || ''} ${user[0].lastName || ''}`.trim() || user[0].email;
+      await db.insert(Notifications).values({
+        userId: car[0].createdBy,
+        content: `${userName} đã đặt lịch hẹn xem xe của bạn.`,
+        type: 'appointment',
+        isRead: false
+      }).execute();
+    }
     return { success: true, data: result[0] };
   } catch (error) {
     console.error("Lỗi tạo cuộc hẹn:", error);
@@ -578,10 +614,90 @@ export const UpdateAppointmentStatus = async (appointmentId, status, reason = nu
       .set({ status, reason })
       .where(eq(Appointment.id, appointmentId))
       .execute();
+    // Lấy thông tin lịch hẹn, người đặt, chủ xe
+    const appointment = await db.select().from(Appointment).where(eq(Appointment.id, appointmentId)).execute();
+    if (appointment && appointment[0]) {
+      const car = await db.select().from(CarListing).where(eq(CarListing.id, appointment[0].carListingId)).execute();
+      const user = await db.select().from(User).where(eq(User.id, appointment[0].userId)).execute();
+      if (car && car[0] && user && user[0]) {
+        let content = '';
+        if (status === 'accepted') {
+          content = `Lịch hẹn xem xe của bạn đã được chấp nhận.`;
+        } else if (status === 'rejected') {
+          content = `Lịch hẹn xem xe của bạn đã bị từ chối.`;
+        } else {
+          content = `Lịch hẹn xem xe của bạn đã được cập nhật trạng thái: ${status}.`;
+        }
+        await db.insert(Notifications).values({
+          userId: user[0].id,
+          content,
+          type: 'appointment_status',
+          isRead: false
+        }).execute();
+      }
+    }
     return { success: true };
   } catch (error) {
     console.error("Error updating appointment status:", error);
     return { success: false, message: error.message };
+  }
+};
+
+export const GetUserNotifications = async (userId) => {
+  try {
+    const result = await db
+      .select()
+      .from(Notifications)
+      .where(eq(Notifications.userId, userId))
+      .orderBy(desc(Notifications.createAt))
+      .execute();
+    return result;
+  } catch (error) {
+    console.error('Lỗi lấy thông báo:', error);
+    return [];
+  }
+};
+
+export const MarkAllNotificationsAsRead = async (userId) => {
+  try {
+    console.log("MarkAllNotificationsAsRead called for userId:", userId);
+    await db.update(Notifications)
+      .set({ isRead: true })
+      .where(eq(Notifications.userId, userId))
+      .execute();
+    return { success: true };
+  } catch (error) {
+    console.error('Lỗi đánh dấu đã đọc:', error);
+    return { success: false };
+  }
+};
+
+export const AddCarComment = async (userId, carListingId, commentText, rating) => {
+  try {
+    // 1. Thêm bình luận vào bảng Comment
+    const result = await db.insert(Comment).values({
+      userId,
+      carListingId,
+      commentText,
+      rating
+    }).returning();
+
+    // 2. Lấy thông tin người đánh giá và chủ xe
+    const user = await db.select().from(User).where(eq(User.id, userId)).execute();
+    const car = await db.select().from(CarListing).where(eq(CarListing.id, carListingId)).execute();
+    if (user && user[0] && car && car[0] && car[0].createdBy !== userId) {
+      const userName = `${user[0].firstName || ''} ${user[0].lastName || ''}`.trim() || user[0].email;
+      await db.insert(Notifications).values({
+        userId: car[0].createdBy,
+        content: `${userName} đã đánh giá xe của bạn: \"${commentText}\"`,
+        type: 'comment',
+        isRead: false
+      }).execute();
+    }
+    return { success: true, data: result[0] };
+  } catch (error) {
+    console.error('Lỗi khi thêm bình luận:', error);
+    return { success: false, message: 'Lỗi khi thêm bình luận' };
   }
 };
 
@@ -609,6 +725,8 @@ export default{
     createUserReport,
     CreateAppointment,
     GetUserAppointments,
-    UpdateAppointmentStatus
-
+    UpdateAppointmentStatus,
+    GetUserNotifications,
+    MarkAllNotificationsAsRead,
+    AddCarComment
 }
