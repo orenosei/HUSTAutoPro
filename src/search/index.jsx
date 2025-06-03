@@ -10,6 +10,7 @@ import CarItem from '@/components/CarItem';
 import Service from '@/Shared/Service';
 import Footer from '@/components/Footer';
 import ChatWidget from '@/components/ChatWidget';
+import MostSearchedCar from '@/components/MostSearchedCar';
 
 
 function SearchByOptions() {
@@ -75,24 +76,35 @@ function SearchByOptions() {
       </div>
       <div className='p-10 md:px-20'>
           <h2 className='font-bold text-4xl '>Kết Quả Tìm Kiếm </h2>
-          <div className='text-sm text-gray-500 mt-2'>
-            {carList.length} xe được tìm thấy
-          </div>
+          {(condition || make || price) && (
+            <div className='text-sm text-gray-500 mt-2'>
+              {carList.length} xe được tìm thấy
+            </div>
+          )}
           
           {/* List of CarList */}
-          <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-7'>
+          {condition || make || price ? (
+            <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-7'>
               {carList?.length > 0 ? (
-                  carList.map((item) => (
-                    <div key={item.id}> {/* Sử dụng ID thay vì index */}
-                      <CarItem car={item} />
-                    </div>
-                  ))
+                carList.map((item) => (
+                  <div key={item.id}>
+                    <CarItem car={item} />
+                  </div>
+                ))
               ) : (
-                  [1, 2, 3, 4, 5, 6].map((item, index) => (
-                      <div key={index} className='h-[320px] rounded-xl bg-slate-200 animate-pulse'></div>
-                  ))
+                <div className="col-span-full text-center text-lg text-gray-500 py-12">
+                  Không tìm thấy xe nào phù hợp
+                </div>
               )}
-          </div>
+            </div>
+          ) : (
+            <div className="col-span-full text-center text-lg text-gray-500 py-12">
+              Không tìm thấy xe nào phù hợp
+            </div>
+          )}
+      </div>
+      <div className='my-8'>
+          <MostSearchedCar />
       </div>
 
       <ChatWidget />        
