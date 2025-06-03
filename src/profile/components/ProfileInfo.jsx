@@ -1,10 +1,9 @@
-"use client"
-
 import { useState, useEffect } from "react"
 import { useUser } from '@clerk/clerk-react';
 import Service from '@/Shared/Service';
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { toast } from 'sonner';
 
 export default function ProfileInfo() {
   const { user } = useUser()
@@ -40,7 +39,7 @@ export default function ProfileInfo() {
     const foundUser = await Service.GetUserByClerkId(user.id)
     if (foundUser) {
       await Service.UpdateUserProfile(foundUser.id, form)
-      alert("Đã lưu thông tin!")
+      toast.success("Cập nhật thông tin thành công!")
     }
   }
 
