@@ -1,5 +1,5 @@
 import IconField from '@/add-listing/components/IconField';
-import CarSpecification from '@/Shared/CarSpecification';
+import Data from '@/Shared/Data';
 import React from 'react';
 
 function Specification({ carDetail }) {
@@ -8,7 +8,7 @@ function Specification({ carDetail }) {
       {carDetail ? (
         <div className="p-10 rounded-xl bg-white shadow-md mt-6 border border-gray-200">
           <h2 className="text-2xl font-semibold">Thông Số</h2>
-          {CarSpecification.map((item, index) => (
+          {Data.CarSpecification.map((item, index) => (
             <div className="mt-5 flex items-center justify-between" key={index}>
               <h2 className="flex gap-2">
                 <IconField icon={item.icon} />

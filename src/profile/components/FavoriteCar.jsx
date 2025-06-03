@@ -9,7 +9,7 @@ import { BiLoaderAlt } from 'react-icons/bi';
 import { toast } from 'sonner';
 import { db } from './../../../configs'
 import { eq } from 'drizzle-orm';
-import { favorites } from './../../../configs/schema';
+import { CarFavourite } from './../../../configs/schema';
 
 
 function FavoriteCar() {
@@ -49,7 +49,7 @@ function FavoriteCar() {
     try {
       setDeletingId(carId);
 
-      await db.delete(favorites).where(eq(favorites.carListingId, carId));
+      await db.delete(CarFavourite).where(eq(CarFavourite.carListingId, carId));
 
       setFavoriteCars((prev) => prev.filter((car) => car.id !== carId));
 
@@ -73,7 +73,7 @@ function FavoriteCar() {
         return;
       }
 
-      await db.delete(favorites).where(eq(favorites.userId, foundUser.id));
+      await db.delete(CarFavourite).where(eq(CarFavourite.userId, foundUser.id));
       setFavoriteCars([]);
       toast.success('Đã xóa tất cả xe khỏi danh sách yêu thích');
     } catch (error) {
