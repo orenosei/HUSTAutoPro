@@ -16,8 +16,8 @@ function FavoriteCar() {
   const { user } = useUser();
   const [favoriteCars, setFavoriteCars] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [deletingId, setDeletingId] = useState(null); 
-
+  const [deletingId, setDeletingId] = useState(null);
+  const [deletingAll, setDeletingAll] = useState(false);
 
   useEffect(() => {
     const fetchFavorites = async () => {
@@ -43,7 +43,7 @@ function FavoriteCar() {
     fetchFavorites();
   }, [user]);
 
-    const handleRemoveFavorite = async (carId) => {
+  const handleRemoveFavorite = async (carId) => {
     if (!window.confirm('Bạn có chắc chắn muốn xóa xe này khỏi danh sách yêu thích?')) return;
 
     try {
@@ -62,10 +62,41 @@ function FavoriteCar() {
     }
   };
 
+  const handleRemoveAllFavorites = async () => {
+    if (!window.confirm('Bạn có chắc chắn muốn xóa tất cả xe khỏi danh sách yêu thích?')) return;
+
+    try {
+      setDeletingAll(true);
+      const foundUser = await Service.GetUserByClerkId(user.id);
+      if (!foundUser) {
+        toast.error("Không tìm thấy thông tin người dùng.");
+        return;
+      }
+
+      await db.delete(favorites).where(eq(favorites.userId, foundUser.id));
+      setFavoriteCars([]);
+      toast.success('Đã xóa tất cả xe khỏi danh sách yêu thích');
+    } catch (error) {
+      console.error("Lỗi khi xóa tất cả xe khỏi danh sách yêu thích:", error);
+      toast.error('Xóa tất cả xe khỏi danh sách yêu thích thất bại');
+    } finally {
+      setDeletingAll(false);
+    }
+  };
+
   return (
     <div className="mt-6">
-      <div className="flex justify-between items-center"> 
+      <div className="flex justify-between items-center mb-4">
         <h2 className="font-bold text-4xl">Xe Yêu Thích Của Tôi</h2>
+        {favoriteCars.length > 0 && (
+          <Button
+            className="text-white bg-red-400 flex-shrink-0 hover:bg-red-600"
+            onClick={handleRemoveAllFavorites}
+            disabled={deletingAll}
+          >
+            {deletingAll ? <BiLoaderAlt className="animate-spin" /> : <><FaTrashAlt className="mr-2" /> Xóa tất cả</>}
+          </Button>
+        )}
       </div>
       {loading ? (
         <p>Đang tải...</p>
@@ -76,18 +107,15 @@ function FavoriteCar() {
           {favoriteCars.map((car, index) => (
             <div key={car.id || index} className="p-3 flex flex-col">
               <CarItem car={car} />
-              <div className="p-3 bg-gray-100 rounded-lg flex justify-center mt-2 gap-5">
-                <Button
-                  className="text-white bg-red-400 flex-shrink-0 hover:bg-red-600"
-                  onClick={() => handleRemoveFavorite(car.id)}
-                  disabled={deletingId === car.id}
-                >
-                  {deletingId === car.id ? (
-                    <BiLoaderAlt className="animate-spin" />
-                  ) : (
-                    <FaTrashAlt />
-                  )}
-                </Button>
+              <div 
+                className="p-3 bg-red-100 rounded-lg flex justify-center items-center mt-2 gap-5 hover:bg-red-200 transition-colors cursor-pointer"
+                onClick={() => handleRemoveFavorite(car.id)}
+              >
+                {deletingId === car.id ? (
+                  <BiLoaderAlt className="animate-spin text-red-500 text-xl" />
+                ) : (
+                  <FaTrashAlt className="text-red-500 text-xl" />
+                )}
               </div>
             </div>
           ))}

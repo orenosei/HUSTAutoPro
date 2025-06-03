@@ -212,18 +212,15 @@ function ViewHistory() {
           {history.map((car) => (
             <div key={car.id} className="p-3 flex flex-col">
               <CarItem car={car} />
-              <div className="p-3 bg-gray-100 rounded-lg flex justify-center mt-2 gap-5">
-                <Button
-                  className="text-white bg-red-400 flex-shrink-0 hover:bg-red-600"
-                  onClick={() => handleRemoveHistory(car.id)}
-                  disabled={deletingId === car.id}
-                >
-                  {deletingId === car.id ? (
-                    <BiLoaderAlt className="animate-spin" />
-                  ) : (
-                    <FaTrashAlt />
-                  )}
-                </Button>
+              <div 
+                className="p-3 bg-red-100 rounded-lg flex justify-center items-center mt-2 gap-5 hover:bg-red-200 transition-colors cursor-pointer"
+                onClick={() => handleRemoveHistory(car.id)}
+              >
+                {deletingId === car.id ? (
+                  <BiLoaderAlt className="animate-spin text-red-500 text-xl" />
+                ) : (
+                  <FaTrashAlt className="text-red-500 text-xl" />
+                )}
               </div>
             </div>
           ))}
