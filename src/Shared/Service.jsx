@@ -236,7 +236,7 @@ export const CheckCarLikeStatus = async (clerkUserId, carId) => {
   }
 };
 
-// Xóa khỏi danh sách yêu thích
+
 export const RemoveFromFavorite = async (clerkUserId, carId) => {
   try {
     const existingUser = await db.select()
@@ -259,6 +259,41 @@ export const RemoveFromFavorite = async (clerkUserId, carId) => {
   } catch (error) {
     console.error("Lỗi khi bỏ yêu thích:", error);
     return { success: false, message: "Lỗi khi xóa khỏi yêu thích" };
+  }
+};
+
+export const GetPopularCars = async () => {
+  try {
+    const carWithCounts = await db
+      .select({
+        carListingId: CarListing.id,
+        favouritesCount: sql`COUNT(${favorites.id})::int`
+      })
+      .from(CarListing)
+      .leftJoin(favorites, eq(CarListing.id, favorites.carListingId))
+      .groupBy(CarListing.id)
+      .orderBy(desc(sql`COUNT(${favorites.id})`))
+      .limit(10);
+
+    if (carWithCounts.length === 0) return [];
+
+    const popularCarIds = carWithCounts.map(car => car.carListingId);
+    const result = await db
+      .select({
+        carListing: CarListing,
+        carImages: CarImages,
+        user: User
+      })
+      .from(CarListing)
+      .leftJoin(CarImages, eq(CarListing.id, CarImages.carListingId))
+      .leftJoin(User, eq(CarListing.createdBy, User.id))
+      .where(inArray(CarListing.id, popularCarIds))
+      .execute();
+
+    return FormatResult(result);
+  } catch (error) {
+    console.error("Lỗi khi lấy xe phổ biến:", error);
+    return [];
   }
 };
 
@@ -757,6 +792,7 @@ export default{
     AddToFavorite,
     CheckCarLikeStatus,
     RemoveFromFavorite,
+    GetPopularCars,
     getCommentsWithUsers,
     GetUserByClerkId,
     UpdateUserProfile,
