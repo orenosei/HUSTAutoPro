@@ -2,10 +2,27 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FaUser, FaEnvelope, FaPhone, FaMapMarker } from 'react-icons/fa'
 
+// Hàm định dạng địa chỉ từ JSON
+const formatAddress = (address) => {
+  if (!address) return '';
+  
+  // Nếu là string thì trả về luôn
+  if (typeof address === 'string') return address;
+  
+  // Nếu là JSON object thì ghép các thành phần
+  const parts = [];
+  if (address.detail) parts.push(address.detail);
+  if (address.ward?.name) parts.push(address.ward.name);
+  if (address.district?.name) parts.push(address.district.name);
+  if (address.province?.name) parts.push(address.province.name);
+  
+  return parts.join(', ');
+};
+
 function OwnerDetail({ carDetail }) {
   const navigate = useNavigate()
   const owner = carDetail?.user
-  const address = owner?.address || ''
+  const formattedAddress = formatAddress(owner?.address)
 
   if (!owner) {
     return (
@@ -28,7 +45,6 @@ function OwnerDetail({ carDetail }) {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100 mt-5">
-      {/* Clickable Header */}
       <div 
         className="flex items-center gap-3 mb-6 cursor-pointer hover:text-blue-600 transition-colors"
         onClick={handleNavigateToUser}
@@ -70,10 +86,10 @@ function OwnerDetail({ carDetail }) {
           ))}
         </div>
 
-        {address && (
+        {formattedAddress && (
           <div className="flex items-start gap-3 pt-2">
             <FaMapMarker className="h-5 w-5 text-gray-400 flex-shrink-0 mt-1" />
-            <p className="text-gray-600 leading-relaxed">{address}</p>
+            <p className="text-gray-600 leading-relaxed">{formattedAddress}</p>
           </div>
         )}
       </div>

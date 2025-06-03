@@ -305,14 +305,14 @@ const getCommentsWithUsers = async (carListingId) => {
 };
 
 
-export const UpdateUserProfile = async (userId, { firstName, lastName, phoneNumber, address }) => {
+export const UpdateUserProfile = async (userId, data) => {
   try {
     await db.update(User)
       .set({
-        firstName,
-        lastName,
-        phoneNumber,
-        address
+        firstName: data.firstName,
+        lastName: data.lastName,
+        phoneNumber: data.phoneNumber,
+        address: data.address
       })
       .where(eq(User.id, userId))
       .execute()
@@ -343,15 +343,15 @@ const FormatBlogResult = (resp) => {
 
     const currentBlog = resultMap.get(blogId);
 
-    if (item.blog_images) {
-      const imageUrl = item.blog_images.imageUrl;
+    if (item.blogImages) {
+      const imageUrl = item.blogImages.imageUrl;
       if (!currentBlog.images.includes(imageUrl)) {
         currentBlog.images.push(imageUrl);
       }
     }
 
-    if (item.blog_favourite) {
-      const favId = item.blog_favourite.id;
+    if (item.blogFavourites) {
+      const favId = item.blogFavourites.id;
       if (!currentBlog.favourites.has(favId)) {
         currentBlog.favourites.add(favId);
         currentBlog.likeCount += 1;

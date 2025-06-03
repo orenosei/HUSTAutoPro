@@ -1,4 +1,4 @@
-import { integer, json, pgTable, serial, varchar, numeric, text, timestamp, uniqueIndex, boolean } from "drizzle-orm/pg-core";
+import { integer, json, pgTable, serial, varchar, numeric, text, timestamp, uniqueIndex, boolean, jsonb } from "drizzle-orm/pg-core";
 
 export const CarListing = pgTable('carListing', {
     id: serial('id').primaryKey(),
@@ -41,7 +41,7 @@ export const User = pgTable('user', {
     lastName: varchar('lastName'),
     email: varchar('email').notNull().unique(),
     phoneNumber: varchar('phoneNumber'),
-    address: varchar('address'),
+    address: jsonb('address').default({}),
     avatar: varchar('avatar', { length: 2048 }),
 });
 
