@@ -133,7 +133,7 @@ function BlogItem({ blog }) {
             <div className="flex flex-wrap gap-4 text-gray-500 mb-4 justify-center">
               <div className="flex items-center gap-1">
                 <FiUser className="text-lg" />
-                <span>{blog?.author?.firstName + blog?.author?.lastName || 'Ẩn danh'}</span>
+                <span>{blog?.author?.firstName +' ' + blog?.author?.lastName || 'Ẩn danh'}</span>
               </div>
               
               <div className="flex items-center gap-1">

@@ -21,6 +21,7 @@ function Blog() {
     const fetchBlogs = async () => {
       try {
         const response = await Service.GetBlogPosts()
+        console.log('Blog posts response:', response)
         
         if (response.success) {
           setBlogs(response.data)
