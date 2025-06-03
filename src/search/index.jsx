@@ -83,14 +83,14 @@ function SearchByOptions() {
           <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-7'>
               {carList?.length > 0 ? (
                   carList.map((item) => (
-                    <div key={item.id}> {/* Sử dụng ID thay vì index */}
+                    <div key={item.id}>
                       <CarItem car={item} />
                     </div>
                   ))
               ) : (
-                  [1, 2, 3, 4, 5, 6].map((item, index) => (
-                      <div key={index} className='h-[320px] rounded-xl bg-slate-200 animate-pulse'></div>
-                  ))
+                  <div className="col-span-full text-center text-lg text-gray-500 py-12">
+                    Không tìm thấy xe nào phù hợp
+                  </div>
               )}
           </div>
       </div>
