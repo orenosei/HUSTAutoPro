@@ -6,6 +6,7 @@ import CarItem from "@/components/CarItem";
 import Service from "@/Shared/Service";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ChatWidget from "@/components/ChatWidget";
 
 export default function ListingPage() {
   const [carList, setCarList] = useState([]);
@@ -59,6 +60,7 @@ export default function ListingPage() {
           )}
         </div>
       </div>
+      <ChatWidget />
       <Footer />
     </div>
   );
