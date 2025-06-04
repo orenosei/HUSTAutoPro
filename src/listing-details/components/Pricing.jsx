@@ -24,23 +24,24 @@ function Pricing({carDetail}) {
       
       <p className='mt-4 text-gray-600 text-sm italic'>* Giá có thể thay đổi tùy theo tình trạng xe.</p>
 
-      <div className='mt-6 flex items-center'>
-        <FaStar className='text-yellow-500 mr-2' />
-        <h2 className='text-md font-semibold text-gray-800'>Ưu đãi:</h2>
+      <div  className='mt-2 bg-white shadow-md border border-gray-200 rounded-lg p-4'>
+        <div className='flex items-center'>
+          <FaStar className='text-yellow-500 mr-2' />
+          <h2 className='text-md font-semibold text-gray-800'>Ưu đãi:</h2>
+        </div>
+        <div>
+          {Array.isArray(carDetail?.offerType) && carDetail.offerType.length > 0 ? (
+            <ul className="list-disc list-inside text-gray-600 text-sm ml-4">
+              {carDetail.offerType.map((offer, idx) => (
+                <li key={idx}>{offer}</li>
+              ))}
+            </ul>
+          ) : (
+            <span className='text-gray-600 text-sm ml-2'>Không có ưu đãi</span>
+          )}
+        </div>
       </div>
-      <div>
-         {Array.isArray(carDetail?.offerType) && carDetail.offerType.length > 0 ? (
-          <ul className="list-disc list-inside text-gray-600 text-sm ml-4">
-            {carDetail.offerType.map((offer, idx) => (
-              <li key={idx}>{offer}</li>
-            ))}
-          </ul>
-        ) : (
-          <span className='text-gray-600 text-sm ml-2'>Không có ưu đãi</span>
-        )}
-      </div>
-      
-      <div className='mt-6'>
+      <div className=''>
         <MoreInfo carDetail={carDetail} />
       </div>
     </div>
