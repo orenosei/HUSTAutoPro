@@ -20,7 +20,7 @@ export const CarListing = pgTable('carListing', {
     color: varchar('color', { length: 30 }).notNull(),
     door: integer('door').notNull(),
     vin: varchar('vin', { length: 50 }),
-    offerType: varchar('offerType', { length: 20 }),
+    offerType: varchar('offerType', { length: 50 }),
     listingDescription: text('listingDescription').notNull(),
     features: json('features'),
     createdBy: integer('createdBy').notNull().references(() => User.id, { onDelete: 'cascade' }),
