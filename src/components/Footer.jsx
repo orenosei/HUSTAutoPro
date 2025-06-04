@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   FaFacebookF,
   FaTiktok,
@@ -10,6 +11,13 @@ import {
 } from 'react-icons/fa';
 
 function Footer() {
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
   return (
     <footer className="bg-gray-100 text-gray-800">
       <div className="max-w-6xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -42,21 +50,21 @@ function Footer() {
         <div className="space-y-3">
           <h3 className="font-bold text-xl">HƯỚNG DẪN</h3>
           <ul className="space-y-2">
-            <li><a href="#" className="hover:underline">Trang chủ</a></li>
-            <li><a href="#" className="hover:underline">Tìm kiếm</a></li>
-            <li><a href="#" className="hover:underline">Blog</a></li>
-            <li><a href="#" className="hover:underline">Liên hệ</a></li>
+            <li><Link to="/" onClick={scrollToTop} className="hover:underline">Trang chủ</Link></li>
+            <li><Link to="/search" onClick={scrollToTop} className="hover:underline">Tìm kiếm</Link></li>
+            <li><Link to="/listings" onClick={scrollToTop} className="hover:underline">Danh sách xe</Link></li>
+            <li><Link to="/blog" onClick={scrollToTop} className="hover:underline">Blog</Link></li>
+            <li><Link to="/intro" onClick={scrollToTop} className="hover:underline">Giới thiệu</Link></li>
           </ul>
         </div>
 
         <div className="space-y-3">
           <h3 className="font-bold text-xl">ĐIỀU KHOẢN</h3>
           <ul className="space-y-2">
-            <li><a href="#" className="hover:underline">Hướng Dẫn Thanh Toán</a></li>
-            <li><a href="#" className="hover:underline">Giới Thiệu</a></li>
-            <li><a href="#" className="hover:underline">Câu Hỏi Thường Gặp</a></li>
-            <li><a href="#" className="hover:underline">Điều Khoản Dịch Vụ</a></li>
-            <li><a href="#" className="hover:underline">Chính Sách Bảo Mật</a></li>
+            <li><Link to="/" onClick={scrollToTop} className="hover:underline">Hướng Dẫn Thanh Toán</Link></li>
+            <li><Link to="/" onClick={scrollToTop} className="hover:underline">Câu Hỏi Thường Gặp</Link></li>
+            <li><Link to="/" onClick={scrollToTop} className="hover:underline">Điều Khoản Dịch Vụ</Link></li>
+            <li><Link to="/" onClick={scrollToTop} className="hover:underline">Chính Sách Bảo Mật</Link></li>
           </ul>
         </div>
 
