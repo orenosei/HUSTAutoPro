@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import carDetails from './../Shared/carDetails.json'
 import InputField from './components/InputField'
 import DropdownField from './components/DropdownField'
+import { MultiSelect } from './components/MultiSelect'
 import { Separator } from '@/components/ui/separator'
 import features from './../Shared/features.json'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -68,7 +69,9 @@ function AddListing() {
       sellingPrice: parseFloat(resp[0].sellingPrice),
       originalPrice: resp[0].originalPrice ? parseFloat(resp[0].originalPrice) : null,
       engineSize: resp[0].engineSize ? parseFloat(resp[0].engineSize) : null,
-      cylinder: resp[0].cylinder ? Number(resp[0].cylinder) : null
+      cylinder: resp[0].cylinder ? Number(resp[0].cylinder) : null,
+
+      offerType: resp[0].offerType || []
     };
     
     setCarInfo(formattedData);
@@ -89,6 +92,13 @@ function AddListing() {
     setFeaturesData((prevData) => ({
       ...prevData,
       [name]: value,
+    }));
+  };
+
+  const handleMultiSelectChange = (name, selectedValues) => {
+    setFormData(prev => ({
+      ...prev,
+      [name]: selectedValues.length > 0 ? selectedValues : null
     }));
   };
   
@@ -148,6 +158,9 @@ function AddListing() {
           : null,
         cylinder: formData.cylinder 
           ? Number(formData.cylinder) 
+          : null,
+        offerType: formData.offerType && formData.offerType.length > 0 
+          ? formData.offerType 
           : null,
         
         // Xử lý dữ liệu đặc biệt
@@ -249,7 +262,14 @@ function AddListing() {
                       handleInputChange={handleInputChange}
                       carInfo={carInfo}
                     />
-                  ) : null}
+                  ) : item.fieldType === "multiselect" ? (
+                    <MultiSelect
+                      options={item.options.map(opt => ({ value: opt, label: opt }))}
+                      selected={formData[item.name] || []}
+                      onChange={(selected) => handleMultiSelectChange(item.name, selected)}
+                      placeholder="Chọn ưu đãi..."
+                    />
+                  ) : null}                
                 </div>
               ))}
             </div>

@@ -194,7 +194,7 @@
     {
       "label": "Loại ưu đãi",
       "name": "offerType",
-      "fieldType": "dropdown",
+      "fieldType": "multiselect",
        "options": [
         "Sang tên biển số",
         "Hỗ trợ đăng ký xe",
