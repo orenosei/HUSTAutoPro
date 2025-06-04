@@ -199,7 +199,7 @@ const AddToFavorite = async (clerkUserId, carListingId) => {
     if (car && car[0] && car[0].createdBy !== userId) {
       await db.insert(Notifications).values({
         userId: car[0].createdBy,
-        content: `${userName} đã thích xe của bạn.`,
+        content: `${userName} đã thích xe ${car[0].listingTitle} của bạn.`,
         type: 'favorite',
         isRead: false
       }).execute();
@@ -475,7 +475,7 @@ export const AddBlogToFavorite = async (clerkUserId, blogPostId) => {
     if (blog && blog[0] && blog[0].userId !== userId) {
       await db.insert(Notifications).values({
         userId: blog[0].userId,
-        content: `${userName} đã thích blog của bạn.`,
+        content: `${userName} đã thích blog ${blog[0].title} của bạn.`,
         type: 'favorite_blog',
         isRead: false
       }).execute();
@@ -644,7 +644,7 @@ export const CreateAppointment = async (data) => {
       const userName = `${user[0].firstName || ''} ${user[0].lastName || ''}`.trim() || user[0].email;
       await db.insert(Notifications).values({
         userId: car[0].createdBy,
-        content: `${userName} đã đặt lịch hẹn xem xe của bạn.`,
+        content: `${userName} đã đặt lịch hẹn xem xe ${car[0].listingTitle} của bạn.`,
         type: 'appointment',
         isRead: false
       }).execute();
@@ -760,6 +760,19 @@ export const MarkAllNotificationsAsRead = async (userId) => {
   }
 };
 
+export const MarkNotificationAsRead = async (notificationId) => {
+  try {
+    await db.update(Notifications)
+      .set({ isRead: true })
+      .where(eq(Notifications.id, notificationId))
+      .execute();
+    return { success: true };
+  } catch (error) {
+    console.error('Lỗi đánh dấu thông báo đã đọc:', error);
+    return { success: false };
+  }
+};
+
 export const AddCarComment = async (userId, carListingId, commentText, rating) => {
   try {
     // 1. Thêm bình luận vào bảng Comment
@@ -777,7 +790,7 @@ export const AddCarComment = async (userId, carListingId, commentText, rating) =
       const userName = `${user[0].firstName || ''} ${user[0].lastName || ''}`.trim() || user[0].email;
       await db.insert(Notifications).values({
         userId: car[0].createdBy,
-        content: `${userName} đã đánh giá xe của bạn: \"${commentText}\"`,
+        content: `${userName} đã đánh giá xe ${car[0].listingTitle} của bạn: \"${commentText}\"`,
         type: 'comment',
         isRead: false
       }).execute();
@@ -819,5 +832,6 @@ export default{
     UpdateAppointmentStatus,
     GetUserNotifications,
     MarkAllNotificationsAsRead,
+    MarkNotificationAsRead,
     AddCarComment
 }
