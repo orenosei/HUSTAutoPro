@@ -95,7 +95,9 @@
         "Tesla",
         "Toyota",
         "Volkswagen",
-        "Volvo"
+        "Volvo",
+        "VinFast",
+        "Khác"
       ],
       "column": 1,
       "icon": "FaIndustry"
@@ -170,7 +172,7 @@
       "name": "color",
       "fieldType": "dropdown",
       "required": true,
-      "options": ["Đen", "Xanh dương", "Vàng", "Hồng", "Đỏ", "Bạc", "Trắng"],
+      "options": ["Đen", "Xanh dương", "Vàng", "Hồng", "Đỏ", "Bạc", "Trắng", "Xám", "Nâu", "Xanh lá", "Cam", "Tím", "Khác"],
       "column": 2,
       "icon": "FaPalette"
     },
@@ -193,7 +195,18 @@
       "label": "Loại ưu đãi",
       "name": "offerType",
       "fieldType": "dropdown",
-      "options": ["Mua", "Khuyến mãi", "Bán", "Gấp"],
+       "options": [
+        "Sang tên biển số",
+        "Hỗ trợ đăng ký xe",
+        "Bảo hành mở rộng",
+        "Hỗ trợ vay trả góp",
+        "Giảm giá dịch vụ bảo dưỡng",
+        "Tặng gói bảo hiểm xe",
+        "Hỗ trợ phí trước bạ",
+        "Miễn phí giao xe tận nhà",
+        "Hỗ trợ đổi xe cũ lấy xe mới",
+        "Tặng phụ kiện chính hãng"
+      ],
       "column": 2,
       "icon": "FaTags"
     },
