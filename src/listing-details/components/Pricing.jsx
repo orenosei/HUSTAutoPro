@@ -22,6 +22,11 @@ function Pricing({carDetail}) {
       </div>
       
       <p className='mt-4 text-gray-600 text-sm italic'>* Giá có thể thay đổi tùy theo tình trạng xe.</p>
+
+      <div className='flex items-center mt-6 mb-4'>
+        <h2 className='text-xl font-semibold text-gray-800'>Ưu đãi:</h2>
+        
+      </div>
       
       <div className='mt-6'>
         <MoreInfo carDetail={carDetail} />
