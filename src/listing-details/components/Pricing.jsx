@@ -25,7 +25,7 @@ function Pricing({carDetail}) {
 
       <div className='flex items-center mt-6 mb-4'>
         <h2 className='text-xl font-semibold text-gray-800'>Ưu đãi:</h2>
-        
+        <span className='text-gray-600 text-sm ml-2'>{carDetail?.offerType || 'Không có ưu đãi'}</span>
       </div>
       
       <div className='mt-6'>

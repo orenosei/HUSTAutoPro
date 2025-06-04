@@ -72,7 +72,6 @@ function AddListing() {
     };
     
     setCarInfo(formattedData);
-    //console.log(formattedData); //
     setFeaturesData(formattedData.features || {});
     setFormData(formattedData);
     setExistingImages(resp[0].images || []);
