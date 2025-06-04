@@ -27,12 +27,6 @@ function Header() {
     };
   }, [open]);
 
-  // Danh sách thông báo mẫu
-  const notifications = [
-    { id: 1, title: 'Bạn có lịch hẹn mới', time: '2 phút trước' },
-    { id: 2, title: 'Bài đăng của bạn đã được duyệt', time: '1 giờ trước' },
-    { id: 3, title: 'Có tin nhắn mới', time: 'Hôm qua' },
-  ];
 
   return (
     <header className='flex justify-between items-center shadow-sm p-5 bg-white'>

@@ -21,8 +21,8 @@ import Footer from '@/components/Footer';
 const MAX_CONTENT_PREVIEW = 150; // Giới hạn 150 chữ cho phần xem trước nội dung
 
 const AddBlog = () => {
-  const CLOUD_NAME = "dqie3avyy"; 
-  const UPLOAD_PRESET = "hustautopro_preset";
+  const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+  const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { user } = useUser();
