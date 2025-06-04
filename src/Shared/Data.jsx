@@ -166,6 +166,14 @@ const CarMakes = [
     {
         "id": 42,
         "name": "Volvo"
+    },
+    {
+        "id": 43,
+        "name": "VinFast"
+    },
+    {
+        "id": 44,
+        "name": "Khác"
     }
 ]
 
@@ -173,7 +181,7 @@ const BodyTypes = ["Sedan", "SUV", "Truck", "Coupe", "Convertible", "Van", "Hatc
 const Transmissions = ["Tự động", "Số sàn", "CVT"];
 const DriveTypes = ["Dẫn động cầu trước", "Dẫn động cầu sau", "Dẫn động 4 bánh", "Dẫn động 4 bánh toàn thời gian"];
 const FuelTypes = ["Xăng", "Dầu", "Điện", "Hybrid"];
-const Colors = ["Đen", "Xanh dương", "Vàng", "Hồng", "Đỏ", "Bạc", "Trắng"];
+const Colors = ["Đen", "Xanh dương", "Vàng", "Hồng", "Đỏ", "Bạc", "Trắng", "Xám", "Nâu", "Xanh lá", "Cam", "Tím", "Khác"];
 
 const Pricing=[
     {
