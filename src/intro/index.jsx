@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import ChatWidget from "@/components/ChatWidget";
 
 const timeline = [
   { year: "2023", event: "HUST Auto Pro thành lập, đặt nền móng cho nền tảng mua bán xe hơi hiện đại." },
@@ -104,6 +105,7 @@ export default function Intro() {
           </div>
         </section>
       </div>
+      <ChatWidget />
       <Footer />
     </div>
   );

@@ -11,6 +11,7 @@ import { useState, useEffect } from 'react'
 import ViewHistory from './components/ViewHistory'
 import Footer from '@/components/Footer'
 import MyAppointment from './components/MyAppointment'
+import ChatWidget from '@/components/ChatWidget'
 
 
 function Profile() {
@@ -83,6 +84,7 @@ function Profile() {
         </TabsContent>
         </Tabs>
     </div>
+    <ChatWidget />
     <Footer />
     </div>
     
