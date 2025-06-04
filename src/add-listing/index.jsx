@@ -23,11 +23,11 @@ import { useUser } from '@clerk/clerk-react'
 import Service from '@/Shared/Service'
 import { inArray } from 'drizzle-orm'
 
+
 function AddListing() {    
   
-  //const CLOUD_NAME = "dql9a2fi8"; 
-  const CLOUD_NAME = "dqie3avyy"; 
-  const UPLOAD_PRESET = "hustautopro_preset"; 
+  const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+  const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
   const [searchParams]= useSearchParams();
   const [images, setImages] = useState([]);
   const [loader, setLoader] = useState(false);
