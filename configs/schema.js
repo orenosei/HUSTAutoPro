@@ -1,4 +1,4 @@
-import { integer, json, pgTable, serial, varchar, numeric, text, timestamp, uniqueIndex, boolean, jsonb } from "drizzle-orm/pg-core";
+import { integer, json, pgTable, serial, varchar, numeric, text, timestamp, uniqueIndex, boolean, jsonb} from "drizzle-orm/pg-core";
 
 export const CarListing = pgTable('carListing', {
     id: serial('id').primaryKey(),
@@ -20,7 +20,7 @@ export const CarListing = pgTable('carListing', {
     color: varchar('color', { length: 30 }).notNull(),
     door: integer('door').notNull(),
     vin: varchar('vin', { length: 50 }),
-    offerType: varchar('offerType', { length: 50 }),
+    offerType: text('offerType').array(), 
     listingDescription: text('listingDescription').notNull(),
     features: json('features'),
     createdBy: integer('createdBy').notNull().references(() => User.id, { onDelete: 'cascade' }),
