@@ -122,7 +122,7 @@
       "label": "Loại dẫn động",
       "name": "driveType",
       "fieldType": "dropdown",
-      "options": ["Dẫn động cầu trước", "Dẫn động cầu sau", "Dẫn động 4 bánh", "Dẫn động 4 bánh toàn thời gian"],
+      "options": ["Dẫn động cầu trước (FWD)", "Dẫn động cầu sau (RWD)", "Dẫn động 4 bánh (AWD)", "Dẫn động 4 bánh toàn thời gian (4WD)"],
       "required": true,
       "column": 1,
       "icon": "FaRoad"
