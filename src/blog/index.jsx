@@ -47,7 +47,7 @@ function Blog() {
         <h1 className="text-3xl font-bold text-gray-800 mb-8 ml-6">Blog</h1>
         <div className="flex justify-end mb-6">
           <button
-            className="px-4 py-2 mr-6 bg-green-500 text-white rounded-lg hover:bg-green-700 transition-colors"
+            className="px-4 py-2 mr-6 bg-red-500 text-white rounded-lg hover:bg-red-700 transition-colors"
             onClick={() => window.location.href = '/blog/add'}
           >
             + Viết blog mới

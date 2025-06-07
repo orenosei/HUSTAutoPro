@@ -3,7 +3,12 @@ import Search from './Search'
 
 function Hero() {
   return (
-    <div className='flex flex-col items-center p-10 py-20 gap-6 h-[750px] w-full bg-[#fdece9]'>
+    <div
+      className='flex flex-col items-center p-10 py-20 gap-6 h-[750px] w-full'
+      style={{
+        background: 'linear-gradient(0deg, #ffbdbd, #f9636d, #c3000e)'
+      }}
+    >
       <style>{`
         @keyframes smooth-wave {
           0%, 100% {
@@ -17,8 +22,12 @@ function Hero() {
         }
       `}</style>
 
-      <h2 className='text-lg'>Tìm kiếm xe hơi để mua hoặc thuê gần bạn</h2>
-      <h2 className='text-[50px] font-bold mb-10'>SỞ HỮU NGAY CHIẾC XE MƠ ƯỚC CỦA BẠN</h2>
+      <h2 className='text-2xl md:text-3xl lg:text-4xl text-white text-shadow-xs text-shadow-red-900 text-center'>
+        Tìm kiếm xe hơi để mua hoặc thuê gần bạn
+      </h2>
+      <h2 className='text-3xl md:text-5xl lg:text-[70px] font-bold mb-10 text-white text-shadow-md text-shadow-red-900 text-center leading-tight'>
+        SỞ HỮU NGAY CHIẾC XE MƠ ƯỚC
+      </h2>
       <Search />
       <img
         src='/LamborghiniAventador.png'

@@ -8,6 +8,7 @@ import { BiLoaderAlt } from 'react-icons/bi'
 import BlogItem from '@/blog/pages/components/BlogItem'
 import { db } from './../../../configs'
 import { BlogPost } from './../../../configs/schema'
+import { eq } from 'drizzle-orm'
 
 function MyBlog({ currentUserId, showEditButton}) {
   const [blogPosts, setBlogPosts] = useState([])
