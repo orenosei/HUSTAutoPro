@@ -84,7 +84,10 @@ function SearchByOptions() {
     <div> 
       <Header />
 
-      <div className='p-16 bg-black flex justify-center '>
+      <div className='p-16 flex justify-center '
+            style={{
+              background: 'linear-gradient(0deg, #ffbdbd, #f9636d, #c3000e)'
+            }}>
           <Search />
       </div>
       <div className='p-10 md:px-20'>

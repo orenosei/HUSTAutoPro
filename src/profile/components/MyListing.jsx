@@ -79,7 +79,7 @@ function MyListing({currentUserId, showEditButton}) {
             <div key={index} className="relative group min-w-[280px] max-w-xs flex-shrink-0">
               <CarItem car={item} />
               {showEditButton && (
-              <div className='absolute top-2 right-2 flex gap-2'>
+              <div className='absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity'>
                 <Link to={`/add-listing?mode=edit&id=${item?.id}`}>
                   <div className='bg-green-500 hover:bg-green-600 text-white p-2 rounded-lg transition-colors cursor-pointer'>
                     Chỉnh Sửa
