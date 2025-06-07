@@ -22,8 +22,12 @@ function Hero() {
         }
       `}</style>
 
-      <h2 className='text-2xl  text-white text-shadow-xs text-shadow-red-900'>Tìm kiếm xe hơi để mua hoặc thuê gần bạn</h2>
-      <h2 className='text-[70px] font-bold mb-10 text-white text-shadow-md text-shadow-red-900'>SỞ HỮU NGAY CHIẾC XE MƠ ƯỚC</h2>
+      <h2 className='text-2xl md:text-3xl lg:text-4xl text-white text-shadow-xs text-shadow-red-900 text-center'>
+        Tìm kiếm xe hơi để mua hoặc thuê gần bạn
+      </h2>
+      <h2 className='text-3xl md:text-5xl lg:text-[70px] font-bold mb-10 text-white text-shadow-md text-shadow-red-900 text-center leading-tight'>
+        SỞ HỮU NGAY CHIẾC XE MƠ ƯỚC
+      </h2>
       <Search />
       <img
         src='/LamborghiniAventador.png'
