@@ -15,7 +15,7 @@ const ChatWidget = () => {
 
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([
-    { id: 1, text: "Привeтик! Arya có thể giúp gì cho bạn?", sender: 'bot' }
+    { id: 1, text: "Привeтик! Chuyên gia xe hơi Arya đây! Tớ có thể giúp gì cho bạn?", sender: 'bot' }
   ]);
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
@@ -219,12 +219,13 @@ const ChatWidget = () => {
                         className={`mb-4 ${msg.sender === 'user' ? 'text-right' : ''}`}
                     >
                         <div 
-                        className={`inline-block p-3 rounded-lg max-w-[80%] shadow-sm ${
-                            msg.sender === 'user' 
-                            ? 'bg-gradient-to-r from-red-400 to-pink-500 text-white rounded-br-none' 
-                            : 'bg-white text-gray-800 rounded-bl-none'
-                        }`}
+                            className={`inline-block p-3 rounded-lg max-w-[80%] shadow-sm ${
+                                msg.sender === 'user' 
+                                ? 'bg-gradient-to-r from-red-400 to-pink-500 text-white rounded-bl-none text-left' 
+                                : 'bg-white text-gray-800 rounded-bl-none'
+                            }`}
                         >
+
                         {msg.sender === 'bot' 
                             ? renderMarkdown(msg.text) 
                             : msg.text}
