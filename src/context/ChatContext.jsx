@@ -6,7 +6,7 @@ export const useChat = () => useContext(ChatContext);
 
 export const ChatProvider = ({ children }) => {
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [autoQuery, setAutoQuery] = useState(null); // Lưu thông tin truy vấn tự động
+  const [autoQuery, setAutoQuery] = useState(null); 
 
   const openChat = () => {
     setIsChatOpen(true);
@@ -18,8 +18,8 @@ export const ChatProvider = ({ children }) => {
   };
 
   const askAboutCar = (carInfo) => {
-    setAutoQuery(carInfo); // Lưu thông tin xe để xử lý tự động
-    openChat(); // Mở chat widget
+    setAutoQuery(carInfo); 
+    openChat(); 
   };
 
   return (

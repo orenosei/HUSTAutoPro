@@ -38,7 +38,7 @@ function ListingDetail() {
     GetCarDetail();
   },[id, location.pathname])
 
-  // Lưu lịch sử xem xe khi vào trang chi tiết
+
   useEffect(() => {
     const saveViewHistory = async () => {
       if (!user || !id) return;
@@ -51,7 +51,6 @@ function ListingDetail() {
           viewedAt: new Date()
         });
       } catch (err) {
-        // Không cần báo lỗi cho user, chỉ log
         console.error('Lỗi lưu lịch sử xem xe:', err);
       }
     };
@@ -66,7 +65,6 @@ function ListingDetail() {
     .innerJoin(User, eq(CarListing.createdBy, User.id))
     .where(eq(CarListing.id, id))
     const resp = Service.FormatResult(result);
-    //console.log(resp[0]);
     setCarDetail(resp[0]);
   }
 
